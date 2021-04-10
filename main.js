@@ -15,7 +15,7 @@ function exit(message) {
 
 async function main() {
   try {
-    const range = parseVersionRange(core.getInput("version"));
+    const range = parseVersionRange(core.getInput("deno-version"));
     if (range === null) {
       exit("The passed version range is not valid.");
     }
@@ -33,7 +33,7 @@ async function main() {
 
     await install(version);
 
-    core.setOutput("version", version.version);
+    core.setOutput("deno-version", version.version);
     core.setOutput("is-canary", version.isCanary);
 
     core.info("Installation complete.");

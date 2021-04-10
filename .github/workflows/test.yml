@@ -20,7 +20,7 @@ jobs:
       - name: Setup Deno
         uses: ./
         with:
-          version: ${{ matrix.deno }}
+          deno-version: ${{ matrix.deno }}
 
       - name: Test Deno
         run: deno run https://deno.land/std/examples/welcome.ts
