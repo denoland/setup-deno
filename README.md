@@ -7,7 +7,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 ### Latest stable
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@main
   with:
     deno-version: v1.x
 ```
@@ -15,7 +15,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 ### Specific stable
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@main
   with:
     deno-version: "1.8.2"
 ```
@@ -23,7 +23,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 ### Semver range
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@main
   with:
     deno-version: "~1.7"
 ```
@@ -31,7 +31,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 ### Latest canary
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@main
   with:
     deno-version: canary
 ```
@@ -39,7 +39,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 ### Specific canary
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@main
   with:
     deno-version: e7b7129b7a92b7500ded88f8f5baa25a7f59e56e
 ```
