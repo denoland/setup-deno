@@ -1,0 +1,22 @@
+{
+  "name": "setup-deno",
+  "description": "Set up Deno easially in GitHub Actions",
+  "version": "1.0.0",
+  "author": "Deno Land Inc",
+  "license": "MIT",
+  "scripts": {
+    "lint": "deno lint --unstable --ignore=node_modules",
+    "fmt": "deno fmt --ignore=node_modules"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/tool-cache": "^1.6.1",
+    "node-fetch": "^2.6.1",
+    "semver": "^7.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.37",
+    "@types/node-fetch": "^2.5.10",
+    "@types/semver": "^7.3.4"
+  }
+}

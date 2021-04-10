@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "module": "CommonJS",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "moduleResolution": "node"
+  }
+}
