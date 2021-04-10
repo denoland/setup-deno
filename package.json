@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "deno lint --unstable --ignore=node_modules",
-    "fmt": "deno fmt --ignore=node_modules"
+    "fmt": "deno fmt --ignore=node_modules",
+    "fmt:check": "deno fmt --ignore=node_modules --check"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
