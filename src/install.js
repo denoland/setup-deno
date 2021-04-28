@@ -29,7 +29,7 @@ async function install(version) {
   const newCachedPath = await tc.cacheDir(
     extractedFolder,
     "deno",
-    version.isCanary ? `0.0.0-${version}` : version.version,
+    version.isCanary ? `0.0.0-${version.version}` : version.version,
   );
   core.info(`Cached Deno to ${newCachedPath}.`);
   core.addPath(newCachedPath);
