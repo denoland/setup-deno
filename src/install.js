@@ -3,7 +3,7 @@ const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
 
 /**
- * @param {import("./version").Version} version 
+ * @param {import("./version").Version} version
  */
 async function install(version) {
   const cachedPath = tc.find(

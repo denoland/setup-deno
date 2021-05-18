@@ -3,13 +3,13 @@ const fetch = require("node-fetch");
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
-/** 
+/**
  * @typedef VersionRange
  * @property {string} range
  * @property {boolean} isCanary
  */
 
-/** 
+/**
  * @typedef Version
  * @property {string} version
  * @property {boolean} isCanary
@@ -17,7 +17,7 @@ const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
 /**
  * Parses the version from the user into a structure.
- * 
+ *
  * @param {string | undefined} version
  * @returns {VersionRange | null}
  */

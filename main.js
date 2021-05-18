@@ -6,7 +6,7 @@ const { install } = require("./src/install.js");
 
 /**
  * @param {string} message
- * @returns {never} 
+ * @returns {never}
  */
 function exit(message) {
   core.setFailed(message);
