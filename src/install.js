@@ -19,7 +19,7 @@ async function install(version) {
   const zip = zipName();
   const url = version.isCanary
     ? `https://dl.deno.land/canary/${version.version}/${zip}`
-    : `https://dl.deno.land/release/v${version.version}/${zip}`;
+    : `https://github.com/denoland/deno/releases/download/v${version.version}/${zip}`;
 
   core.info(`Downloading Deno from ${url}.`);
 
