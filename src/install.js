@@ -1,3 +1,5 @@
+const os = require("os");
+const path = require("path");
 const process = require("process");
 const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
@@ -31,8 +33,11 @@ async function install(version) {
     "deno",
     version.isCanary ? `0.0.0-${version.version}` : version.version,
   );
-  core.info(`Cached Deno to ${newCachedPath}.`);
   core.addPath(newCachedPath);
+  core.info(`Cached Deno to ${newCachedPath}.`);
+  const denoInstallRoot = process.env.DENO_INSTALL_ROOT ||
+    path.join(os.homedir(), ".deno", "bin");
+  core.addPath(denoInstallRoot);
 }
 
 /** @returns {string} */
