@@ -33,8 +33,8 @@ async function install(version) {
     "deno",
     version.isCanary ? `0.0.0-${version.version}` : version.version,
   );
-  core.addPath(newCachedPath);
   core.info(`Cached Deno to ${newCachedPath}.`);
+  core.addPath(newCachedPath);
   const denoInstallRoot = process.env.DENO_INSTALL_ROOT ||
     path.join(os.homedir(), ".deno", "bin");
   core.addPath(denoInstallRoot);
