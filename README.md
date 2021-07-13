@@ -6,7 +6,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 
 ### Latest stable
 
-> Note: we highly recommend specifying the latest stable version you want to test on because Deno does not follow semver and introduces non-backwards compatible changes within minor version bumps.
+> Note: we highly recommend specifying the latest stable minor version you want to run on because Deno does not follow semver and introduces non-backwards compatible changes within minor version bumps.
 
 ```yaml
 - uses: denoland/setup-deno@v1
