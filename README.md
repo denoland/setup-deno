@@ -4,12 +4,22 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 
 ## Usage
 
-### Latest stable
+### Latest stable for a major
 
 ```yaml
 - uses: denoland/setup-deno@v1
   with:
     deno-version: v1.x
+```
+
+### Latest stable for any major
+
+Targets the latest major, minor and patch version of Deno.
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-version: vx.x.x
 ```
 
 ### Specific stable
