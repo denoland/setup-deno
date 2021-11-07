@@ -16,3 +16,5 @@ outputs:
 runs:
   using: "node12"
   main: "main.js"
+- name: Setup Deno
+  uses: denoland/setup-deno@v1.1.0
