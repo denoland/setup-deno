@@ -61,7 +61,7 @@ async function resolveVersion({ range, isCanary }) {
   }
 
   const res = await fetch(
-    "https://raw.githubusercontent.com/denoland/deno_website2/main/versions.json",
+    "https://raw.githubusercontent.com/denoland/dotland/main/versions.json",
   );
   if (res.status !== 200) {
     throw new Error(
