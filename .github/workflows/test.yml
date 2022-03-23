@@ -16,7 +16,7 @@ jobs:
           [1.x, "1.8.2", canary, ~1.7, e7b7129b7a92b7500ded88f8f5baa25a7f59e56e]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Deno
         uses: ./
