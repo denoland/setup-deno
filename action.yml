@@ -14,5 +14,5 @@ outputs:
   is-canary:
     description: "If the installed Deno version was a canary version."
 runs:
-  using: "node12"
+  using: "node16"
   main: "main.js"
