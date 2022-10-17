@@ -1,5 +1,5 @@
 const semver = require("semver");
-const fetch = require("node-fetch");
+const { fetch } = require("undici");
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
