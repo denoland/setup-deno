@@ -60,9 +60,7 @@ async function resolveVersion({ range, isCanary }) {
     return { version: range, isCanary: true };
   }
 
-  const res = await fetch(
-    "https://raw.githubusercontent.com/denoland/dotland/main/versions.json",
-  );
+  const res = await fetch("https://deno.com/versions.json");
   if (res.status !== 200) {
     throw new Error(
       "Failed to fetch stable version info from raw.githubusercontent.com. Please try again later.",
