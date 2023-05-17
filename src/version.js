@@ -48,7 +48,9 @@ function parseVersionRange(version) {
 async function resolveVersion({ range, isCanary }) {
   if (isCanary) {
     if (range === "latest") {
-      const res = await fetchWithRetries("https://dl.deno.land/canary-latest.txt");
+      const res = await fetchWithRetries(
+        "https://dl.deno.land/canary-latest.txt",
+      );
       if (res.status !== 200) {
         throw new Error(
           "Failed to fetch canary version info from dl.deno.land. Please try again later.",
