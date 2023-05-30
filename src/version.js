@@ -48,7 +48,9 @@ function parseVersionRange(version) {
 async function resolveVersion({ range, isCanary }) {
   if (isCanary) {
     if (range === "latest") {
-      const res = await fetch("https://dl.deno.land/canary-latest.txt");
+      const res = await fetchWithRetries(
+        "https://dl.deno.land/canary-latest.txt",
+      );
       if (res.status !== 200) {
         throw new Error(
           "Failed to fetch canary version info from dl.deno.land. Please try again later.",
@@ -60,10 +62,10 @@ async function resolveVersion({ range, isCanary }) {
     return { version: range, isCanary: true };
   }
 
-  const res = await fetch("https://deno.com/versions.json");
+  const res = await fetchWithRetries("https://deno.com/versions.json");
   if (res.status !== 200) {
     throw new Error(
-      "Failed to fetch stable version info from raw.githubusercontent.com. Please try again later.",
+      "Failed to fetch stable version info from deno.com/versions.json. Please try again later.",
     );
   }
   const versionJson = await res.json();
@@ -86,6 +88,28 @@ async function resolveVersion({ range, isCanary }) {
   }
 
   return { version, isCanary: false };
+}
+
+/** @param {string} url */
+async function fetchWithRetries(url, maxRetries = 5) {
+  let sleepMs = 250;
+  let iterationCount = 0;
+  while (true) {
+    iterationCount++;
+    try {
+      const res = await fetch(url);
+      if (res.status === 200 || iterationCount > maxRetries) {
+        return res;
+      }
+    } catch (err) {
+      if (iterationCount > maxRetries) {
+        throw err;
+      }
+    }
+    console.warn(`Failed fetching. Retrying in ${sleepMs}ms...`);
+    await new Promise((resolve) => setTimeout(resolve, sleepMs));
+    sleepMs = Math.min(sleepMs * 2, 10_000);
+  }
 }
 
 module.exports = {
