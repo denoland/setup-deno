@@ -24,12 +24,12 @@ jobs:
           deno-version: ${{ matrix.deno }}
 
       - name: Test Deno
-        run: deno run https://deno.land/std/examples/welcome.ts
+        run: deno run https://deno.land/std@1.98.0/examples/welcome.ts
 
       - name: Test `deno install`
         run: |
-          deno install --allow-net -n deno_curl https://deno.land/std/examples/curl.ts
-          deno_curl https://deno.land/std/examples/curl.ts
+          deno install --allow-net -n deno_curl https://deno.land/std@1.98.0/examples/curl.ts
+          deno_curl https://deno.land/std@1.98.0/examples/curl.ts
 
       - name: Format
         if: runner.os == 'Linux' && matrix.deno == 'canary'
