@@ -5,6 +5,7 @@ const {
   NotSupportedError
 } = require('./errors')
 const assert = require('assert')
+const { kHTTP2BuildRequest, kHTTP2CopyHeaders, kHTTP1BuildRequest } = require('./symbols')
 const util = require('./util')
 
 // tokenRegExp and headerCharRegex have been lifted from
@@ -34,10 +35,6 @@ const channels = {}
 
 let extractBody
 
-const nodeVersion = process.versions.node.split('.')
-const nodeMajor = Number(nodeVersion[0])
-const nodeMinor = Number(nodeVersion[1])
-
 try {
   const diagnosticsChannel = require('diagnostics_channel')
   channels.create = diagnosticsChannel.channel('undici:request:create')
@@ -65,7 +62,9 @@ class Request {
     upgrade,
     headersTimeout,
     bodyTimeout,
-    throwOnError
+    reset,
+    throwOnError,
+    expectContinue
   }, handler) {
     if (typeof path !== 'string') {
       throw new InvalidArgumentError('path must be a string')
@@ -95,6 +94,14 @@ class Request {
 
     if (bodyTimeout != null && (!Number.isFinite(bodyTimeout) || bodyTimeout < 0)) {
       throw new InvalidArgumentError('invalid bodyTimeout')
+    }
+
+    if (reset != null && typeof reset !== 'boolean') {
+      throw new InvalidArgumentError('invalid reset')
+    }
+
+    if (expectContinue != null && typeof expectContinue !== 'boolean') {
+      throw new InvalidArgumentError('invalid expectContinue')
     }
 
     this.headersTimeout = headersTimeout
@@ -139,6 +146,8 @@ class Request {
 
     this.blocking = blocking == null ? false : blocking
 
+    this.reset = reset == null ? null : reset
+
     this.host = null
 
     this.contentLength = null
@@ -146,6 +155,9 @@ class Request {
     this.contentType = null
 
     this.headers = ''
+
+    // Only for H2
+    this.expectContinue = expectContinue != null ? expectContinue : false
 
     if (Array.isArray(headers)) {
       if (headers.length % 2 !== 0) {
@@ -165,7 +177,7 @@ class Request {
     }
 
     if (util.isFormDataLike(this.body)) {
-      if (nodeMajor < 16 || (nodeMajor === 16 && nodeMinor < 8)) {
+      if (util.nodeMajor < 16 || (util.nodeMajor === 16 && util.nodeMinor < 8)) {
         throw new InvalidArgumentError('Form-Data bodies are only supported in node v16.8 and newer.')
       }
 
@@ -179,6 +191,7 @@ class Request {
         this.headers += `content-type: ${contentType}\r\n`
       }
       this.body = bodyStream.stream
+      this.contentLength = bodyStream.length
     } else if (util.isBlobLike(body) && this.contentType == null && body.type) {
       this.contentType = body.type
       this.headers += `content-type: ${body.type}\r\n`
@@ -265,14 +278,79 @@ class Request {
     return this[kHandler].onError(error)
   }
 
+  // TODO: adjust to support H2
   addHeader (key, value) {
     processHeader(this, key, value)
     return this
   }
+
+  static [kHTTP1BuildRequest] (origin, opts, handler) {
+    // TODO: Migrate header parsing here, to make Requests
+    // HTTP agnostic
+    return new Request(origin, opts, handler)
+  }
+
+  static [kHTTP2BuildRequest] (origin, opts, handler) {
+    const headers = opts.headers
+    opts = { ...opts, headers: null }
+
+    const request = new Request(origin, opts, handler)
+
+    request.headers = {}
+
+    if (Array.isArray(headers)) {
+      if (headers.length % 2 !== 0) {
+        throw new InvalidArgumentError('headers array must be even')
+      }
+      for (let i = 0; i < headers.length; i += 2) {
+        processHeader(request, headers[i], headers[i + 1], true)
+      }
+    } else if (headers && typeof headers === 'object') {
+      const keys = Object.keys(headers)
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i]
+        processHeader(request, key, headers[key], true)
+      }
+    } else if (headers != null) {
+      throw new InvalidArgumentError('headers must be an object or an array')
+    }
+
+    return request
+  }
+
+  static [kHTTP2CopyHeaders] (raw) {
+    const rawHeaders = raw.split('\r\n')
+    const headers = {}
+
+    for (const header of rawHeaders) {
+      const [key, value] = header.split(': ')
+
+      if (value == null || value.length === 0) continue
+
+      if (headers[key]) headers[key] += `,${value}`
+      else headers[key] = value
+    }
+
+    return headers
+  }
 }
 
-function processHeader (request, key, val) {
+function processHeaderValue (key, val, skipAppend) {
   if (val && typeof val === 'object') {
+    throw new InvalidArgumentError(`invalid ${key} header`)
+  }
+
+  val = val != null ? `${val}` : ''
+
+  if (headerCharRegex.exec(val) !== null) {
+    throw new InvalidArgumentError(`invalid ${key} header`)
+  }
+
+  return skipAppend ? val : `${key}: ${val}\r\n`
+}
+
+function processHeader (request, key, val, skipAppend = false) {
+  if (val && (typeof val === 'object' && !Array.isArray(val))) {
     throw new InvalidArgumentError(`invalid ${key} header`)
   } else if (val === undefined) {
     return
@@ -283,6 +361,9 @@ function processHeader (request, key, val) {
     key.length === 4 &&
     key.toLowerCase() === 'host'
   ) {
+    if (headerCharRegex.exec(val) !== null) {
+      throw new InvalidArgumentError(`invalid ${key} header`)
+    }
     // Consumed by Client
     request.host = val
   } else if (
@@ -297,11 +378,11 @@ function processHeader (request, key, val) {
   } else if (
     request.contentType === null &&
     key.length === 12 &&
-    key.toLowerCase() === 'content-type' &&
-    headerCharRegex.exec(val) === null
+    key.toLowerCase() === 'content-type'
   ) {
     request.contentType = val
-    request.headers += `${key}: ${val}\r\n`
+    if (skipAppend) request.headers[key] = processHeaderValue(key, val, skipAppend)
+    else request.headers += processHeaderValue(key, val)
   } else if (
     key.length === 17 &&
     key.toLowerCase() === 'transfer-encoding'
@@ -311,7 +392,12 @@ function processHeader (request, key, val) {
     key.length === 10 &&
     key.toLowerCase() === 'connection'
   ) {
-    throw new InvalidArgumentError('invalid connection header')
+    const value = typeof val === 'string' ? val.toLowerCase() : null
+    if (value !== 'close' && value !== 'keep-alive') {
+      throw new InvalidArgumentError('invalid connection header')
+    } else if (value === 'close') {
+      request.reset = true
+    }
   } else if (
     key.length === 10 &&
     key.toLowerCase() === 'keep-alive'
@@ -329,10 +415,20 @@ function processHeader (request, key, val) {
     throw new NotSupportedError('expect header not supported')
   } else if (tokenRegExp.exec(key) === null) {
     throw new InvalidArgumentError('invalid header key')
-  } else if (headerCharRegex.exec(val) !== null) {
-    throw new InvalidArgumentError(`invalid ${key} header`)
   } else {
-    request.headers += `${key}: ${val}\r\n`
+    if (Array.isArray(val)) {
+      for (let i = 0; i < val.length; i++) {
+        if (skipAppend) {
+          if (request.headers[key]) request.headers[key] += `,${processHeaderValue(key, val[i], skipAppend)}`
+          else request.headers[key] = processHeaderValue(key, val[i], skipAppend)
+        } else {
+          request.headers += processHeaderValue(key, val[i])
+        }
+      }
+    } else {
+      if (skipAppend) request.headers[key] = processHeaderValue(key, val, skipAppend)
+      else request.headers += processHeaderValue(key, val)
+    }
   }
 }
 

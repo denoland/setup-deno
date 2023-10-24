@@ -1,5 +1,7 @@
 const process = require("process");
 const core = require("@actions/core");
+const os = require("os");
+const path = require("path");
 
 const { parseVersionRange, resolveVersion } = require("./src/version.js");
 const { install } = require("./src/install.js");
@@ -25,13 +27,21 @@ async function main() {
       exit("Could not resolve a version for the given range.");
     }
 
+    const useLocalCache = core.getInput("cache") === "true";
+
     core.info(
       `Going to install ${
         version.isCanary ? "canary" : "stable"
       } version ${version.version}.`,
     );
 
-    await install(version);
+    const installationPath = await install(version, useLocalCache);
+
+    const denoInstallRoot = process.env.DENO_INSTALL_ROOT ||
+      path.join(os.homedir(), ".deno", "bin");
+
+    core.addPath(installationPath);
+    core.addPath(denoInstallRoot);
 
     core.setOutput("deno-version", version.version);
     core.setOutput("is-canary", version.isCanary);

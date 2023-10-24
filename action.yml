@@ -8,6 +8,9 @@ inputs:
   deno-version:
     description: The Deno version to install. Can be a semver version of a stable release, "canary" for the latest canary, or the Git hash of a specific canary release.
     default: "1.x"
+  cache:
+    description: "Whether to save the Deno executable to the repository cache."
+    default: false
 outputs:
   deno-version:
     description: "The Deno version that was installed."

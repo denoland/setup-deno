@@ -22,6 +22,7 @@ jobs:
         uses: ./
         with:
           deno-version: ${{ matrix.deno }}
+          cache: ${{ matrix.deno == '~1.32' && 'true' || 'false' }}
 
       - name: Test Deno
         run: deno run https://deno.land/std@0.198.0/examples/welcome.ts

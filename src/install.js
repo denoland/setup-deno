@@ -1,43 +1,79 @@
-const os = require("os");
 const path = require("path");
 const process = require("process");
 const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
+const cache = require("@actions/cache");
 
 /**
  * @param {import("./version").Version} version
+ * @returns {Promise<string>} The path to the installation.
  */
-async function install(version) {
-  const cachedPath = tc.find(
-    "deno",
-    version.isCanary ? `0.0.0-${version.version}` : version.version,
-  );
+async function install(version, useLocalCache = false) {
+  const versionSpec = version.isCanary ? "canary" : version.version;
+
+  const cachedPath = tc.find("deno", versionSpec);
   if (cachedPath) {
-    core.info(`Using cached Deno installation from ${cachedPath}.`);
+    core.info(`Using cached Deno installation in the runner: ${cachedPath}.`);
     core.addPath(cachedPath);
-    return;
+    return cachedPath;
   }
 
+  if (!process.env.RUNNER_TOOL_CACHE) {
+    throw new Error("RUNNER_TOOL_CACHE is not set");
+  }
   const zip = zipName();
+  const loaclCacheKey = zip.replace(/\.zip$/, "") + "-" + versionSpec;
+
+  if (useLocalCache) {
+    const restorePath = path.join(
+      process.env.RUNNER_TOOL_CACHE,
+      "deno",
+      versionSpec,
+      process.arch,
+    );
+    core.info(
+      `attempting restore of Deno installation for ${loaclCacheKey} to ${restorePath}`,
+    );
+    const restoredKey = await cache.restoreCache([restorePath], loaclCacheKey);
+    if (restoredKey) {
+      core.info(
+        `using cached Deno installation in the repository: ${restorePath}`,
+      );
+      return restorePath;
+    }
+  }
+
   const url = version.isCanary
     ? `https://dl.deno.land/canary/${version.version}/${zip}`
     : `https://github.com/denoland/deno/releases/download/v${version.version}/${zip}`;
 
-  core.info(`Downloading Deno from ${url}.`);
+  core.info(`No cached installation found. Downloading Deno from ${url}.`);
 
   const zipPath = await tc.downloadTool(url);
   const extractedFolder = await tc.extractZip(zipPath);
 
-  const newCachedPath = await tc.cacheDir(
+  const toolCachePath = await tc.cacheDir(
     extractedFolder,
     "deno",
-    version.isCanary ? `0.0.0-${version.version}` : version.version,
+    versionSpec,
+    process.arch,
   );
-  core.info(`Cached Deno to ${newCachedPath}.`);
-  core.addPath(newCachedPath);
-  const denoInstallRoot = process.env.DENO_INSTALL_ROOT ||
-    path.join(os.homedir(), ".deno", "bin");
-  core.addPath(denoInstallRoot);
+  if (!toolCachePath.startsWith(process.env.RUNNER_TOOL_CACHE)) {
+    core.warning(
+      `Deno was cached to ${toolCachePath}, but the expected be cached under ${process.env.RUNNER_TOOL_CACHE}.`,
+    );
+  } else {
+    core.info(`Cached Deno to ${toolCachePath}.`);
+  }
+
+  if (useLocalCache) {
+    core.info(
+      `Saving Deno installation to the repository cache for ${loaclCacheKey}.`,
+    );
+    await cache.saveCache([toolCachePath], loaclCacheKey);
+  }
+
+  return toolCachePath;
 }
 
 /** @returns {string} */
