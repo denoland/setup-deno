@@ -4,6 +4,14 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 
 ## Usage
 
+### Version from file
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-version-file: .dvmrc
+```
+
 ### Latest stable for a major
 
 ```yaml

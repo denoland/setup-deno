@@ -1,3 +1,4 @@
+const fs = require("fs");
 const process = require("process");
 const core = require("@actions/core");
 
@@ -15,7 +16,11 @@ function exit(message) {
 
 async function main() {
   try {
-    const range = parseVersionRange(core.getInput("deno-version"));
+    const denoVersionFile = core.getInput("deno-version-file");
+    const range = parseVersionRange(
+      core.getInput("deno-version") ||
+        (denoVersionFile ? fs.readFileSync(denoVersionFile, "utf8") : "1.x"),
+    );
     if (range === null) {
       exit("The passed version range is not valid.");
     }
