@@ -1,5 +1,6 @@
 const semver = require("semver");
 const { fetch } = require("undici");
+const fs = require("fs");
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
@@ -42,6 +43,26 @@ function parseVersionRange(version) {
 }
 
 /**
+ * Parses the version from the version file
+ *
+ * @param {string} versionFilePath
+ * @returns {string | undefined}
+ */
+function getDenoVersionFromFile(versionFilePath) {
+  if (!fs.existsSync(versionFilePath)) {
+    throw new Error(
+      `The specified node version file at: ${versionFilePath} does not exist`
+    );
+  }
+
+  const contents = fs.readFileSync(versionFilePath, "utf8");
+
+  const found = contents.match(/^(?:deno?\s+)?v?(?<version>[^\s]+)$/m);
+
+  return (found && found.groups && found.groups.version) || contents.trim();
+}
+
+/**
  * @param {VersionRange} range
  * @returns {Promise<Version | null>}
  */
@@ -49,11 +70,11 @@ async function resolveVersion({ range, isCanary }) {
   if (isCanary) {
     if (range === "latest") {
       const res = await fetchWithRetries(
-        "https://dl.deno.land/canary-latest.txt",
+        "https://dl.deno.land/canary-latest.txt"
       );
       if (res.status !== 200) {
         throw new Error(
-          "Failed to fetch canary version info from dl.deno.land. Please try again later.",
+          "Failed to fetch canary version info from dl.deno.land. Please try again later."
         );
       }
       const version = (await res.text()).trim();
@@ -65,7 +86,7 @@ async function resolveVersion({ range, isCanary }) {
   const res = await fetchWithRetries("https://deno.com/versions.json");
   if (res.status !== 200) {
     throw new Error(
-      "Failed to fetch stable version info from deno.com/versions.json. Please try again later.",
+      "Failed to fetch stable version info from deno.com/versions.json. Please try again later."
     );
   }
   const versionJson = await res.json();
@@ -115,4 +136,5 @@ async function fetchWithRetries(url, maxRetries = 5) {
 module.exports = {
   parseVersionRange,
   resolveVersion,
+  getDenoVersionFromFile,
 };
