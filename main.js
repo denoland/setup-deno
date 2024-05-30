@@ -1,5 +1,6 @@
 const process = require("process");
 const core = require("@actions/core");
+const path = require("path");
 
 const { parseVersionRange, resolveVersion } = require("./src/version.js");
 const { install } = require("./src/install.js");
@@ -32,6 +33,8 @@ async function main() {
     );
 
     await install(version);
+
+    core.info(`::add-matcher::${path.join(__dirname, "problem-matchers.json")}`);
 
     core.setOutput("deno-version", version.version);
     core.setOutput("is-canary", version.isCanary);

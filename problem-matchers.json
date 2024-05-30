@@ -1,0 +1,21 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "deno-lint",
+      "pattern": [
+        {
+          "regexp": "^(?:\\x1B\\[[0-9;]*[a-zA-Z])*(warning|warn|error)(?:\\[(\\S*)\\])?(?:\\x1B\\[[0-9;]*[a-zA-Z])*: (.*?)(?:\\x1B\\[[0-9;]*[a-zA-Z])*$",
+          "severity": 1,
+          "code": 2,
+          "message": 3
+        },
+        {
+          "regexp": "^  (?:\\x1B\\[[0-9;]*[a-zA-Z])*-->(?:\\x1B\\[[0-9;]*[a-zA-Z])* (?:\\x1B\\[[0-9;]*[a-zA-Z])*(\\S+?)(?:\\x1B\\[[0-9;]*[a-zA-Z])*:(\\d+):(\\d+)(?:\\x1B\\[[0-9;]*[a-zA-Z])*$",
+          "file": 1,
+          "line": 2,
+          "column": 3
+        }
+      ]
+    }
+  ]
+}
