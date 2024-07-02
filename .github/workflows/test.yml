@@ -13,7 +13,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         deno:
-          [1.x, "1.33.1", canary, ~1.32, b31cf9fde6ad5398c20370c136695db77df6beeb]
+          [
+            1.x,
+            "1.33.1",
+            canary,
+            ~1.32,
+            b31cf9fde6ad5398c20370c136695db77df6beeb,
+          ]
 
     steps:
       - uses: actions/checkout@v3
@@ -38,3 +44,51 @@ jobs:
       - name: Lint
         if: runner.os == 'Linux' && matrix.deno == 'canary'
         run: npm run lint
+
+  test-dvm-file:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        deno:
+          [
+            1.x,
+            "1.33.1",
+            canary,
+            ~1.32,
+            b31cf9fde6ad5398c20370c136695db77df6beeb,
+          ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Deno
+        uses: ./
+        with:
+          deno-version-file: .dvmrc
+
+      - name: Check version
+        run: deno -V | grep -q "deno 1\.43\.1"
+
+  test-tool-versions-file:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        deno:
+          [
+            1.x,
+            "1.33.1",
+            canary,
+            ~1.32,
+            b31cf9fde6ad5398c20370c136695db77df6beeb,
+          ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Deno
+        uses: ./
+        with:
+          deno-version-file: .tool-versions
+
+      - name: Check version
+        run: deno -V | grep -q "deno 1\.43\.1"
