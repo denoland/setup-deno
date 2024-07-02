@@ -46,7 +46,7 @@ jobs:
         run: npm run lint
 
   test-dvm-file:
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -70,7 +70,7 @@ jobs:
         run: deno -V | grep -q "deno 1\.43\.1"
 
   test-tool-versions-file:
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
