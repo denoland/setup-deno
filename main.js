@@ -21,7 +21,9 @@ async function main() {
   try {
     const denoVersionFile = core.getInput("deno-version-file");
     const range = parseVersionRange(
-      core.getInput("deno-version") || getDenoVersionFromFile(denoVersionFile)
+      denoVersionFile
+        ? getDenoVersionFromFile(denoVersionFile)
+        : core.getInput("deno-version")
     );
 
     if (range === null) {
