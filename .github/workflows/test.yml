@@ -39,28 +39,18 @@ jobs:
         if: runner.os == 'Linux' && matrix.deno == 'canary'
         run: npm run lint
 
-  test-dvm-file:
+  test-version-file:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deno-version-file: [.dvmrc, .tool-versions]
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Deno
         uses: ./
         with:
-          deno-version-file: .dvmrc
-
-      - name: Check version
-        run: deno -V | grep -q "deno 1\.43\.1"
-
-  test-tool-versions-file:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Deno
-        uses: ./
-        with:
-          deno-version-file: .tool-versions
+          deno-version-file: ${{ matrix.deno-version-file }}
 
       - name: Check version
         run: deno -V | grep -q "deno 1\.43\.1"
