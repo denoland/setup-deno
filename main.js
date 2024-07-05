@@ -1,7 +1,11 @@
 const process = require("process");
 const core = require("@actions/core");
 
-const { parseVersionRange, resolveVersion } = require("./src/version.js");
+const {
+  parseVersionRange,
+  getDenoVersionFromFile,
+  resolveVersion,
+} = require("./src/version.js");
 const { install } = require("./src/install.js");
 
 /**
@@ -15,7 +19,13 @@ function exit(message) {
 
 async function main() {
   try {
-    const range = parseVersionRange(core.getInput("deno-version"));
+    const denoVersionFile = core.getInput("deno-version-file");
+    const range = parseVersionRange(
+      denoVersionFile
+        ? getDenoVersionFromFile(denoVersionFile)
+        : core.getInput("deno-version"),
+    );
+
     if (range === null) {
       exit("The passed version range is not valid.");
     }

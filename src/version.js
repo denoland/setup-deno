@@ -1,5 +1,6 @@
 const semver = require("semver");
 const { fetch } = require("undici");
+const fs = require("fs");
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
@@ -39,6 +40,35 @@ function parseVersionRange(version) {
   }
 
   return null;
+}
+
+/**
+ * Parses the version from the version file
+ *
+ * @param {string} versionFilePath
+ * @returns {string | undefined}
+ */
+function getDenoVersionFromFile(versionFilePath) {
+  if (!fs.existsSync(versionFilePath)) {
+    throw new Error(
+      `The specified node version file at: ${versionFilePath} does not exist`,
+    );
+  }
+
+  const contents = fs.readFileSync(versionFilePath, "utf8");
+
+  // .tool-versions typically looks like
+  // ```
+  // ruby 2.6.5
+  // deno 1.43.1
+  // node 20.0.0
+  // ```
+  // This parses the version of Deno from the file
+  const denoVersionInToolVersions = contents.match(
+    /^deno\s+v?(?<version>[^\s]+)$/m,
+  );
+
+  return denoVersionInToolVersions?.groups?.version || contents.trim();
 }
 
 /**
@@ -115,4 +145,5 @@ async function fetchWithRetries(url, maxRetries = 5) {
 module.exports = {
   parseVersionRange,
   resolveVersion,
+  getDenoVersionFromFile,
 };
