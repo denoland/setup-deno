@@ -57,9 +57,16 @@ function getDenoVersionFromFile(versionFilePath) {
 
   const contents = fs.readFileSync(versionFilePath, "utf8");
 
-  const found = contents.match(/^(?:deno?\s+)?v?(?<version>[^\s]+)$/m);
+  // .tool-versions typically looks like
+  // ```
+  // ruby 2.6.5
+  // deno 1.43.1
+  // node 20.0.0
+  // ```
+  // This parses the version of Deno from the file
+  const denoVersionInToolVersions = contents.match(/^deno\s+v?(?<version>[^\s]+)$/m);
 
-  return (found && found.groups && found.groups.version) || contents.trim();
+  return denoVersionInToolVersions?.groups?.version || contents.trim();
 }
 
 /**
