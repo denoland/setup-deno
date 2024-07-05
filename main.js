@@ -23,7 +23,7 @@ async function main() {
     const range = parseVersionRange(
       denoVersionFile
         ? getDenoVersionFromFile(denoVersionFile)
-        : core.getInput("deno-version")
+        : core.getInput("deno-version"),
     );
 
     if (range === null) {
@@ -36,9 +36,9 @@ async function main() {
     }
 
     core.info(
-      `Going to install ${version.isCanary ? "canary" : "stable"} version ${
-        version.version
-      }.`
+      `Going to install ${
+        version.isCanary ? "canary" : "stable"
+      } version ${version.version}.`,
     );
 
     await install(version);
