@@ -64,7 +64,9 @@ function getDenoVersionFromFile(versionFilePath) {
   // node 20.0.0
   // ```
   // This parses the version of Deno from the file
-  const denoVersionInToolVersions = contents.match(/^deno\s+v?(?<version>[^\s]+)$/m);
+  const denoVersionInToolVersions = contents.match(
+    /^deno\s+v?(?<version>[^\s]+)$/m,
+  );
 
   return denoVersionInToolVersions?.groups?.version || contents.trim();
 }
