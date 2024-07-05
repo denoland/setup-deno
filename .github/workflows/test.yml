@@ -12,7 +12,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        deno: [1.x, "1.33.1", canary, ~1.32, b31cf9fde6ad5398c20370c136695db77df6beeb]
+        deno:
+          [1.x, "1.33.1", canary, ~1.32, b31cf9fde6ad5398c20370c136695db77df6beeb]
 
     steps:
       - uses: actions/checkout@v3
