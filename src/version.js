@@ -30,6 +30,10 @@ function parseVersionRange(version) {
     return { range: "latest", isCanary: true };
   }
 
+  if (version == "latest") {
+    return { range: "latest", isCanary: false };
+  }
+
   if (GIT_HASH_RE.test(version)) {
     return { range: version, isCanary: true };
   }
@@ -90,6 +94,23 @@ async function resolveVersion({ range, isCanary }) {
       return { version, isCanary: true };
     }
     return { version: range, isCanary: true };
+  }
+
+  if (range === "latest") {
+    const res = await fetchWithRetries(
+      "https://dl.deno.land/release-latest.txt",
+    );
+    if (res.status !== 200) {
+      throw new Error(
+        "Failed to fetch release version info from dl.deno.land. Please try again later.",
+      );
+    }
+    let version = (await res.text()).trim();
+    version = semver.clean(version);
+    if (version === null) {
+      return null;
+    }
+    return { version, isCanary: false };
   }
 
   const res = await fetchWithRetries("https://deno.com/versions.json");
