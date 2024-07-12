@@ -105,7 +105,11 @@ async function resolveVersion({ range, isCanary }) {
         "Failed to fetch release version info from dl.deno.land. Please try again later.",
       );
     }
-    const version = (await res.text()).trim();
+    let version = (await res.text()).trim();
+    version = semver.clean(version);
+    if (version === null) {
+      return null;
+    }
     return { version, isCanary: false };
   }
 
