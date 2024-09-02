@@ -56,7 +56,8 @@ Targets the latest major, minor and patch version of Deno.
 
 ### Version from file
 
-The extension can also automatically read the version file from [`.tool-versions`](https://asdf-vm.com/manage/configuration.html#tool-versions)
+The extension can also automatically read the version file from
+[`.tool-versions`](https://asdf-vm.com/manage/configuration.html#tool-versions)
 
 ```yaml
 - uses: denoland/setup-deno@v1
@@ -64,7 +65,8 @@ The extension can also automatically read the version file from [`.tool-versions
     deno-version-file: .tool-versions
 ```
 
-The extension can also automatically read the file from [`dvm`](https://github.com/justjavac/dvm).
+The extension can also automatically read the file from
+[`dvm`](https://github.com/justjavac/dvm).
 
 ```yaml
 - uses: denoland/setup-deno@v1
