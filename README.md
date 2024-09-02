@@ -4,20 +4,6 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 
 ## Usage
 
-### Version from file
-
-```yaml
-- uses: denoland/setup-deno@v1
-  with:
-    deno-version-file: .dvmrc
-```
-
-```yaml
-- uses: denoland/setup-deno@v1
-  with:
-    deno-version-file: .tool-versions
-```
-
 ### Latest stable for a major
 
 ```yaml
@@ -66,4 +52,22 @@ Targets the latest major, minor and patch version of Deno.
 - uses: denoland/setup-deno@v1
   with:
     deno-version: e7b7129b7a92b7500ded88f8f5baa25a7f59e56e
+```
+
+### Version from file
+
+The extension can also automatically read the version file from [`.tool-versions`](https://asdf-vm.com/manage/configuration.html#tool-versions)
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-version-file: .tool-versions
+```
+
+The extension can also automatically read the file from [`dvm`](https://github.com/justjavac/dvm).
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-version-file: .dvmrc
 ```
