@@ -29,13 +29,13 @@ jobs:
       - name: Test `deno install -g` (2.0)
         if: matrix.deno == 'canary' || matrix.deno == 'latest'
         run: |
-          deno install --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
+          deno install -g --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
       - name: Test `deno install (1.0)
         if: matrix.deno == '1.x' || matrix.deno == '1.33.1' || matrix.deno == '~1.32' || matrix.deno == 'b290fd01f3f5d32f9d010fc719ced0240759c049'
         run: |
-          deno install -g --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
+          deno install --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
       - name: Format
