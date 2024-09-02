@@ -29,7 +29,7 @@ jobs:
       - name: Test `deno install -g` (2.0)
         if: matrix.deno == 'canary' || matrix.deno == 'latest'
         run: |
-          deno install -g --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
+          deno install --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
       - name: Test `deno install (1.0)
