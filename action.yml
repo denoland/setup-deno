@@ -10,11 +10,16 @@ inputs:
     default: "1.x"
   deno-version-file:
     description: File containing the Deno version to install such as .dvmrc or .tool-versions.
+  deno-binary-name:
+    description: The name to use for the binary.
+    default: "deno"
 outputs:
   deno-version:
     description: "The Deno version that was installed."
   is-canary:
     description: "If the installed Deno version was a canary version."
+  deno-binary-name:
+    description: The name to use for the binary.
 runs:
   using: "node20"
   main: "main.js"
