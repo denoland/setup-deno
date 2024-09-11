@@ -31,7 +31,10 @@ async function install(version, binaryName) {
   const extractedFolder = await tc.extractZip(zipPath);
 
   if (binaryName !== "deno") {
-    await fs.rename(path.join(extractedFolder, "deno"), path.join(extractedFolder, binaryName));
+    await fs.rename(
+      path.join(extractedFolder, "deno"),
+      path.join(extractedFolder, binaryName),
+    );
   }
 
   const newCachedPath = await tc.cacheDir(
