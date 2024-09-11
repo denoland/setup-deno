@@ -64,16 +64,13 @@ jobs:
 
   test-binary-name:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        deno-binary-name: deno_foo
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Deno
         uses: ./
         with:
-          deno-version-file: ${{ matrix.deno-version-file }}
+          deno-binary-name: deno_foo
 
-      - name: Check version
+      - name: Check binary exists
         run: deno_foo -V
