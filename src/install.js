@@ -30,7 +30,7 @@ async function install(version, binaryName) {
   const zipPath = await tc.downloadTool(url);
   const extractedFolder = await tc.extractZip(zipPath);
 
-  core.info(extractedFolder);
+  (await fs.readdir(extractedFolder)).map(e => core.info(e));
 
   if (binaryName !== "deno") {
     //await fs.rename(extractedFolder, extractedFolder);
