@@ -41,13 +41,10 @@ async function main() {
       } version ${version.version}.`,
     );
 
-    const binaryName = core.getInput("deno-binary-name");
-
-    await install(version, binaryName);
+    await install(version);
 
     core.setOutput("deno-version", version.version);
     core.setOutput("is-canary", version.isCanary);
-    core.setOutput("deno-binary-name", binaryName);
 
     core.info("Installation complete.");
   } catch (err) {

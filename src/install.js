@@ -7,9 +7,8 @@ const tc = require("@actions/tool-cache");
 
 /**
  * @param {import("./version").Version} version
- * @param {string} binaryName
  */
-async function install(version, binaryName) {
+async function install(version) {
   const cachedPath = tc.find(
     "deno",
     version.isCanary ? `0.0.0-${version.version}` : version.version,
@@ -30,6 +29,7 @@ async function install(version, binaryName) {
   const zipPath = await tc.downloadTool(url);
   const extractedFolder = await tc.extractZip(zipPath);
 
+  const binaryName = core.getInput("deno-binary-name");
   if (binaryName !== "deno") {
     await fs.rename(
       path.join(extractedFolder, "deno"),
