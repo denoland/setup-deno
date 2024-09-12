@@ -1,5 +1,6 @@
 const os = require("os");
 const path = require("path");
+const fs = require("fs/promises");
 const process = require("process");
 const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
@@ -28,9 +29,23 @@ async function install(version) {
   const zipPath = await tc.downloadTool(url);
   const extractedFolder = await tc.extractZip(zipPath);
 
+  const binaryName = core.getInput("deno-binary-name");
+  if (binaryName !== "deno") {
+    await fs.rename(
+      path.join(
+        extractedFolder,
+        process.platform === "win32" ? "deno.exe" : "deno",
+      ),
+      path.join(
+        extractedFolder,
+        process.platform === "win32" ? binaryName + ".exe" : binaryName,
+      ),
+    );
+  }
+
   const newCachedPath = await tc.cacheDir(
     extractedFolder,
-    "deno",
+    binaryName,
     version.isCanary ? `0.0.0-${version.version}` : version.version,
   );
   core.info(`Cached Deno to ${newCachedPath}.`);

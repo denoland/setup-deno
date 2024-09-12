@@ -73,3 +73,11 @@ The extension can also automatically read the file from
   with:
     deno-version-file: .dvmrc
 ```
+
+### Specifying binary name
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-binary-name: deno_latest
+```
