@@ -32,8 +32,14 @@ async function install(version) {
   const binaryName = core.getInput("deno-binary-name");
   if (binaryName !== "deno") {
     await fs.rename(
-      path.join(extractedFolder, "deno"),
-      path.join(extractedFolder, binaryName),
+      path.join(
+        extractedFolder,
+        process.platform === "win32" ? "deno.exe" : "deno",
+      ),
+      path.join(
+        extractedFolder,
+        process.platform === "win32" ? binaryName + ".exe" : binaryName,
+      ),
     );
   }
 
