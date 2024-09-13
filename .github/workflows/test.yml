@@ -93,6 +93,8 @@ jobs:
 
       - name: Setup Deno
         uses: ./
+        with:
+          deno-version: "rc"
 
       - name: Lint
         run: deno lint
