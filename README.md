@@ -54,12 +54,20 @@ Targets the latest major, minor and patch version of Deno.
     deno-version: e7b7129b7a92b7500ded88f8f5baa25a7f59e56e
 ```
 
-### Release candidate
+### Latest release candidate
 
 ```yaml
 - uses: denoland/setup-deno@v1
   with:
     deno-version: rc
+```
+
+### Specific release candidate
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-version: 2.0.0-rc.1
 ```
 
 ### Version from file
@@ -84,8 +92,44 @@ The extension can also automatically read the file from
 
 ### Specifying binary name
 
+This is useful when you want to install different versions of Deno side by side.
+
 ```yaml
 - uses: denoland/setup-deno@v1
   with:
-    deno-binary-name: deno_latest
+    deno-version: canary
+    deno-binary-name: deno_canary
+```
+
+### Determining the release channel
+
+You can determine the release channel reading back the `release-channel` output.
+
+Valid values are `stable`, `canary` and `rc`.
+
+```yaml
+- uses: denoland/setup-deno@v1
+  id: deno
+  with:
+    deno-version: canary
+
+- run: echo "Deno release channel is ${{ steps.deno.outputs.release-channel }}"
+```
+
+### Determining the installed version
+
+You can determine the installed version reading back the `deno-version` output.
+
+For canary versions, the output will be in the form `0.0.0-GIT_HASH`.
+
+For stable and rc versions, the output will be the regular semver version
+number.
+
+```yaml
+- uses: denoland/setup-deno@v1
+  id: deno
+  with:
+    deno-version: canary
+
+- run: echo "Deno version is ${{ steps.deno.outputs.deno-version }}"
 ```

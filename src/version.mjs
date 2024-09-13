@@ -7,13 +7,13 @@ const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 /**
  * @typedef VersionRange
  * @property {string} range
- * @property {"canary" | "rc" | "release"} kind
+ * @property {"canary" | "rc" | "stable"} kind
  */
 
 /**
  * @typedef Version
  * @property {string} version
- * @property {"canary" | "rc" | "release"} kind
+ * @property {"canary" | "rc" | "stable"} kind
  */
 
 /**
@@ -35,7 +35,7 @@ export function parseVersionRange(version) {
   }
 
   if (version === "latest") {
-    return { range: "latest", kind: "release" };
+    return { range: "latest", kind: "stable" };
   }
 
   if (GIT_HASH_RE.test(version)) {
@@ -44,7 +44,7 @@ export function parseVersionRange(version) {
 
   const range = semver.validRange(version);
   if (range !== null) {
-    return { range, kind: "release" };
+    return { range, kind: "stable" };
   }
 
   return null;
@@ -154,7 +154,7 @@ async function resolveRelease(range) {
     if (version === null) {
       throw new Error("Failed to parse release version.");
     }
-    return { version, kind: "release" };
+    return { version, kind: "stable" };
   } else {
     const res = await fetchWithRetries("https://deno.com/versions.json");
     if (res.status !== 200) {
@@ -182,7 +182,7 @@ async function resolveRelease(range) {
     version = semver.clean(version);
     if (version === null) throw new Error("UNREACHABLE");
 
-    return { version, kind: "release" };
+    return { version, kind: version.includes("-rc.") ? "rc" : "stable" };
   }
 }
 
