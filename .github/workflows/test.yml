@@ -46,6 +46,19 @@ jobs:
           deno install --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
+  test-not-local:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Deno
+        # install the extension from this repo using the current commit hash
+        uses: denoland/setup-deno@${{github.sha}}
+        with:
+          deno-version: 1.x
+
+      - name: Test Deno
+        run: deno -V
   test-version-file:
     runs-on: ubuntu-latest
     strategy:
