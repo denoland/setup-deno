@@ -1,7 +1,7 @@
 {
   "name": "setup-deno",
   "description": "Set up Deno easially in GitHub Actions",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "author": "Deno Land Inc",
   "license": "MIT",
   "type": "module",
