@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         deno:
-          [1.x, "1.33.1", canary, ~1.32, b290fd01f3f5d32f9d010fc719ced0240759c049]
+          [1.x, "1.33.1", canary, ~1.32, b290fd01f3f5d32f9d010fc719ced0240759c049, rc]
 
     steps:
       - uses: actions/checkout@v3

@@ -11,7 +11,7 @@ const tc = require("@actions/tool-cache");
 async function install(version) {
   const cachedPath = tc.find(
     "deno",
-    version.isCanary ? `0.0.0-${version.version}` : version.version,
+    version.kind === "canary" ? `0.0.0-${version.version}` : version.version,
   );
   if (cachedPath) {
     core.info(`Using cached Deno installation from ${cachedPath}.`);
@@ -20,7 +20,7 @@ async function install(version) {
   }
 
   const zip = zipName();
-  const url = version.isCanary
+  const url = version.kind === "canary"
     ? `https://dl.deno.land/canary/${version.version}/${zip}`
     : `https://dl.deno.land/release/v${version.version}/${zip}`;
 

@@ -35,16 +35,13 @@ async function main() {
       exit("Could not resolve a version for the given range.");
     }
 
-    core.info(
-      `Going to install ${
-        version.isCanary ? "canary" : "stable"
-      } version ${version.version}.`,
-    );
+    core.info(`Going to install ${version.kind} version ${version.version}.`);
 
     await install(version);
 
     core.setOutput("deno-version", version.version);
-    core.setOutput("is-canary", version.isCanary);
+    // TODO(@crowlKats): change this output to "kind"
+    core.setOutput("is-canary", version.kind === "canary");
 
     core.info("Installation complete.");
   } catch (err) {
