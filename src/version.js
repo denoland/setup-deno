@@ -7,13 +7,13 @@ const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 /**
  * @typedef VersionRange
  * @property {string} range
- * @property {boolean} isCanary
+ * @property {"canary" | "rc" | "release"} kind
  */
 
 /**
  * @typedef Version
  * @property {string} version
- * @property {boolean} isCanary
+ * @property {"canary" | "rc" | "release"} kind
  */
 
 /**
@@ -26,21 +26,25 @@ function parseVersionRange(version) {
   version = String(version) || "1.x";
   version = version.trim();
 
-  if (version == "canary") {
-    return { range: "latest", isCanary: true };
+  if (version === "canary") {
+    return { range: "latest", kind: "canary" };
   }
 
-  if (version == "latest") {
-    return { range: "latest", isCanary: false };
+  if (version === "rc") {
+    return { range: "latest", kind: "rc" };
+  }
+
+  if (version === "latest") {
+    return { range: "latest", kind: "release" };
   }
 
   if (GIT_HASH_RE.test(version)) {
-    return { range: version, isCanary: true };
+    return { range: version, kind: "canary" };
   }
 
   const range = semver.validRange(version);
   if (range !== null) {
-    return { range, isCanary: false };
+    return { range, kind: "release" };
   }
 
   return null;
@@ -79,23 +83,59 @@ function getDenoVersionFromFile(versionFilePath) {
  * @param {VersionRange} range
  * @returns {Promise<Version | null>}
  */
-async function resolveVersion({ range, isCanary }) {
-  if (isCanary) {
-    if (range === "latest") {
-      const res = await fetchWithRetries(
-        "https://dl.deno.land/canary-latest.txt",
-      );
-      if (res.status !== 200) {
-        throw new Error(
-          "Failed to fetch canary version info from dl.deno.land. Please try again later.",
-        );
-      }
-      const version = (await res.text()).trim();
-      return { version, isCanary: true };
-    }
-    return { version: range, isCanary: true };
+function resolveVersion({ range, kind }) {
+  if (kind === "canary") {
+    return resolveCanary(range);
+  } else if (kind === "rc") {
+    // range is always "latest"
+    return resolveReleaseCandidate();
+  } else {
+    return resolveRelease(range);
   }
+}
 
+/**
+ * @param {string} range
+ * @returns {Promise<Version | null>}
+ */
+async function resolveCanary(range) {
+  if (range === "latest") {
+    const res = await fetchWithRetries(
+      "https://dl.deno.land/canary-latest.txt",
+    );
+    if (res.status !== 200) {
+      throw new Error(
+        "Failed to fetch canary version info from dl.deno.land. Please try again later.",
+      );
+    }
+    const version = (await res.text()).trim();
+    return { version, kind: "canary" };
+  } else {
+    return { version: range, kind: "canary" };
+  }
+}
+
+/**
+ * @returns {Promise<Version | null>}
+ */
+async function resolveReleaseCandidate() {
+  const res = await fetchWithRetries(
+    "https://dl.deno.land/release-rc-latest.txt",
+  );
+  if (res.status !== 200) {
+    throw new Error(
+      "Failed to fetch release candidate version info from dl.deno.land. Please try again later.",
+    );
+  }
+  const version = semver.clean((await res.text()).trim());
+  return { version, kind: "rc" };
+}
+
+/**
+ * @param {string} range
+ * @returns {Promise<Version | null>}
+ */
+async function resolveRelease(range) {
   if (range === "latest") {
     const res = await fetchWithRetries(
       "https://dl.deno.land/release-latest.txt",
@@ -110,35 +150,35 @@ async function resolveVersion({ range, isCanary }) {
     if (version === null) {
       return null;
     }
-    return { version, isCanary: false };
-  }
+    return { version, kind: "release" };
+  } else {
+    const res = await fetchWithRetries("https://deno.com/versions.json");
+    if (res.status !== 200) {
+      throw new Error(
+        "Failed to fetch stable version info from deno.com/versions.json. Please try again later.",
+      );
+    }
+    const versionJson = await res.json();
+    if (!("cli" in versionJson)) {
+      throw new Error("Fetched stable version info is invalid.");
+    }
+    /** @type {string[]} */
+    const versions = versionJson.cli;
+    if (!Array.isArray(versions)) {
+      throw new Error("Fetched stable version info is invalid.");
+    }
 
-  const res = await fetchWithRetries("https://deno.com/versions.json");
-  if (res.status !== 200) {
-    throw new Error(
-      "Failed to fetch stable version info from deno.com/versions.json. Please try again later.",
-    );
-  }
-  const versionJson = await res.json();
-  if (!("cli" in versionJson)) {
-    throw new Error("Fetched stable version info is invalid.");
-  }
-  /** @type {string[]} */
-  const versions = versionJson.cli;
-  if (!Array.isArray(versions)) {
-    throw new Error("Fetched stable version info is invalid.");
-  }
+    let version = semver.maxSatisfying(versions, range);
+    if (version === null) {
+      return null;
+    }
+    version = semver.clean(version);
+    if (version === null) {
+      return null;
+    }
 
-  let version = semver.maxSatisfying(versions, range);
-  if (version === null) {
-    return null;
+    return { version, kind: "release" };
   }
-  version = semver.clean(version);
-  if (version === null) {
-    return null;
-  }
-
-  return { version, isCanary: false };
 }
 
 /** @param {string} url */

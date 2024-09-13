@@ -54,6 +54,14 @@ Targets the latest major, minor and patch version of Deno.
     deno-version: e7b7129b7a92b7500ded88f8f5baa25a7f59e56e
 ```
 
+### Release candidate
+
+```yaml
+- uses: denoland/setup-deno@v1
+  with:
+    deno-version: rc
+```
+
 ### Version from file
 
 The extension can also automatically read the version file from
