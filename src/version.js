@@ -83,7 +83,7 @@ function getDenoVersionFromFile(versionFilePath) {
  * @param {VersionRange} range
  * @returns {Promise<Version | null>}
  */
-async function resolveVersion({ range, kind }) {
+function resolveVersion({ range, kind }) {
   if (kind === "canary") {
     return resolveCanary(range);
   } else if (kind === "rc") {
