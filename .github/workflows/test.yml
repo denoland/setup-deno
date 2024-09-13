@@ -11,9 +11,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
         deno:
-          [1.x, "1.33.1", canary, ~1.32, b290fd01f3f5d32f9d010fc719ced0240759c049, rc]
+          - "1.x"
+          - "1.33.1"
+          - "canary"
+          - "~1.32"
+          - "b290fd01f3f5d32f9d010fc719ced0240759c049"
+          - "rc"
 
     steps:
       - uses: actions/checkout@v3
@@ -66,7 +74,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v3
 
@@ -77,3 +85,20 @@ jobs:
 
       - name: Check binary exists
         run: deno_foo -V
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Deno
+        uses: ./
+
+      - name: Lint
+        run: deno lint
+
+      - name: Format
+        run: deno fmt --check
+
+      - name: Check types
+        run: deno check main.mjs

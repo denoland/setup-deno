@@ -1,14 +1,14 @@
-const os = require("os");
-const path = require("path");
-const fs = require("fs/promises");
-const process = require("process");
-const core = require("@actions/core");
-const tc = require("@actions/tool-cache");
+import * as os from "node:os";
+import * as path from "node:path";
+import * as fs from "node:fs/promises";
+import process from "node:process";
+import core from "@actions/core";
+import tc from "@actions/tool-cache";
 
 /**
- * @param {import("./version").Version} version
+ * @param {import("./version.mjs").Version} version
  */
-async function install(version) {
+export async function install(version) {
   const cachedPath = tc.find(
     "deno",
     version.kind === "canary" ? `0.0.0-${version.version}` : version.version,
@@ -46,7 +46,7 @@ async function install(version) {
   const newCachedPath = await tc.cacheDir(
     extractedFolder,
     binaryName,
-    version.isCanary ? `0.0.0-${version.version}` : version.version,
+    version.kind === "canary" ? `0.0.0-${version.version}` : version.version,
   );
   core.info(`Cached Deno to ${newCachedPath}.`);
   core.addPath(newCachedPath);
@@ -86,7 +86,3 @@ function zipName() {
 
   return `deno-${arch}-${platform}.zip`;
 }
-
-module.exports = {
-  install,
-};

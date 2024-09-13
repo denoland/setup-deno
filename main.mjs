@@ -1,12 +1,11 @@
-const process = require("process");
-const core = require("@actions/core");
-
-const {
-  parseVersionRange,
+import process from "node:process";
+import core from "@actions/core";
+import {
   getDenoVersionFromFile,
+  parseVersionRange,
   resolveVersion,
-} = require("./src/version.js");
-const { install } = require("./src/install.js");
+} from "./src/version.mjs";
+import { install } from "./src/install.mjs";
 
 /**
  * @param {string} message
@@ -46,7 +45,7 @@ async function main() {
 
     core.info("Installation complete.");
   } catch (err) {
-    core.setFailed(err);
+    core.setFailed((err instanceof Error) ? err : String(err));
     process.exit();
   }
 }

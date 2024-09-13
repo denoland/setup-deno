@@ -1,6 +1,6 @@
-const semver = require("semver");
-const { fetch } = require("undici");
-const fs = require("fs");
+import semver from "semver";
+import { fetch } from "undici";
+import * as fs from "node:fs";
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
@@ -22,7 +22,7 @@ const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
  * @param {string | undefined} version
  * @returns {VersionRange | null}
  */
-function parseVersionRange(version) {
+export function parseVersionRange(version) {
   version = String(version) || "1.x";
   version = version.trim();
 
@@ -56,7 +56,7 @@ function parseVersionRange(version) {
  * @param {string} versionFilePath
  * @returns {string | undefined}
  */
-function getDenoVersionFromFile(versionFilePath) {
+export function getDenoVersionFromFile(versionFilePath) {
   if (!fs.existsSync(versionFilePath)) {
     throw new Error(
       `The specified node version file at: ${versionFilePath} does not exist`,
@@ -83,7 +83,7 @@ function getDenoVersionFromFile(versionFilePath) {
  * @param {VersionRange} range
  * @returns {Promise<Version | null>}
  */
-function resolveVersion({ range, kind }) {
+export function resolveVersion({ range, kind }) {
   if (kind === "canary") {
     return resolveCanary(range);
   } else if (kind === "rc") {
@@ -128,6 +128,9 @@ async function resolveReleaseCandidate() {
     );
   }
   const version = semver.clean((await res.text()).trim());
+  if (version === null) {
+    throw new Error("Failed to parse release candidate version.");
+  }
   return { version, kind: "rc" };
 }
 
@@ -145,10 +148,11 @@ async function resolveRelease(range) {
         "Failed to fetch release version info from dl.deno.land. Please try again later.",
       );
     }
+    /** @type {string | null} */
     let version = (await res.text()).trim();
     version = semver.clean(version);
     if (version === null) {
-      return null;
+      throw new Error("Failed to parse release version.");
     }
     return { version, kind: "release" };
   } else {
@@ -159,23 +163,24 @@ async function resolveRelease(range) {
       );
     }
     const versionJson = await res.json();
+    if (typeof versionJson !== "object" || versionJson === null) {
+      throw new Error("Fetched stable version info is invalid.");
+    }
     if (!("cli" in versionJson)) {
+      throw new Error("Fetched stable version info is invalid.");
+    }
+    if (!Array.isArray(versionJson.cli)) {
       throw new Error("Fetched stable version info is invalid.");
     }
     /** @type {string[]} */
     const versions = versionJson.cli;
-    if (!Array.isArray(versions)) {
-      throw new Error("Fetched stable version info is invalid.");
-    }
 
     let version = semver.maxSatisfying(versions, range);
     if (version === null) {
       return null;
     }
     version = semver.clean(version);
-    if (version === null) {
-      return null;
-    }
+    if (version === null) throw new Error("UNREACHABLE");
 
     return { version, kind: "release" };
   }
@@ -202,9 +207,3 @@ async function fetchWithRetries(url, maxRetries = 5) {
     sleepMs = Math.min(sleepMs * 2, 10_000);
   }
 }
-
-module.exports = {
-  parseVersionRange,
-  resolveVersion,
-  getDenoVersionFromFile,
-};
