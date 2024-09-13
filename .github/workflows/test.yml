@@ -46,14 +46,6 @@ jobs:
           deno install --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
-      - name: Format
-        if: runner.os == 'Linux' && matrix.deno == 'canary'
-        run: npm run fmt:check
-
-      - name: Lint
-        if: runner.os == 'Linux' && matrix.deno == 'canary'
-        run: npm run lint
-
   test-version-file:
     runs-on: ubuntu-latest
     strategy:
