@@ -17,6 +17,8 @@ function exit(message) {
 }
 
 async function main() {
+  core.warning("Running on setup-deno@1, which is deprecated.\nPlease update to setup-deno@2, which defaults to Deno 2.0");
+
   try {
     const denoVersionFile = core.getInput("deno-version-file");
     const range = parseVersionRange(
