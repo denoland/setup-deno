@@ -39,8 +39,6 @@ async function main() {
     await install(version);
 
     core.setOutput("deno-version", version.version);
-    // TODO(@crowlKats): remove in 2.0
-    core.setOutput("is-canary", version.kind === "canary");
     core.setOutput("release-channel", version.kind);
 
     core.info("Installation complete.");
