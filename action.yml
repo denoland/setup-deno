@@ -16,8 +16,6 @@ inputs:
 outputs:
   deno-version:
     description: "The Deno version that was installed."
-  is-canary:
-    description: "If the installed Deno version was a canary version."
   release-channel:
     description: "The release channel of the installed version."
 runs:
