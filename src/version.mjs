@@ -198,6 +198,9 @@ async function fetchWithRetries(url, maxRetries = 5) {
     try {
       const res = await fetch(
         url,
+        // dispatcher is `ProxyAgent | undefined`, which is assignable to `Dispatcher | undefined` because
+        // ProxyAgent extends Dispatcher, but TS2322 is reported.
+        // @ts-ignore:
         { dispatcher },
       );
       if (res.status === 200 || iterationCount > maxRetries) {
