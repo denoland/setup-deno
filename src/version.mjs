@@ -1,6 +1,7 @@
 import semver from "semver";
 import { fetch } from "undici";
 import * as fs from "node:fs";
+import { HttpClient } from "@actions/http-client";
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
@@ -188,12 +189,17 @@ async function resolveRelease(range) {
 
 /** @param {string} url */
 async function fetchWithRetries(url, maxRetries = 5) {
+  const dispatcher = new HttpClient().getAgentDispatcher(url);
+
   let sleepMs = 250;
   let iterationCount = 0;
   while (true) {
     iterationCount++;
     try {
-      const res = await fetch(url);
+      const res = await fetch(
+        url,
+        { dispatcher },
+      );
       if (res.status === 200 || iterationCount > maxRetries) {
         return res;
       }
