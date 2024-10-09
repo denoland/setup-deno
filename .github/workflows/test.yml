@@ -17,6 +17,7 @@ jobs:
           - macos-latest
         deno:
           - "1.x"
+          - "2.x"
           - "1.33.1"
           - "canary"
           - "~1.32"
