@@ -7,9 +7,9 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 ### Latest stable for a major
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
-    deno-version: v1.x
+    deno-version: v2.x
 ```
 
 ### Latest stable for any major
@@ -17,7 +17,7 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 Targets the latest major, minor and patch version of Deno.
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: vx.x.x
 ```
@@ -25,7 +25,7 @@ Targets the latest major, minor and patch version of Deno.
 ### Specific stable
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: "1.8.2"
 ```
@@ -33,7 +33,7 @@ Targets the latest major, minor and patch version of Deno.
 ### Semver range
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: "~1.7"
 ```
@@ -41,7 +41,7 @@ Targets the latest major, minor and patch version of Deno.
 ### Latest canary
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: canary
 ```
@@ -49,7 +49,7 @@ Targets the latest major, minor and patch version of Deno.
 ### Specific canary
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: e7b7129b7a92b7500ded88f8f5baa25a7f59e56e
 ```
@@ -57,7 +57,7 @@ Targets the latest major, minor and patch version of Deno.
 ### Latest release candidate
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: rc
 ```
@@ -65,7 +65,7 @@ Targets the latest major, minor and patch version of Deno.
 ### Specific release candidate
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: 2.0.0-rc.1
 ```
@@ -76,7 +76,7 @@ The extension can also automatically read the version file from
 [`.tool-versions`](https://asdf-vm.com/manage/configuration.html#tool-versions)
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version-file: .tool-versions
 ```
@@ -85,7 +85,7 @@ The extension can also automatically read the file from
 [`dvm`](https://github.com/justjavac/dvm).
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version-file: .dvmrc
 ```
@@ -95,7 +95,7 @@ The extension can also automatically read the file from
 This is useful when you want to install different versions of Deno side by side.
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   with:
     deno-version: canary
     deno-binary-name: deno_canary
@@ -108,7 +108,7 @@ You can determine the release channel reading back the `release-channel` output.
 Valid values are `stable`, `canary` and `rc`.
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   id: deno
   with:
     deno-version: canary
@@ -126,7 +126,7 @@ For stable and rc versions, the output will be the regular semver version
 number.
 
 ```yaml
-- uses: denoland/setup-deno@v1
+- uses: denoland/setup-deno@v2
   id: deno
   with:
     deno-version: canary
