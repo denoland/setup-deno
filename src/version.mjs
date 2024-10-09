@@ -23,7 +23,7 @@ const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
  * @returns {VersionRange | null}
  */
 export function parseVersionRange(version) {
-  version = String(version) || "1.x";
+  version = String(version) || "2.x";
   version = version.trim();
 
   if (version === "canary") {
