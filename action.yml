@@ -13,7 +13,14 @@ inputs:
   deno-binary-name:
     description: The name to use for the binary.
     default: "deno"
+  cache:
+    description: Cache downloaded modules & packages automatically in GitHub Actions cache.
+    default: "false"
+  cache-hash:
+    description: A hash used as part of the cache key. Use e.g. `$\{{ hashFiles('**/deno.lock') }}` to cache based on the lockfile contents.
 outputs:
+  cache-hit:
+    description: A boolean indicating whether the cache was hit.
   deno-version:
     description: "The Deno version that was installed."
   release-channel:
@@ -21,3 +28,5 @@ outputs:
 runs:
   using: "node20"
   main: "dist/main.mjs"
+  post: "dist/post.mjs"
+  post-if: always()

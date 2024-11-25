@@ -56,6 +56,11 @@ async function main() {
     core.setOutput("release-channel", version.kind);
 
     core.info("Installation complete.");
+
+    if (core.getInput("cache") === "true") {
+      const { restoreCache } = await import("./cache.ts");
+      await restoreCache(core.getInput("cache-hash"));
+    }
   } catch (err) {
     core.setFailed((err instanceof Error) ? err : String(err));
     process.exit();
