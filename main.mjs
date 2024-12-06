@@ -1,5 +1,6 @@
 import process from "node:process";
 import core from "@actions/core";
+import path from "node:path";
 import {
   getDenoVersionFromFile,
   parseVersionRange,
@@ -37,6 +38,12 @@ async function main() {
     core.info(`Going to install ${version.kind} version ${version.version}.`);
 
     await install(version);
+
+    core.info(
+      `::add-matcher::${
+        path.join(import.meta.dirname ?? ".", "deno-problem-matchers.json")
+      }`,
+    );
 
     core.setOutput("deno-version", version.version);
     core.setOutput("release-channel", version.kind);
