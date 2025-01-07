@@ -20,9 +20,20 @@ export async function install(version) {
   }
 
   const zip = zipName();
-  const url = version.kind === "canary"
-    ? `https://dl.deno.land/canary/${version.version}/${zip}`
-    : `https://dl.deno.land/release/v${version.version}/${zip}`;
+  let url;
+
+  switch (version.kind) {
+    case "canary":
+      url = `https://dl.deno.land/canary/${version.version}/${zip}`;
+      break;
+    case "rc":
+      url = `https://dl.deno.land/release/v${version.version}/${zip}`;
+      break;
+    case "stable":
+      url =
+        `https://github.com/denoland/deno/releases/download/v${version.version}/${zip}`;
+      break;
+  }
 
   core.info(`Downloading Deno from ${url}.`);
 
