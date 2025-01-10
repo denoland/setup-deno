@@ -133,3 +133,23 @@ number.
 
 - run: echo "Deno version is ${{ steps.deno.outputs.deno-version }}"
 ```
+
+### Caching dependencies downloaded by Deno automatically
+
+Dependencies installed by Deno can be cached automatically, which is similar to
+the [`cache` option in `setup-node`](https://github.com/actions/setup-node).
+
+To enable the cache, use `cache: true`. It's recommended to also add the
+`cache-hash` property, to scope caches based on lockfile changes.
+
+```yaml
+- uses: denoland/setup-deno@v2
+  with:
+    cache: true
+    cache-hash: ${{ hashFiles('**/deno.lock') }}
+```
+
+> [!WARNING]
+> If an environment variable `DENO_DIR` is set for steps that run/download
+> dependencies, then `DENO_DIR` must also be set for the `denoland/setup-deno`
+> Action, for the caching to work as intended.
