@@ -1,9 +1,15 @@
 {
   "lock": false,
-  "nodeModulesDir": "none",
+  "nodeModulesDir": "auto",
   "license": "MIT",
   "compilerOptions": {
     "lib": ["esnext"]
+  },
+  "exclude": [
+    "dist"
+  ],
+  "tasks": {
+    "build": "deno run -A scripts/build.ts"
   },
   "imports": {
     "@actions/core": "npm:@actions/core@^1.11.1",
