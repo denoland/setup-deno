@@ -1,6 +1,16 @@
 {
+  "lock": false,
+  "nodeModulesDir": "none",
+  "license": "MIT",
   "compilerOptions": {
-    "checkJs": true,
-    "allowJs": true
+    "lib": ["esnext"]
+  },
+  "imports": {
+    "@actions/core": "npm:@actions/core@^1.11.1",
+    "@actions/tool-cache": "npm:@actions/tool-cache@^2.0.2",
+    "@types/node": "npm:@types/node@^22.15.0",
+    "@types/semver": "npm:@types/semver@^7.7.0",
+    "semver": "npm:semver@^7.7.1",
+    "undici": "npm:undici@^7.8.0"
   }
 }
