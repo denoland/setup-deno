@@ -7,13 +7,13 @@ const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 /**
  * @typedef VersionRange
  * @property {string} range
- * @property {"canary" | "rc" | "stable"} kind
+ * @property {"canary" | "rc" | "stable" | "lts"} kind
  */
 
 /**
  * @typedef Version
  * @property {string} version
- * @property {"canary" | "rc" | "stable"} kind
+ * @property {"canary" | "rc" | "stable" | "lts"} kind
  */
 
 /**
@@ -36,6 +36,10 @@ export function parseVersionRange(version) {
 
   if (version === "latest") {
     return { range: "latest", kind: "stable" };
+  }
+
+  if (version === "lts") {
+    return { range: "latest", kind: "lts" };
   }
 
   if (GIT_HASH_RE.test(version)) {
@@ -89,6 +93,8 @@ export function resolveVersion({ range, kind }) {
   } else if (kind === "rc") {
     // range is always "latest"
     return resolveReleaseCandidate();
+  } else if (kind === "lts") {
+    return resolveLTS();
   } else {
     return resolveRelease(range);
   }
@@ -132,6 +138,25 @@ async function resolveReleaseCandidate() {
     throw new Error("Failed to parse release candidate version.");
   }
   return { version, kind: "rc" };
+}
+
+/**
+ * @returns {Promise<Version | null>}
+ */
+async function resolveLTS() {
+  const res = await fetchWithRetries(
+    "https://dl.deno.land/release-lts-latest.txt",
+  );
+  if (res.status !== 200) {
+    throw new Error(
+      "Failed to fetch LTS version info from dl.deno.land. Please try again later.",
+    );
+  }
+  const version = semver.clean((await res.text()).trim());
+  if (version === null) {
+    throw new Error("Failed to parse LTS version.");
+  }
+  return { version, kind: "lts" };
 }
 
 /**

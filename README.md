@@ -70,6 +70,14 @@ Targets the latest major, minor and patch version of Deno.
     deno-version: 2.0.0-rc.1
 ```
 
+### Latest LTS
+
+```yaml
+- uses: denoland/setup-deno@v2
+  with:
+    deno-version: lts
+```
+
 ### Version from file
 
 The extension can also automatically read the version file from
