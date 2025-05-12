@@ -36389,6 +36389,10 @@ function parseVersionRange(version) {
 		range: "latest",
 		kind: "stable"
 	};
+	if (version === "lts") return {
+		range: "latest",
+		kind: "lts"
+	};
 	if (GIT_HASH_RE.test(version)) return {
 		range: version,
 		kind: "canary"
@@ -36410,6 +36414,7 @@ function getDenoVersionFromFile(versionFilePath) {
 function resolveVersion({ range, kind }) {
 	if (kind === "canary") return resolveCanary(range);
 	else if (kind === "rc") return resolveReleaseCandidate();
+	else if (kind === "lts") return resolveLTS();
 	else return resolveRelease(range);
 }
 async function resolveCanary(range) {
@@ -36434,6 +36439,16 @@ async function resolveReleaseCandidate() {
 	return {
 		version,
 		kind: "rc"
+	};
+}
+async function resolveLTS() {
+	const res = await fetchWithRetries("https://dl.deno.land/release-lts-latest.txt");
+	if (res.status !== 200) throw new Error("Failed to fetch LTS version info from dl.deno.land. Please try again later.");
+	const version = import_semver.default.clean((await res.text()).trim());
+	if (version === null) throw new Error("Failed to parse LTS version.");
+	return {
+		version,
+		kind: "lts"
 	};
 }
 async function resolveRelease(range) {
@@ -38230,6 +38245,7 @@ async function install(version) {
 			url = `https://dl.deno.land/release/v${version.version}/${zip}`;
 			break;
 		case "stable":
+		case "lts":
 			url = `https://github.com/denoland/deno/releases/download/v${version.version}/${zip}`;
 			break;
 	}

@@ -23,6 +23,7 @@ jobs:
           - "~1.32"
           - "b290fd01f3f5d32f9d010fc719ced0240759c049"
           - "rc"
+          - "lts"
 
     steps:
       - uses: actions/checkout@v3
@@ -111,5 +112,5 @@ jobs:
       - name: Build code
         run: deno run -A scripts/build.ts
 
-      - name: Assert no git changes
+      - name: Assert no git changes (run `deno task build` if this fails)
         run: git diff --quiet
