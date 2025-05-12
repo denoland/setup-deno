@@ -3,6 +3,7 @@
   "specifiers": {
     "npm:@actions/core@^1.11.1": "1.11.1",
     "npm:@actions/tool-cache@^2.0.2": "2.0.2",
+    "npm:@types/node@*": "22.15.15",
     "npm:@types/node@^22.15.0": "22.15.17",
     "npm:@types/semver@^7.7.0": "7.7.0",
     "npm:semver@^7.7.1": "7.7.1",
@@ -321,6 +322,12 @@
       "integrity": "sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==",
       "dependencies": [
         "tslib"
+      ]
+    },
+    "@types/node@22.15.15": {
+      "integrity": "sha512-R5muMcZob3/Jjchn5LcO8jdKwSCbzqmPB6ruBxMcf9kbxtniZHP327s6C37iOfuw8mbKK3cAQa7sEl7afLrQ8A==",
+      "dependencies": [
+        "undici-types"
       ]
     },
     "@types/node@22.15.17": {
