@@ -42436,7 +42436,8 @@ async function restoreCache(cacheHash) {
 		const message = loadedCacheKey ? `Cache key used: "${loadedCacheKey}".` : `No cache found for restore key: "${restoreKey}".`;
 		import_core.info(message);
 	} catch (err) {
-		import_core.warning(new Error("Failed to restore cache. Continuing without cache.", { cause: err }));
+		import_core.warning(new Error("Failed to restore cache. Continuing without cache."));
+		import_core.warning(err);
 	}
 }
 async function resolveDefaultCacheKey() {

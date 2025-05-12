@@ -20333,7 +20333,7 @@ async function main() {
 		import_core.setOutput("release-channel", version.kind);
 		import_core.info("Installation complete.");
 		if (import_core.getInput("cache") === "true") {
-			const { restoreCache } = await import("./cache-Cy7mjoaS.mjs");
+			const { restoreCache } = await import("./cache-DRBeMjWD.mjs");
 			await restoreCache(import_core.getInput("cache-hash"));
 		}
 	} catch (err) {

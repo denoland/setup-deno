@@ -58,10 +58,9 @@ export async function restoreCache(cacheHash: string) {
     core.info(message);
   } catch (err) {
     core.warning(
-      new Error("Failed to restore cache. Continuing without cache.", {
-        cause: err,
-      }),
+      new Error("Failed to restore cache. Continuing without cache."),
     );
+    core.warning(err as Error);
   }
 }
 
