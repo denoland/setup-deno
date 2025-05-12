@@ -113,7 +113,7 @@ jobs:
           cache-hash: ${{ hashFiles('**/package-lock.json') }}
 
       - name: Run with cached dependencies
-        run: deno run --cached-only --frozen=false -RE npm:cowsay@1.6.0 "It works!"
+        run: deno run --cached-only --no-config -RE npm:cowsay@1.6.0 "It works!"
 
   lint:
     runs-on: ubuntu-latest
