@@ -126,7 +126,7 @@ async function resolveReleaseCandidate(): Promise<Version | null> {
   return { version, kind: "rc" };
 }
 
-async function resolveLTS() {
+async function resolveLTS(): Promise<Version | null> {
   const res = await fetchWithRetries(
     "https://dl.deno.land/release-lts-latest.txt",
   );
@@ -142,11 +142,6 @@ async function resolveLTS() {
   return { version, kind: "lts" };
 }
 
-/**
- * @param {string} range
- * @returns {Promise<Version | null>}
- */
-async function resolveRelease(range) {
 async function resolveRelease(range: string): Promise<Version | null> {
   if (range === "latest") {
     const res = await fetchWithRetries(
