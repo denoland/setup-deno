@@ -160,4 +160,4 @@ To enable the cache, use `cache: true`. It's recommended to also add the
 > [!WARNING]
 > If an environment variable `DENO_DIR` is set for steps that run/download
 > dependencies, then `DENO_DIR` must also be set for the `denoland/setup-deno`
-> Action, for the caching to work as intended.
+> action, for the caching to work as intended.
