@@ -9,6 +9,12 @@ await new Deno.Command(Deno.execPath(), {
   stderr: "inherit",
 }).output();
 
+try {
+  Deno.removeSync(join(import.meta.dirname!, "../dist"), { recursive: true });
+} catch {
+  // ignore
+}
+
 await build({
   entry: {
     main: "src/main.ts",
