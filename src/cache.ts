@@ -61,6 +61,7 @@ export async function restoreCache(cacheHash: string) {
     core.warning(
       new Error("Failed to restore cache. Continuing without cache."),
     );
+    // core.warning doesn't log error causes, so explicititly log the error
     core.warning(err as Error);
   }
 }
