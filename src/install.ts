@@ -28,6 +28,7 @@ export async function install(version: Version) {
       url = `https://dl.deno.land/release/v${version.version}/${zip}`;
       break;
     case "stable":
+    case "lts":
       url =
         `https://github.com/denoland/deno/releases/download/v${version.version}/${zip}`;
       break;
