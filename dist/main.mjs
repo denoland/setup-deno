@@ -3,10 +3,10 @@ import process$1 from "node:process";
 import * as path$1 from "node:path";
 import path from "node:path";
 import * as console$1 from "node:console";
-import * as fs$3 from "node:fs";
+import * as fs$4 from "node:fs";
 import { setTimeout as setTimeout$1 } from "node:timers";
 import * as os from "node:os";
-import * as fs from "node:fs/promises";
+import * as fs$1 from "node:fs/promises";
 
 //#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/constants.js
 var require_constants$5 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/constants.js"(exports, module) {
@@ -19329,8 +19329,8 @@ function parseVersionRange(version) {
 }
 /** Parses the version from the version file */
 function getDenoVersionFromFile(versionFilePath) {
-	if (!fs$3.existsSync(versionFilePath)) throw new Error(`The specified node version file at: ${versionFilePath} does not exist`);
-	const contents = fs$3.readFileSync(versionFilePath, "utf8");
+	if (!fs$4.existsSync(versionFilePath)) throw new Error(`The specified node version file at: ${versionFilePath} does not exist`);
+	const contents = fs$4.readFileSync(versionFilePath, "utf8");
 	const denoVersionInToolVersions = contents.match(/^deno\s+v?(?<version>[^\s]+)$/m);
 	return denoVersionInToolVersions?.groups?.version || contents.trim();
 }
@@ -19487,7 +19487,7 @@ var require_manifest = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.0.
 	const core_1 = require_core();
 	const os$2 = __require("os");
 	const cp = __require("child_process");
-	const fs$2 = __require("fs");
+	const fs$3 = __require("fs");
 	function _findMatch(versionSpec, stable, candidates, archFilter) {
 		return __awaiter$2(this, void 0, void 0, function* () {
 			const platFilter = os$2.platform();
@@ -19547,8 +19547,8 @@ var require_manifest = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.0.
 		const lsbReleaseFile = "/etc/lsb-release";
 		const osReleaseFile = "/etc/os-release";
 		let contents = "";
-		if (fs$2.existsSync(lsbReleaseFile)) contents = fs$2.readFileSync(lsbReleaseFile).toString();
-		else if (fs$2.existsSync(osReleaseFile)) contents = fs$2.readFileSync(osReleaseFile).toString();
+		if (fs$3.existsSync(lsbReleaseFile)) contents = fs$3.readFileSync(lsbReleaseFile).toString();
+		else if (fs$3.existsSync(osReleaseFile)) contents = fs$3.readFileSync(osReleaseFile).toString();
 		return contents;
 	}
 	exports._readLinuxVersionFile = _readLinuxVersionFile;
@@ -19725,7 +19725,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 	const core = __importStar(require_core());
 	const io = __importStar(require_io());
 	const crypto = __importStar(__require("crypto"));
-	const fs$1 = __importStar(__require("fs"));
+	const fs$2 = __importStar(__require("fs"));
 	const mm = __importStar(require_manifest());
 	const os$1 = __importStar(__require("os"));
 	const path$2 = __importStar(__require("path"));
@@ -19779,7 +19779,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 	exports.downloadTool = downloadTool;
 	function downloadToolAttempt(url, dest, auth, headers) {
 		return __awaiter(this, void 0, void 0, function* () {
-			if (fs$1.existsSync(dest)) throw new Error(`Destination file path ${dest} already exists`);
+			if (fs$2.existsSync(dest)) throw new Error(`Destination file path ${dest} already exists`);
 			const http$1 = new httpm.HttpClient(userAgent, [], { allowRetries: false });
 			if (auth) {
 				core.debug("set auth");
@@ -19797,7 +19797,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 			const readStream = responseMessageFactory();
 			let succeeded = false;
 			try {
-				yield pipeline$4(readStream, fs$1.createWriteStream(dest));
+				yield pipeline$4(readStream, fs$2.createWriteStream(dest));
 				core.debug("download complete");
 				succeeded = true;
 				return dest;
@@ -20031,9 +20031,9 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 			arch = arch || os$1.arch();
 			core.debug(`Caching tool ${tool} ${version} ${arch}`);
 			core.debug(`source dir: ${sourceDir}`);
-			if (!fs$1.statSync(sourceDir).isDirectory()) throw new Error("sourceDir is not a directory");
+			if (!fs$2.statSync(sourceDir).isDirectory()) throw new Error("sourceDir is not a directory");
 			const destPath = yield _createToolPath(tool, version, arch);
-			for (const itemName of fs$1.readdirSync(sourceDir)) {
+			for (const itemName of fs$2.readdirSync(sourceDir)) {
 				const s = path$2.join(sourceDir, itemName);
 				yield io.cp(s, destPath, { recursive: true });
 			}
@@ -20058,7 +20058,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 			arch = arch || os$1.arch();
 			core.debug(`Caching tool ${tool} ${version} ${arch}`);
 			core.debug(`source file: ${sourceFile}`);
-			if (!fs$1.statSync(sourceFile).isFile()) throw new Error("sourceFile is not a file");
+			if (!fs$2.statSync(sourceFile).isFile()) throw new Error("sourceFile is not a file");
 			const destFolder = yield _createToolPath(tool, version, arch);
 			const destPath = path$2.join(destFolder, targetFile);
 			core.debug(`destination file ${destPath}`);
@@ -20089,7 +20089,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 			versionSpec = semver.clean(versionSpec) || "";
 			const cachePath = path$2.join(_getCacheDirectory(), toolName, versionSpec, arch);
 			core.debug(`checking cache: ${cachePath}`);
-			if (fs$1.existsSync(cachePath) && fs$1.existsSync(`${cachePath}.complete`)) {
+			if (fs$2.existsSync(cachePath) && fs$2.existsSync(`${cachePath}.complete`)) {
 				core.debug(`Found tool in cache ${toolName} ${versionSpec} ${arch}`);
 				toolPath = cachePath;
 			} else core.debug("not found");
@@ -20107,11 +20107,11 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 		const versions = [];
 		arch = arch || os$1.arch();
 		const toolPath = path$2.join(_getCacheDirectory(), toolName);
-		if (fs$1.existsSync(toolPath)) {
-			const children = fs$1.readdirSync(toolPath);
+		if (fs$2.existsSync(toolPath)) {
+			const children = fs$2.readdirSync(toolPath);
 			for (const child of children) if (isExplicitVersion(child)) {
 				const fullPath = path$2.join(toolPath, child, arch || "");
-				if (fs$1.existsSync(fullPath) && fs$1.existsSync(`${fullPath}.complete`)) versions.push(child);
+				if (fs$2.existsSync(fullPath) && fs$2.existsSync(`${fullPath}.complete`)) versions.push(child);
 			}
 		}
 		return versions;
@@ -20176,7 +20176,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 	function _completeToolPath(tool, version, arch) {
 		const folderPath = path$2.join(_getCacheDirectory(), tool, semver.clean(version) || version, arch || "");
 		const markerPath = `${folderPath}.complete`;
-		fs$1.writeFileSync(markerPath, "");
+		fs$2.writeFileSync(markerPath, "");
 		core.debug("finished caching tool");
 	}
 	/**
@@ -20278,7 +20278,7 @@ async function install(version) {
 	const zipPath = await import_tool_cache.downloadTool(url);
 	const extractedFolder = await import_tool_cache.extractZip(zipPath);
 	const binaryName = import_core.getInput("deno-binary-name");
-	if (binaryName !== "deno") await fs.rename(path$1.join(extractedFolder, process$1.platform === "win32" ? "deno.exe" : "deno"), path$1.join(extractedFolder, process$1.platform === "win32" ? binaryName + ".exe" : binaryName));
+	if (binaryName !== "deno") await fs$1.rename(path$1.join(extractedFolder, process$1.platform === "win32" ? "deno.exe" : "deno"), path$1.join(extractedFolder, process$1.platform === "win32" ? binaryName + ".exe" : binaryName));
 	const newCachedPath = await import_tool_cache.cacheDir(extractedFolder, binaryName, version.kind === "canary" ? `0.0.0-${version.version}` : version.version);
 	import_core.info(`Cached Deno to ${newCachedPath}.`);
 	import_core.addPath(newCachedPath);
@@ -20332,7 +20332,7 @@ async function main() {
 		import_core.setOutput("release-channel", version.kind);
 		import_core.info("Installation complete.");
 		if (import_core.getInput("cache") === "true") {
-			const { restoreCache } = await import("./cache-ByPW8-iO.mjs");
+			const { restoreCache } = await import("./cache-CiqfW4gT.mjs");
 			await restoreCache(import_core.getInput("cache-hash"));
 		}
 	} catch (err) {

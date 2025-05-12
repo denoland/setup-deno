@@ -1,5 +1,8 @@
 import { __commonJS, __require, __toESM, import_core, require_auth, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-DmxAwBYV.mjs";
 import process$1 from "node:process";
+import crypto from "node:crypto";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 //#region node_modules/.deno/@actions+glob@0.1.2/node_modules/@actions/glob/lib/internal-glob-options-helper.js
 var require_internal_glob_options_helper = __commonJS({ "node_modules/.deno/@actions+glob@0.1.2/node_modules/@actions/glob/lib/internal-glob-options-helper.js"(exports) {
@@ -100,7 +103,7 @@ var require_internal_path_helper = __commonJS({ "node_modules/.deno/@actions+glo
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.safeTrimTrailingSeparator = exports.normalizeSeparators = exports.hasRoot = exports.hasAbsoluteRoot = exports.ensureAbsoluteRoot = exports.dirname = void 0;
-	const path$7 = __importStar$17(__require("path"));
+	const path$8 = __importStar$17(__require("path"));
 	const assert_1$8 = __importDefault$6(__require("assert"));
 	const IS_WINDOWS$5 = process.platform === "win32";
 	/**
@@ -123,7 +126,7 @@ var require_internal_path_helper = __commonJS({ "node_modules/.deno/@actions+glo
 	function dirname(p) {
 		p = safeTrimTrailingSeparator(p);
 		if (IS_WINDOWS$5 && /^\\\\[^\\]+(\\[^\\]+)?$/.test(p)) return p;
-		let result = path$7.dirname(p);
+		let result = path$8.dirname(p);
 		if (IS_WINDOWS$5 && /^\\\\[^\\]+\\[^\\]+\\$/.test(result)) result = safeTrimTrailingSeparator(result);
 		return result;
 	}
@@ -153,7 +156,7 @@ var require_internal_path_helper = __commonJS({ "node_modules/.deno/@actions+glo
 			}
 		}
 		assert_1$8.default(hasAbsoluteRoot(root), `ensureAbsoluteRoot parameter 'root' must have an absolute root`);
-		if (root.endsWith("/") || IS_WINDOWS$5 && root.endsWith("\\")) {} else root += path$7.sep;
+		if (root.endsWith("/") || IS_WINDOWS$5 && root.endsWith("\\")) {} else root += path$8.sep;
 		return root + itemPath;
 	}
 	exports.ensureAbsoluteRoot = ensureAbsoluteRoot;
@@ -199,8 +202,8 @@ var require_internal_path_helper = __commonJS({ "node_modules/.deno/@actions+glo
 	function safeTrimTrailingSeparator(p) {
 		if (!p) return "";
 		p = normalizeSeparators(p);
-		if (!p.endsWith(path$7.sep)) return p;
-		if (p === path$7.sep) return p;
+		if (!p.endsWith(path$8.sep)) return p;
+		if (p === path$8.sep) return p;
 		if (IS_WINDOWS$5 && /^[A-Z]:\\$/i.test(p)) return p;
 		return p.substr(0, p.length - 1);
 	}
@@ -520,12 +523,12 @@ var require_brace_expansion = __commonJS({ "node_modules/.deno/brace-expansion@1
 var require_minimatch = __commonJS({ "node_modules/.deno/minimatch@3.1.2/node_modules/minimatch/minimatch.js"(exports, module) {
 	module.exports = minimatch;
 	minimatch.Minimatch = Minimatch;
-	var path$6 = function() {
+	var path$7 = function() {
 		try {
 			return __require("path");
 		} catch (e) {}
 	}() || { sep: "/" };
-	minimatch.sep = path$6.sep;
+	minimatch.sep = path$7.sep;
 	var GLOBSTAR = minimatch.GLOBSTAR = Minimatch.GLOBSTAR = {};
 	var expand = require_brace_expansion();
 	var plTypes = {
@@ -623,7 +626,7 @@ var require_minimatch = __commonJS({ "node_modules/.deno/minimatch@3.1.2/node_mo
 		assertValidPattern(pattern);
 		if (!options) options = {};
 		pattern = pattern.trim();
-		if (!options.allowWindowsEscape && path$6.sep !== "/") pattern = pattern.split(path$6.sep).join("/");
+		if (!options.allowWindowsEscape && path$7.sep !== "/") pattern = pattern.split(path$7.sep).join("/");
 		this.options = options;
 		this.set = [];
 		this.pattern = pattern;
@@ -945,7 +948,7 @@ var require_minimatch = __commonJS({ "node_modules/.deno/minimatch@3.1.2/node_mo
 		if (this.empty) return f === "";
 		if (f === "/" && partial) return true;
 		var options = this.options;
-		if (path$6.sep !== "/") f = f.split(path$6.sep).join("/");
+		if (path$7.sep !== "/") f = f.split(path$7.sep).join("/");
 		f = f.split(slashSplit);
 		this.debug(this.pattern, "split", f);
 		var set = this.set;
@@ -1080,7 +1083,7 @@ var require_internal_path = __commonJS({ "node_modules/.deno/@actions+glob@0.1.2
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Path = void 0;
-	const path$5 = __importStar$15(__require("path"));
+	const path$6 = __importStar$15(__require("path"));
 	const pathHelper$1 = __importStar$15(require_internal_path_helper());
 	const assert_1$7 = __importDefault$5(__require("assert"));
 	const IS_WINDOWS$3 = process.platform === "win32";
@@ -1097,12 +1100,12 @@ var require_internal_path = __commonJS({ "node_modules/.deno/@actions+glob@0.1.2
 			if (typeof itemPath === "string") {
 				assert_1$7.default(itemPath, `Parameter 'itemPath' must not be empty`);
 				itemPath = pathHelper$1.safeTrimTrailingSeparator(itemPath);
-				if (!pathHelper$1.hasRoot(itemPath)) this.segments = itemPath.split(path$5.sep);
+				if (!pathHelper$1.hasRoot(itemPath)) this.segments = itemPath.split(path$6.sep);
 				else {
 					let remaining = itemPath;
 					let dir = pathHelper$1.dirname(remaining);
 					while (dir !== remaining) {
-						const basename = path$5.basename(remaining);
+						const basename = path$6.basename(remaining);
 						this.segments.unshift(basename);
 						remaining = dir;
 						dir = pathHelper$1.dirname(remaining);
@@ -1120,7 +1123,7 @@ var require_internal_path = __commonJS({ "node_modules/.deno/@actions+glob@0.1.2
 						assert_1$7.default(segment === pathHelper$1.dirname(segment), `Parameter 'itemPath' root segment contains information for multiple segments`);
 						this.segments.push(segment);
 					} else {
-						assert_1$7.default(!segment.includes(path$5.sep), `Parameter 'itemPath' contains unexpected path separators`);
+						assert_1$7.default(!segment.includes(path$6.sep), `Parameter 'itemPath' contains unexpected path separators`);
 						this.segments.push(segment);
 					}
 				}
@@ -1131,10 +1134,10 @@ var require_internal_path = __commonJS({ "node_modules/.deno/@actions+glob@0.1.2
 		*/
 		toString() {
 			let result = this.segments[0];
-			let skipSlash = result.endsWith(path$5.sep) || IS_WINDOWS$3 && /^[A-Z]:$/i.test(result);
+			let skipSlash = result.endsWith(path$6.sep) || IS_WINDOWS$3 && /^[A-Z]:$/i.test(result);
 			for (let i = 1; i < this.segments.length; i++) {
 				if (skipSlash) skipSlash = false;
-				else result += path$5.sep;
+				else result += path$6.sep;
 				result += this.segments[i];
 			}
 			return result;
@@ -1181,7 +1184,7 @@ var require_internal_pattern = __commonJS({ "node_modules/.deno/@actions+glob@0.
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Pattern = void 0;
 	const os$2 = __importStar$14(__require("os"));
-	const path$4 = __importStar$14(__require("path"));
+	const path$5 = __importStar$14(__require("path"));
 	const pathHelper = __importStar$14(require_internal_path_helper());
 	const assert_1$6 = __importDefault$4(__require("assert"));
 	const minimatch_1 = require_minimatch();
@@ -1210,7 +1213,7 @@ var require_internal_pattern = __commonJS({ "node_modules/.deno/@actions+glob@0.
 			}
 			pattern = Pattern.fixupPattern(pattern, homedir);
 			this.segments = new internal_path_1.Path(pattern).segments;
-			this.trailingSeparator = pathHelper.normalizeSeparators(pattern).endsWith(path$4.sep);
+			this.trailingSeparator = pathHelper.normalizeSeparators(pattern).endsWith(path$5.sep);
 			pattern = pathHelper.safeTrimTrailingSeparator(pattern);
 			let foundGlob = false;
 			const searchSegments = this.segments.map((x) => Pattern.getLiteral(x)).filter((x) => !foundGlob && !(foundGlob = x === ""));
@@ -1234,7 +1237,7 @@ var require_internal_pattern = __commonJS({ "node_modules/.deno/@actions+glob@0.
 		match(itemPath) {
 			if (this.segments[this.segments.length - 1] === "**") {
 				itemPath = pathHelper.normalizeSeparators(itemPath);
-				if (!itemPath.endsWith(path$4.sep) && this.isImplicitPattern === false) itemPath = `${itemPath}${path$4.sep}`;
+				if (!itemPath.endsWith(path$5.sep) && this.isImplicitPattern === false) itemPath = `${itemPath}${path$5.sep}`;
 			} else itemPath = pathHelper.safeTrimTrailingSeparator(itemPath);
 			if (this.minimatch.match(itemPath)) return this.trailingSeparator ? internal_match_kind_1$1.MatchKind.Directory : internal_match_kind_1$1.MatchKind.All;
 			return internal_match_kind_1$1.MatchKind.None;
@@ -1262,8 +1265,8 @@ var require_internal_pattern = __commonJS({ "node_modules/.deno/@actions+glob@0.
 			assert_1$6.default(literalSegments.every((x, i) => (x !== "." || i === 0) && x !== ".."), `Invalid pattern '${pattern}'. Relative pathing '.' and '..' is not allowed.`);
 			assert_1$6.default(!pathHelper.hasRoot(pattern) || literalSegments[0], `Invalid pattern '${pattern}'. Root segment must not contain globs.`);
 			pattern = pathHelper.normalizeSeparators(pattern);
-			if (pattern === "." || pattern.startsWith(`.${path$4.sep}`)) pattern = Pattern.globEscape(process.cwd()) + pattern.substr(1);
-			else if (pattern === "~" || pattern.startsWith(`~${path$4.sep}`)) {
+			if (pattern === "." || pattern.startsWith(`.${path$5.sep}`)) pattern = Pattern.globEscape(process.cwd()) + pattern.substr(1);
+			else if (pattern === "~" || pattern.startsWith(`~${path$5.sep}`)) {
 				homedir = homedir || os$2.homedir();
 				assert_1$6.default(homedir, "Unable to determine HOME directory");
 				assert_1$6.default(pathHelper.hasAbsoluteRoot(homedir), `Expected HOME directory to be a rooted path. Actual '${homedir}'`);
@@ -1334,8 +1337,8 @@ var require_internal_search_state = __commonJS({ "node_modules/.deno/@actions+gl
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.SearchState = void 0;
 	var SearchState = class {
-		constructor(path$8, level) {
-			this.path = path$8;
+		constructor(path$9, level) {
+			this.path = path$9;
 			this.level = level;
 		}
 	};
@@ -1467,9 +1470,9 @@ var require_internal_globber = __commonJS({ "node_modules/.deno/@actions+glob@0.
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.DefaultGlobber = void 0;
 	const core$7 = __importStar$13(require_core());
-	const fs$4 = __importStar$13(__require("fs"));
+	const fs$5 = __importStar$13(__require("fs"));
 	const globOptionsHelper = __importStar$13(require_internal_glob_options_helper());
-	const path$3 = __importStar$13(__require("path"));
+	const path$4 = __importStar$13(__require("path"));
 	const patternHelper = __importStar$13(require_internal_pattern_helper());
 	const internal_match_kind_1 = require_internal_match_kind();
 	const internal_pattern_1 = require_internal_pattern();
@@ -1517,7 +1520,7 @@ var require_internal_globber = __commonJS({ "node_modules/.deno/@actions+glob@0.
 				for (const searchPath of patternHelper.getSearchPaths(patterns)) {
 					core$7.debug(`Search path '${searchPath}'`);
 					try {
-						yield __await$1(fs$4.promises.lstat(searchPath));
+						yield __await$1(fs$5.promises.lstat(searchPath));
 					} catch (err) {
 						if (err.code === "ENOENT") continue;
 						throw err;
@@ -1539,7 +1542,7 @@ var require_internal_globber = __commonJS({ "node_modules/.deno/@actions+glob@0.
 						if (match$1 & internal_match_kind_1.MatchKind.Directory) yield yield __await$1(item.path);
 						else if (!partialMatch$1) continue;
 						const childLevel = item.level + 1;
-						const childItems = (yield __await$1(fs$4.promises.readdir(item.path))).map((x) => new internal_search_state_1.SearchState(path$3.join(item.path, x), childLevel));
+						const childItems = (yield __await$1(fs$5.promises.readdir(item.path))).map((x) => new internal_search_state_1.SearchState(path$4.join(item.path, x), childLevel));
 						stack.push(...childItems.reverse());
 					} else if (match$1 & internal_match_kind_1.MatchKind.File) yield yield __await$1(item.path);
 				}
@@ -1566,7 +1569,7 @@ var require_internal_globber = __commonJS({ "node_modules/.deno/@actions+glob@0.
 			return __awaiter$15(this, void 0, void 0, function* () {
 				let stats;
 				if (options.followSymbolicLinks) try {
-					stats = yield fs$4.promises.stat(item.path);
+					stats = yield fs$5.promises.stat(item.path);
 				} catch (err) {
 					if (err.code === "ENOENT") {
 						if (options.omitBrokenSymbolicLinks) {
@@ -1577,9 +1580,9 @@ var require_internal_globber = __commonJS({ "node_modules/.deno/@actions+glob@0.
 					}
 					throw err;
 				}
-				else stats = yield fs$4.promises.lstat(item.path);
+				else stats = yield fs$5.promises.lstat(item.path);
 				if (stats.isDirectory() && options.followSymbolicLinks) {
-					const realPath = yield fs$4.promises.realpath(item.path);
+					const realPath = yield fs$5.promises.realpath(item.path);
 					while (traversalChain.length >= item.level) traversalChain.pop();
 					if (traversalChain.some((x) => x === realPath)) {
 						core$7.debug(`Symlink cycle detected for path '${item.path}' and realpath '${realPath}'`);
@@ -1758,12 +1761,12 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getRuntimeToken = exports.getCacheVersion = exports.assertDefined = exports.getGnuTarPathOnWindows = exports.getCacheFileName = exports.getCompressionMethod = exports.unlinkFile = exports.resolvePaths = exports.getArchiveFileSizeInBytes = exports.createTempDirectory = void 0;
 	const core$6 = __importStar$12(require_core());
-	const exec = __importStar$12(require_exec());
+	const exec$1 = __importStar$12(require_exec());
 	const glob = __importStar$12(require_glob());
 	const io$1 = __importStar$12(require_io());
-	const crypto$1 = __importStar$12(__require("crypto"));
-	const fs$3 = __importStar$12(__require("fs"));
-	const path$2 = __importStar$12(__require("path"));
+	const crypto$2 = __importStar$12(__require("crypto"));
+	const fs$4 = __importStar$12(__require("fs"));
+	const path$3 = __importStar$12(__require("path"));
 	const semver = __importStar$12(require_semver());
 	const util$3 = __importStar$12(__require("util"));
 	const constants_1$4 = require_constants$3();
@@ -1777,16 +1780,16 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 				if (IS_WINDOWS$6) baseLocation = process.env["USERPROFILE"] || "C:\\";
 				else if (process.platform === "darwin") baseLocation = "/Users";
 				else baseLocation = "/home";
-				tempDirectory = path$2.join(baseLocation, "actions", "temp");
+				tempDirectory = path$3.join(baseLocation, "actions", "temp");
 			}
-			const dest = path$2.join(tempDirectory, crypto$1.randomUUID());
+			const dest = path$3.join(tempDirectory, crypto$2.randomUUID());
 			yield io$1.mkdirP(dest);
 			return dest;
 		});
 	}
 	exports.createTempDirectory = createTempDirectory;
 	function getArchiveFileSizeInBytes(filePath) {
-		return fs$3.statSync(filePath).size;
+		return fs$4.statSync(filePath).size;
 	}
 	exports.getArchiveFileSizeInBytes = getArchiveFileSizeInBytes;
 	function resolvePaths(patterns) {
@@ -1801,7 +1804,7 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 					_c$1 = _g.value;
 					_e = false;
 					const file = _c$1;
-					const relativeFile = path$2.relative(workspace, file).replace(new RegExp(`\\${path$2.sep}`, "g"), "/");
+					const relativeFile = path$3.relative(workspace, file).replace(new RegExp(`\\${path$3.sep}`, "g"), "/");
 					core$6.debug(`Matched: ${relativeFile}`);
 					if (relativeFile === "") paths.push(".");
 					else paths.push(`${relativeFile}`);
@@ -1821,7 +1824,7 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 	exports.resolvePaths = resolvePaths;
 	function unlinkFile(filePath) {
 		return __awaiter$13(this, void 0, void 0, function* () {
-			return util$3.promisify(fs$3.unlink)(filePath);
+			return util$3.promisify(fs$4.unlink)(filePath);
 		});
 	}
 	exports.unlinkFile = unlinkFile;
@@ -1831,7 +1834,7 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 			additionalArgs.push("--version");
 			core$6.debug(`Checking ${app} ${additionalArgs.join(" ")}`);
 			try {
-				yield exec.exec(`${app}`, additionalArgs, {
+				yield exec$1.exec(`${app}`, additionalArgs, {
 					ignoreReturnCode: true,
 					silent: true,
 					listeners: {
@@ -1863,7 +1866,7 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 	exports.getCacheFileName = getCacheFileName;
 	function getGnuTarPathOnWindows() {
 		return __awaiter$13(this, void 0, void 0, function* () {
-			if (fs$3.existsSync(constants_1$4.GnuTarPathOnWindows)) return constants_1$4.GnuTarPathOnWindows;
+			if (fs$4.existsSync(constants_1$4.GnuTarPathOnWindows)) return constants_1$4.GnuTarPathOnWindows;
 			const versionOutput = yield getVersion("tar");
 			return versionOutput.toLowerCase().includes("gnu tar") ? io$1.which("tar") : "";
 		});
@@ -1879,7 +1882,7 @@ var require_cacheUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/n
 		if (compressionMethod) components.push(compressionMethod);
 		if (process.platform === "win32" && !enableCrossOsArchive) components.push("windows-only");
 		components.push(versionSalt);
-		return crypto$1.createHash("sha256").update(components.join("|")).digest("hex");
+		return crypto$2.createHash("sha256").update(components.join("|")).digest("hex");
 	}
 	exports.getCacheVersion = getCacheVersion;
 	function getRuntimeToken() {
@@ -2422,11 +2425,11 @@ var require_tslib = __commonJS({ "node_modules/.deno/tslib@2.8.1/node_modules/ts
 			}
 			return next();
 		};
-		__rewriteRelativeImportExtension = function(path$8, preserveJsx) {
-			if (typeof path$8 === "string" && /^\.\.?\//.test(path$8)) return path$8.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function(m$1, tsx, d$1, ext$1, cm) {
+		__rewriteRelativeImportExtension = function(path$9, preserveJsx) {
+			if (typeof path$9 === "string" && /^\.\.?\//.test(path$9)) return path$9.replace(/\.(tsx)$|((?:\.d)?)((?:\.[^./]+?)?)\.([cm]?)ts$/i, function(m$1, tsx, d$1, ext$1, cm) {
 				return tsx ? preserveJsx ? ".jsx" : ".js" : d$1 && (!ext$1 || !cm) ? m$1 : d$1 + ext$1 + "." + cm.toLowerCase() + "js";
 			});
-			return path$8;
+			return path$9;
 		};
 		exporter("__extends", __extends);
 		exporter("__assign", __assign);
@@ -6599,8 +6602,8 @@ var require_getClient = __commonJS({ "node_modules/.deno/@typespec+ts-http-runti
 		}
 		const { allowInsecureConnection: allowInsecureConnection$1, httpClient } = clientOptions;
 		const endpointUrl = (_c$1 = clientOptions.endpoint) !== null && _c$1 !== void 0 ? _c$1 : endpoint;
-		const client = (path$8, ...args) => {
-			const getUrl = (requestOptions) => (0, urlHelpers_js_1$1.buildRequestUrl)(endpointUrl, path$8, args, Object.assign({ allowInsecureConnection: allowInsecureConnection$1 }, requestOptions));
+		const client = (path$9, ...args) => {
+			const getUrl = (requestOptions) => (0, urlHelpers_js_1$1.buildRequestUrl)(endpointUrl, path$9, args, Object.assign({ allowInsecureConnection: allowInsecureConnection$1 }, requestOptions));
 			return {
 				get: (requestOptions = {}) => {
 					return buildOperation("GET", getUrl(requestOptions), pipeline, requestOptions, allowInsecureConnection$1, httpClient);
@@ -10990,12 +10993,12 @@ var require_urlHelpers = __commonJS({ "node_modules/.deno/@azure+core-client@1.9
 		let isAbsolutePath = false;
 		let requestUrl = replaceAll(baseUri, urlReplacements);
 		if (operationSpec.path) {
-			let path$8 = replaceAll(operationSpec.path, urlReplacements);
-			if (operationSpec.path === "/{nextLink}" && path$8.startsWith("/")) path$8 = path$8.substring(1);
-			if (isAbsoluteUrl(path$8)) {
-				requestUrl = path$8;
+			let path$9 = replaceAll(operationSpec.path, urlReplacements);
+			if (operationSpec.path === "/{nextLink}" && path$9.startsWith("/")) path$9 = path$9.substring(1);
+			if (isAbsoluteUrl(path$9)) {
+				requestUrl = path$9;
 				isAbsolutePath = true;
-			} else requestUrl = appendPath(requestUrl, path$8);
+			} else requestUrl = appendPath(requestUrl, path$9);
 		}
 		const { queryParams, sequenceParams } = calculateQueryParameters(operationSpec, operationArguments, fallbackObject);
 		/**
@@ -11035,9 +11038,9 @@ var require_urlHelpers = __commonJS({ "node_modules/.deno/@azure+core-client@1.9
 		if (pathToAppend.startsWith("/")) pathToAppend = pathToAppend.substring(1);
 		const searchStart = pathToAppend.indexOf("?");
 		if (searchStart !== -1) {
-			const path$8 = pathToAppend.substring(0, searchStart);
+			const path$9 = pathToAppend.substring(0, searchStart);
 			const search = pathToAppend.substring(searchStart + 1);
-			newPath = newPath + path$8;
+			newPath = newPath + path$9;
 			if (search) parsedUrl.search = parsedUrl.search ? `${parsedUrl.search}&${search}` : search;
 		} else newPath = newPath + pathToAppend;
 		parsedUrl.pathname = newPath;
@@ -14258,12 +14261,12 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 	var coreXml = require_commonjs$3();
 	var logger$1 = require_commonjs$11();
 	var abortController = require_commonjs$10();
-	var crypto = __require("crypto");
+	var crypto$1 = __require("crypto");
 	var coreTracing = require_commonjs$8();
 	var stream$1 = __require("stream");
 	var coreLro = require_commonjs$2();
 	var events = __require("events");
-	var fs$2 = __require("fs");
+	var fs$3 = __require("fs");
 	var util$1 = __require("util");
 	var buffer$1 = __require("buffer");
 	function _interopNamespaceDefault(e) {
@@ -14284,7 +14287,7 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 	}
 	var coreHttpCompat__namespace = /* @__PURE__ */ _interopNamespaceDefault(coreHttpCompat);
 	var coreClient__namespace = /* @__PURE__ */ _interopNamespaceDefault(coreClient);
-	var fs__namespace = /* @__PURE__ */ _interopNamespaceDefault(fs$2);
+	var fs__namespace = /* @__PURE__ */ _interopNamespaceDefault(fs$3);
 	var util__namespace = /* @__PURE__ */ _interopNamespaceDefault(util$1);
 	/**
 	* The `@azure/logger` configuration for this package.
@@ -14580,10 +14583,10 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 	*/
 	function escapeURLPath(url$1) {
 		const urlParsed = new URL(url$1);
-		let path$8 = urlParsed.pathname;
-		path$8 = path$8 || "/";
-		path$8 = escape(path$8);
-		urlParsed.pathname = path$8;
+		let path$9 = urlParsed.pathname;
+		path$9 = path$9 || "/";
+		path$9 = escape(path$9);
+		urlParsed.pathname = path$9;
 		return urlParsed.toString();
 	}
 	function getProxyUriFromDevConnString(connectionString) {
@@ -14670,9 +14673,9 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 	*/
 	function appendToURLPath(url$1, name) {
 		const urlParsed = new URL(url$1);
-		let path$8 = urlParsed.pathname;
-		path$8 = path$8 ? path$8.endsWith("/") ? `${path$8}${name}` : `${path$8}/${name}` : name;
-		urlParsed.pathname = path$8;
+		let path$9 = urlParsed.pathname;
+		path$9 = path$9 ? path$9.endsWith("/") ? `${path$9}${name}` : `${path$9}/${name}` : name;
+		urlParsed.pathname = path$9;
 		return urlParsed.toString();
 	}
 	/**
@@ -15776,9 +15779,9 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 		* @param request -
 		*/
 		getCanonicalizedResourceString(request) {
-			const path$8 = getURLPath(request.url) || "/";
+			const path$9 = getURLPath(request.url) || "/";
 			let canonicalizedResourceString = "";
-			canonicalizedResourceString += `/${this.factory.accountName}${path$8}`;
+			canonicalizedResourceString += `/${this.factory.accountName}${path$9}`;
 			const queries = getURLQueries(request.url);
 			const lowercaseQueries = {};
 			if (queries) {
@@ -15840,7 +15843,7 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 		* @param stringToSign -
 		*/
 		computeHMACSHA256(stringToSign) {
-			return crypto.createHmac("sha256", this.accountKey).update(stringToSign, "utf8").digest("base64");
+			return crypto$1.createHmac("sha256", this.accountKey).update(stringToSign, "utf8").digest("base64");
 		}
 	};
 	/**
@@ -16063,7 +16066,7 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 				getHeaderValueToSign(request, HeaderConstants.IF_UNMODIFIED_SINCE),
 				getHeaderValueToSign(request, HeaderConstants.RANGE)
 			].join("\n") + "\n" + getCanonicalizedHeadersString(request) + getCanonicalizedResourceString(request);
-			const signature = crypto.createHmac("sha256", options.accountKey).update(stringToSign, "utf8").digest("base64");
+			const signature = crypto$1.createHmac("sha256", options.accountKey).update(stringToSign, "utf8").digest("base64");
 			request.headers.set(HeaderConstants.AUTHORIZATION, `SharedKey ${options.accountName}:${signature}`);
 		}
 		/**
@@ -16108,9 +16111,9 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 			return canonicalizedHeadersStringToSign;
 		}
 		function getCanonicalizedResourceString(request) {
-			const path$8 = getURLPath(request.url) || "/";
+			const path$9 = getURLPath(request.url) || "/";
 			let canonicalizedResourceString = "";
-			canonicalizedResourceString += `/${options.accountName}${path$8}`;
+			canonicalizedResourceString += `/${options.accountName}${path$9}`;
 			const queries = getURLQueries(request.url);
 			const lowercaseQueries = {};
 			if (queries) {
@@ -27975,7 +27978,7 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 		* @param stringToSign -
 		*/
 		computeHMACSHA256(stringToSign) {
-			return crypto.createHmac("sha256", this.key).update(stringToSign, "utf8").digest("base64");
+			return crypto$1.createHmac("sha256", this.key).update(stringToSign, "utf8").digest("base64");
 		}
 	};
 	/**
@@ -33506,8 +33509,8 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 		}
 		preAddSubRequest(subRequest) {
 			if (this.operationCount >= BATCH_MAX_REQUEST) throw new RangeError(`Cannot exceed ${BATCH_MAX_REQUEST} sub requests in a single batch`);
-			const path$8 = getURLPath(subRequest.url);
-			if (!path$8 || path$8 === "") throw new RangeError(`Invalid url for sub request: '${subRequest.url}'`);
+			const path$9 = getURLPath(subRequest.url);
+			if (!path$9 || path$9 === "") throw new RangeError(`Invalid url for sub request: '${subRequest.url}'`);
 		}
 		postAddSubRequest(subRequest) {
 			this.subRequests.set(this.operationCount, subRequest);
@@ -33559,8 +33562,8 @@ var require_dist$1 = __commonJS({ "node_modules/.deno/@azure+storage-blob@12.27.
 			else if (!credentialOrPipeline) pipeline = newPipeline(new AnonymousCredential(), options);
 			else pipeline = newPipeline(credentialOrPipeline, options);
 			const storageClientContext = new StorageContextClient(url$1, getCoreClientOptions(pipeline));
-			const path$8 = getURLPath(url$1);
-			if (path$8 && path$8 !== "/") this.serviceOrContainerContext = storageClientContext.container;
+			const path$9 = getURLPath(url$1);
+			if (path$9 && path$9 !== "/") this.serviceOrContainerContext = storageClientContext.container;
 			else this.serviceOrContainerContext = storageClientContext.service;
 		}
 		/**
@@ -36403,7 +36406,7 @@ var require_downloadUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.
 	const http_client_1$2 = require_lib();
 	const storage_blob_1 = require_dist$1();
 	const buffer = __importStar$4(__require("buffer"));
-	const fs$1 = __importStar$4(__require("fs"));
+	const fs$2 = __importStar$4(__require("fs"));
 	const stream = __importStar$4(__require("stream"));
 	const util = __importStar$4(__require("util"));
 	const utils$3 = __importStar$4(require_cacheUtils());
@@ -36523,7 +36526,7 @@ var require_downloadUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.
 	*/
 	function downloadCacheHttpClient(archiveLocation, archivePath) {
 		return __awaiter$9(this, void 0, void 0, function* () {
-			const writeStream = fs$1.createWriteStream(archivePath);
+			const writeStream = fs$2.createWriteStream(archivePath);
 			const httpClient = new http_client_1$2.HttpClient("actions/cache");
 			const downloadResponse = yield (0, requestUtils_1$1.retryHttpClientResponse)("downloadCache", () => __awaiter$9(this, void 0, void 0, function* () {
 				return httpClient.get(archiveLocation);
@@ -36551,7 +36554,7 @@ var require_downloadUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.
 	function downloadCacheHttpClientConcurrent(archiveLocation, archivePath, options) {
 		var _a$2;
 		return __awaiter$9(this, void 0, void 0, function* () {
-			const archiveDescriptor = yield fs$1.promises.open(archivePath, "w");
+			const archiveDescriptor = yield fs$2.promises.open(archivePath, "w");
 			const httpClient = new http_client_1$2.HttpClient("actions/cache", void 0, {
 				socketTimeout: options.timeoutInMs,
 				keepAlive: true
@@ -36652,7 +36655,7 @@ var require_downloadUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.
 			} else {
 				const maxSegmentSize = Math.min(134217728, buffer.constants.MAX_LENGTH);
 				const downloadProgress = new DownloadProgress(contentLength$1);
-				const fd = fs$1.openSync(archivePath, "w");
+				const fd = fs$2.openSync(archivePath, "w");
 				try {
 					downloadProgress.startDisplayTimer();
 					const controller = new abort_controller_1.AbortController();
@@ -36669,11 +36672,11 @@ var require_downloadUtils = __commonJS({ "node_modules/.deno/@actions+cache@4.0.
 						if (result === "timeout") {
 							controller.abort();
 							throw new Error("Aborting cache download as the download time exceeded the timeout.");
-						} else if (Buffer.isBuffer(result)) fs$1.writeFileSync(fd, result);
+						} else if (Buffer.isBuffer(result)) fs$2.writeFileSync(fd, result);
 					}
 				} finally {
 					downloadProgress.stopDisplayTimer();
-					fs$1.closeSync(fd);
+					fs$2.closeSync(fd);
 				}
 			}
 		});
@@ -36955,7 +36958,7 @@ var require_cacheHttpClient = __commonJS({ "node_modules/.deno/@actions+cache@4.
 	const core$1 = __importStar$2(require_core());
 	const http_client_1$1 = require_lib();
 	const auth_1$1 = require_auth();
-	const fs = __importStar$2(__require("fs"));
+	const fs$1 = __importStar$2(__require("fs"));
 	const url_1 = __require("url");
 	const utils$2 = __importStar$2(require_cacheUtils());
 	const uploadUtils_1 = require_uploadUtils();
@@ -37069,7 +37072,7 @@ var require_cacheHttpClient = __commonJS({ "node_modules/.deno/@actions+cache@4.
 		return __awaiter$8(this, void 0, void 0, function* () {
 			const fileSize = utils$2.getArchiveFileSizeInBytes(archivePath);
 			const resourceUrl = getCacheApiUrl(`caches/${cacheId.toString()}`);
-			const fd = fs.openSync(archivePath, "r");
+			const fd = fs$1.openSync(archivePath, "r");
 			const uploadOptions = (0, options_1.getUploadOptions)(options);
 			const concurrency = utils$2.assertDefined("uploadConcurrency", uploadOptions.uploadConcurrency);
 			const maxChunkSize = utils$2.assertDefined("uploadChunkSize", uploadOptions.uploadChunkSize);
@@ -37083,7 +37086,7 @@ var require_cacheHttpClient = __commonJS({ "node_modules/.deno/@actions+cache@4.
 						const start = offset;
 						const end = offset + chunkSize - 1;
 						offset += maxChunkSize;
-						yield uploadChunk(httpClient, resourceUrl, () => fs.createReadStream(archivePath, {
+						yield uploadChunk(httpClient, resourceUrl, () => fs$1.createReadStream(archivePath, {
 							fd,
 							start,
 							end,
@@ -37094,7 +37097,7 @@ var require_cacheHttpClient = __commonJS({ "node_modules/.deno/@actions+cache@4.
 					}
 				})));
 			} finally {
-				fs.closeSync(fd);
+				fs$1.closeSync(fd);
 			}
 			return;
 		});
@@ -42563,7 +42566,7 @@ var require_tar = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_mod
 	const exec_1 = require_exec();
 	const io = __importStar$1(require_io());
 	const fs_1 = __require("fs");
-	const path$1 = __importStar$1(__require("path"));
+	const path$2 = __importStar$1(__require("path"));
 	const utils$1 = __importStar$1(require_cacheUtils());
 	const constants_1$1 = require_constants$3();
 	const IS_WINDOWS = process.platform === "win32";
@@ -42611,13 +42614,13 @@ var require_tar = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_mod
 			const BSD_TAR_ZSTD = tarPath.type === constants_1$1.ArchiveToolType.BSD && compressionMethod !== constants_1$1.CompressionMethod.Gzip && IS_WINDOWS;
 			switch (type) {
 				case "create":
-					args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "--files-from", constants_1$1.ManifestFilename);
+					args.push("--posix", "-cf", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "--exclude", BSD_TAR_ZSTD ? tarFile : cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "--files-from", constants_1$1.ManifestFilename);
 					break;
 				case "extract":
-					args.push("-xf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"));
+					args.push("-xf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P", "-C", workingDirectory.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"));
 					break;
 				case "list":
-					args.push("-tf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"), "-P");
+					args.push("-tf", BSD_TAR_ZSTD ? tarFile : archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"), "-P");
 					break;
 			}
 			if (tarPath.type === constants_1$1.ArchiveToolType.GNU) switch (process.platform) {
@@ -42655,12 +42658,12 @@ var require_tar = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_mod
 				case constants_1$1.CompressionMethod.Zstd: return BSD_TAR_ZSTD ? [
 					"zstd -d --long=30 --force -o",
 					constants_1$1.TarFilename,
-					archivePath.replace(new RegExp(`\\${path$1.sep}`, "g"), "/")
+					archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/")
 				] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -d --long=30\"" : "unzstd --long=30"];
 				case constants_1$1.CompressionMethod.ZstdWithoutLong: return BSD_TAR_ZSTD ? [
 					"zstd -d --force -o",
 					constants_1$1.TarFilename,
-					archivePath.replace(new RegExp(`\\${path$1.sep}`, "g"), "/")
+					archivePath.replace(new RegExp(`\\${path$2.sep}`, "g"), "/")
 				] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -d\"" : "unzstd"];
 				default: return ["-z"];
 			}
@@ -42673,12 +42676,12 @@ var require_tar = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_mod
 			switch (compressionMethod) {
 				case constants_1$1.CompressionMethod.Zstd: return BSD_TAR_ZSTD ? [
 					"zstd -T0 --long=30 --force -o",
-					cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"),
+					cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"),
 					constants_1$1.TarFilename
 				] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -T0 --long=30\"" : "zstdmt --long=30"];
 				case constants_1$1.CompressionMethod.ZstdWithoutLong: return BSD_TAR_ZSTD ? [
 					"zstd -T0 --force -o",
-					cacheFileName.replace(new RegExp(`\\${path$1.sep}`, "g"), "/"),
+					cacheFileName.replace(new RegExp(`\\${path$2.sep}`, "g"), "/"),
 					constants_1$1.TarFilename
 				] : ["--use-compress-program", IS_WINDOWS ? "\"zstd -T0\"" : "zstdmt"];
 				default: return ["-z"];
@@ -42715,7 +42718,7 @@ var require_tar = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_mod
 	exports.extractTar = extractTar;
 	function createTar(archiveFolder, sourceDirectories, compressionMethod) {
 		return __awaiter$1(this, void 0, void 0, function* () {
-			(0, fs_1.writeFileSync)(path$1.join(archiveFolder, constants_1$1.ManifestFilename), sourceDirectories.join("\n"));
+			(0, fs_1.writeFileSync)(path$2.join(archiveFolder, constants_1$1.ManifestFilename), sourceDirectories.join("\n"));
 			const commands = yield getCommands(compressionMethod, "create");
 			yield execCommands(commands, archiveFolder);
 		});
@@ -42787,7 +42790,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.saveCache = exports.restoreCache = exports.isFeatureAvailable = exports.ReserveCacheError = exports.ValidationError = void 0;
 	const core = __importStar(require_core());
-	const path = __importStar(__require("path"));
+	const path$1 = __importStar(__require("path"));
 	const utils = __importStar(require_cacheUtils());
 	const cacheHttpClient = __importStar(require_cacheHttpClient());
 	const cacheTwirpClient = __importStar(require_cacheTwirpClient());
@@ -42880,7 +42883,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 					core.info("Lookup only - skipping download");
 					return cacheEntry.cacheKey;
 				}
-				archivePath = path.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
+				archivePath = path$1.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
 				core.debug(`Archive Path: ${archivePath}`);
 				yield cacheHttpClient.downloadCache(cacheEntry.archiveLocation, archivePath, options);
 				if (core.isDebug()) yield (0, tar_1.listTar)(archivePath, compressionMethod);
@@ -42941,7 +42944,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 					core.info("Lookup only - skipping download");
 					return response.matchedKey;
 				}
-				archivePath = path.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
+				archivePath = path$1.join(yield utils.createTempDirectory(), utils.getCacheFileName(compressionMethod));
 				core.debug(`Archive path: ${archivePath}`);
 				core.debug(`Starting download of archive to: ${archivePath}`);
 				yield cacheHttpClient.downloadCache(response.signedDownloadUrl, archivePath, options);
@@ -43007,7 +43010,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 			core.debug(`${JSON.stringify(cachePaths)}`);
 			if (cachePaths.length === 0) throw new Error(`Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.`);
 			const archiveFolder = yield utils.createTempDirectory();
-			const archivePath = path.join(archiveFolder, utils.getCacheFileName(compressionMethod));
+			const archivePath = path$1.join(archiveFolder, utils.getCacheFileName(compressionMethod));
 			core.debug(`Archive Path: ${archivePath}`);
 			try {
 				yield (0, tar_1.createTar)(archiveFolder, cachePaths, compressionMethod);
@@ -43066,7 +43069,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 			core.debug(`${JSON.stringify(cachePaths)}`);
 			if (cachePaths.length === 0) throw new Error(`Path Validation Error: Path(s) specified in the action for caching do(es) not exist, hence no cache is being saved.`);
 			const archiveFolder = yield utils.createTempDirectory();
-			const archivePath = path.join(archiveFolder, utils.getCacheFileName(compressionMethod));
+			const archivePath = path$1.join(archiveFolder, utils.getCacheFileName(compressionMethod));
 			core.debug(`Archive Path: ${archivePath}`);
 			try {
 				yield (0, tar_1.createTar)(archiveFolder, cachePaths, compressionMethod);
@@ -43147,6 +43150,7 @@ async function restoreCache(cacheHash) {
 	try {
 		const denoDir = await resolveDenoDir();
 		import_core.saveState(state.DENO_DIR, denoDir);
+		if (cacheHash.length === 0) cacheHash = await resolveDefaultCacheKey();
 		const { GITHUB_JOB, RUNNER_OS, RUNNER_ARCH } = process$1.env;
 		const restoreKey = `deno-cache-${RUNNER_OS}-${RUNNER_ARCH}`;
 		const primaryKey = `${restoreKey}-${GITHUB_JOB}-${cacheHash}`;
@@ -43161,16 +43165,45 @@ async function restoreCache(cacheHash) {
 		import_core.warning(new Error("Failed to restore cache. Continuing without cache.", { cause: err }));
 	}
 }
+async function resolveDefaultCacheKey() {
+	const root = process$1.env.GITHUB_WORKSPACE || process$1.cwd();
+	const files = [];
+	async function walk(dir) {
+		try {
+			const entries = await fs.readdir(dir, { withFileTypes: true });
+			for (const entry of entries) {
+				const fullPath = path.join(dir, entry.name);
+				if (entry.isDirectory()) await walk(fullPath);
+				else if (entry.name === "deno.lock") files.push(fullPath);
+			}
+		} catch (err) {
+			import_core.warning(new Error(`Failed walking "${dir}"`, { cause: err }));
+		}
+	}
+	await walk(root);
+	const hash = crypto.createHash("sha256");
+	for (const file of files.sort()) try {
+		const content = await fs.readFile(file);
+		hash.update(file);
+		hash.update(content);
+	} catch (err) {
+		import_core.warning(new Error(`Failed reading "${file}"`, { cause: err }));
+	}
+	return hash.digest("hex");
+}
 async function resolveDenoDir() {
 	const { DENO_DIR } = process$1.env;
 	if (DENO_DIR) return DENO_DIR;
-	const { exec: exec$1 } = await import("node:child_process");
-	const output = await new Promise((res, rej) => {
-		exec$1("deno info --json", (err, stdout) => err ? rej(err) : res(stdout));
-	});
+	const output = await exec("deno info --json");
 	const info = JSON.parse(output);
 	if (typeof info.denoDir !== "string") throw new Error("`deno info --json` output did not contain a denoDir property. Maybe try updating this action or your Deno version if either are old.");
 	return info.denoDir;
+}
+async function exec(command) {
+	const { exec: exec$2 } = await import("node:child_process");
+	return await new Promise((res, rej) => {
+		exec$2(command, (err, stdout) => err ? rej(err) : res(stdout));
+	});
 }
 
 //#endregion

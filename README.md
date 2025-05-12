@@ -144,20 +144,25 @@ number.
 
 ### Caching dependencies downloaded by Deno automatically
 
-Dependencies installed by Deno can be cached automatically, which is similar to
-the [`cache` option in `setup-node`](https://github.com/actions/setup-node).
+Dependencies installed by Deno can be cached automatically.
 
-To enable the cache, use `cache: true`. It's recommended to also add the
-`cache-hash` property, to scope caches based on lockfile changes.
+To enable the cache, use `cache: true`.
 
 ```yaml
 - uses: denoland/setup-deno@v2
   with:
     cache: true
-    cache-hash: ${{ hashFiles('**/deno.lock') }}
 ```
 
 > [!WARNING]
 > If an environment variable `DENO_DIR` is set for steps that run/download
 > dependencies, then `DENO_DIR` must also be set for the `denoland/setup-deno`
 > action, for the caching to work as intended.
+
+By default, the cache is automatically keyed by:
+
+- the github
+  [job_id](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_id)
+- the runner os and architecture
+- a hash of the deno.lock files in the project (can be overridden via the
+  `cache-hash` option)

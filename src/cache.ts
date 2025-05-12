@@ -1,4 +1,7 @@
 import process from "node:process";
+import fs from "node:fs/promises";
+import path from "node:path";
+import crypto from "node:crypto";
 import cache from "@actions/cache";
 import core from "@actions/core";
 
@@ -35,6 +38,10 @@ export async function restoreCache(cacheHash: string) {
     const denoDir = await resolveDenoDir();
     core.saveState(state.DENO_DIR, denoDir);
 
+    if (cacheHash.length === 0) {
+      cacheHash = await resolveDefaultCacheKey();
+    }
+
     const { GITHUB_JOB, RUNNER_OS, RUNNER_ARCH } = process.env;
     const restoreKey = `deno-cache-${RUNNER_OS}-${RUNNER_ARCH}`;
     // CI jobs often download different dependencies, so include Job ID in the cache key.
@@ -61,15 +68,59 @@ export async function restoreCache(cacheHash: string) {
   }
 }
 
+async function resolveDefaultCacheKey(): Promise<string> {
+  // ${{ hashFiles('**/deno.lock') }}
+  const root = process.env.GITHUB_WORKSPACE || process.cwd();
+  const files: string[] = [];
+
+  async function walk(dir: string) {
+    try {
+      const entries = await fs.readdir(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          await walk(fullPath);
+        } else if (entry.name === "deno.lock") {
+          files.push(fullPath);
+        }
+      }
+    } catch (err) {
+      core.warning(
+        new Error(`Failed walking "${dir}"`, {
+          cause: err,
+        }),
+      );
+    }
+  }
+
+  await walk(root);
+
+  const hash = crypto.createHash("sha256");
+  for (const file of files.sort()) {
+    try {
+      const content = await fs.readFile(file);
+      hash.update(file);
+      hash.update(content);
+    } catch (err) {
+      core.warning(
+        new Error(`Failed reading "${file}"`, {
+          cause: err,
+        }),
+      );
+    }
+  }
+
+  return hash.digest("hex");
+}
+
 async function resolveDenoDir(): Promise<string> {
   const { DENO_DIR } = process.env;
-  if (DENO_DIR) return DENO_DIR;
+  if (DENO_DIR) {
+    return DENO_DIR;
+  }
 
   // Retrieve the DENO_DIR from `deno info --json`
-  const { exec } = await import("node:child_process");
-  const output = await new Promise<string>((res, rej) => {
-    exec("deno info --json", (err, stdout) => err ? rej(err) : res(stdout));
-  });
+  const output = await exec("deno info --json");
   const info = JSON.parse(output);
   if (typeof info.denoDir !== "string") {
     throw new Error(
@@ -78,4 +129,11 @@ async function resolveDenoDir(): Promise<string> {
     );
   }
   return info.denoDir;
+}
+
+async function exec(command: string) {
+  const { exec } = await import("node:child_process");
+  return await new Promise<string>((res, rej) => {
+    exec(command, (err, stdout) => err ? rej(err) : res(stdout));
+  });
 }
