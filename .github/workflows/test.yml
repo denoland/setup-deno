@@ -92,10 +92,10 @@ jobs:
         uses: ./
         with:
           cache: true
-          cache-hash: ${{ hashFiles('**/package-lock.json') }}
+          cache-hash: ${{ hashFiles('**/deno.lock') }}
 
       - name: Download dependencies for cache
-        run: deno install --global npm:cowsay@1.6.0
+        run: deno install --global --no-config npm:cowsay@1.6.0
 
   test-cache:
     needs: test-setup-cache
@@ -110,7 +110,7 @@ jobs:
         uses: ./
         with:
           cache: true
-          cache-hash: ${{ hashFiles('**/package-lock.json') }}
+          cache-hash: ${{ hashFiles('**/deno.lock') }}
 
       - name: Run with cached dependencies
         run: deno run --cached-only --no-config -RE npm:cowsay@1.6.0 "It works!"
