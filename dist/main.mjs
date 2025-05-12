@@ -20332,7 +20332,7 @@ async function main() {
 		import_core.setOutput("release-channel", version.kind);
 		import_core.info("Installation complete.");
 		if (import_core.getInput("cache") === "true") {
-			const { restoreCache } = await import("./cache-BTzhFjhX.mjs");
+			const { restoreCache } = await import("./cache-ByPW8-iO.mjs");
 			await restoreCache(import_core.getInput("cache-hash"));
 		}
 	} catch (err) {
