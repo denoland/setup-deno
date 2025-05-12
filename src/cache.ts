@@ -70,5 +70,12 @@ async function resolveDenoDir(): Promise<string> {
   const output = await new Promise<string>((res, rej) => {
     exec("deno info --json", (err, stdout) => err ? rej(err) : res(stdout));
   });
-  return JSON.parse(output).denoDir;
+  const info = JSON.parse(output);
+  if (typeof info.denoDir !== "string") {
+    throw new Error(
+      "`deno info --json` output did not contain a denoDir property. " +
+        "Maybe try updating this action or your Deno version if either are old.",
+    );
+  }
+  return info.denoDir;
 }
