@@ -20,4 +20,4 @@ outputs:
     description: "The release channel of the installed version."
 runs:
   using: "node20"
-  main: "main.mjs"
+  main: "dist/main.mjs"
