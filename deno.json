@@ -1,4 +1,7 @@
 {
+  "lock": {
+    "frozen": true
+  },
   "nodeModulesDir": "auto",
   "license": "MIT",
   "compilerOptions": {
