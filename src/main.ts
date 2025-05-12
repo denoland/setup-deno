@@ -20,6 +20,11 @@ function exit(message: string): never {
   process.exit();
 }
 
+function isCachingEnabled() {
+  return core.getInput("cache") === "true" ||
+    core.getInput("cache-hash").length > 0;
+}
+
 async function main() {
   try {
     const denoVersionFile = core.getInput("deno-version-file");
@@ -57,7 +62,7 @@ async function main() {
 
     core.info("Installation complete.");
 
-    if (core.getInput("cache") === "true") {
+    if (isCachingEnabled()) {
       const { restoreCache } = await import("./cache.ts");
       await restoreCache(core.getInput("cache-hash"));
     }

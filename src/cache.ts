@@ -1,6 +1,7 @@
 import process from "node:process";
 import cache from "@actions/cache";
 import core from "@actions/core";
+import { hashFiles } from "@actions/glob";
 
 const state = {
   DENO_DIR: "DENO_DIR",
@@ -64,9 +65,7 @@ export async function restoreCache(cacheHash: string) {
   }
 }
 
-async function resolveDefaultCacheKey(): Promise<string> {
-  const { hashFiles } = await import("@actions/glob");
-
+function resolveDefaultCacheKey(): Promise<string> {
   return hashFiles(
     "**/deno.lock",
     process.env.GITHUB_WORKSPACE,
