@@ -39,13 +39,13 @@ jobs:
       - name: Test `deno install -g` (2.0)
         if: matrix.deno == 'canary' || matrix.deno == 'latest'
         run: |
-          deno install -g --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
+          deno install -g --allow-net --no-config -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
       - name: Test `deno install (1.0)
         if: matrix.deno == '1.x' || matrix.deno == '1.33.1' || matrix.deno == '~1.32' || matrix.deno == 'b290fd01f3f5d32f9d010fc719ced0240759c049'
         run: |
-          deno install --allow-net -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
+          deno install --allow-net --no-config -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
 
   test-version-file:
@@ -97,4 +97,20 @@ jobs:
         run: deno fmt --check
 
       - name: Check types
-        run: deno check main.mjs
+        run: deno check src/main.ts
+
+  build-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: ./
+        with:
+          deno-version: "rc"
+
+      - name: Build code
+        run: deno run -A scripts/build.ts
+
+      - name: Assert no git changes
+        run: git diff --quiet
