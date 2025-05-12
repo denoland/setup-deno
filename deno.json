@@ -16,6 +16,7 @@
   "imports": {
     "@actions/cache": "npm:@actions/cache@^4.0.3",
     "@actions/core": "npm:@actions/core@^1.11.1",
+    "@actions/glob": "npm:@actions/glob@^0.5.0",
     "@actions/tool-cache": "npm:@actions/tool-cache@^2.0.2",
     "@types/node": "npm:@types/node@^22.15.0",
     "@types/semver": "npm:@types/semver@^7.7.0",

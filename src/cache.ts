@@ -1,7 +1,4 @@
 import process from "node:process";
-import fs from "node:fs/promises";
-import path from "node:path";
-import crypto from "node:crypto";
 import cache from "@actions/cache";
 import core from "@actions/core";
 
@@ -69,48 +66,12 @@ export async function restoreCache(cacheHash: string) {
 }
 
 async function resolveDefaultCacheKey(): Promise<string> {
-  // ${{ hashFiles('**/deno.lock') }}
-  const root = process.env.GITHUB_WORKSPACE || process.cwd();
-  const files: string[] = [];
+  const { hashFiles } = await import("@actions/glob");
 
-  async function walk(dir: string) {
-    try {
-      const entries = await fs.readdir(dir, { withFileTypes: true });
-      for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-          await walk(fullPath);
-        } else if (entry.name === "deno.lock") {
-          files.push(fullPath);
-        }
-      }
-    } catch (err) {
-      core.warning(
-        new Error(`Failed walking "${dir}"`, {
-          cause: err,
-        }),
-      );
-    }
-  }
-
-  await walk(root);
-
-  const hash = crypto.createHash("sha256");
-  for (const file of files.sort()) {
-    try {
-      const content = await fs.readFile(file);
-      hash.update(file);
-      hash.update(content);
-    } catch (err) {
-      core.warning(
-        new Error(`Failed reading "${file}"`, {
-          cause: err,
-        }),
-      );
-    }
-  }
-
-  return hash.digest("hex");
+  return hashFiles(
+    "**/deno.lock",
+    process.env.GITHUB_WORKSPACE,
+  );
 }
 
 async function resolveDenoDir(): Promise<string> {
