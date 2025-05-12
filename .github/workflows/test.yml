@@ -112,5 +112,5 @@ jobs:
       - name: Build code
         run: deno run -A scripts/build.ts
 
-      - name: Assert no git changes
+      - name: Assert no git changes (run `deno task build` if this fails)
         run: git diff --quiet
