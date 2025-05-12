@@ -1,5 +1,4 @@
 {
-  "lock": false,
   "nodeModulesDir": "auto",
   "license": "MIT",
   "compilerOptions": {
@@ -17,6 +16,7 @@
     "@types/node": "npm:@types/node@^22.15.0",
     "@types/semver": "npm:@types/semver@^7.7.0",
     "semver": "npm:semver@^7.7.1",
+    "tsdown": "npm:tsdown@0.10.1",
     "undici": "npm:undici@^7.8.0"
   }
 }

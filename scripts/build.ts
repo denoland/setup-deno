@@ -1,4 +1,4 @@
-import { build } from "npm:tsdown@0.10.1";
+import { build } from "tsdown";
 import { join } from "node:path";
 
 // Ensure `deno install` has run before building
