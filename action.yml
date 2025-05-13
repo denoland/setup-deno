@@ -17,7 +17,7 @@ inputs:
     description: Cache downloaded modules & packages automatically in GitHub Actions cache.
     default: "false"
   cache-hash:
-    description: A hash used as part of the cache key. Use e.g. `$\{{ hashFiles('**/deno.lock') }}` to cache based on the lockfile contents.
+    description: A hash used as part of the cache key, which defaults to a hash of the deno.lock files.
 outputs:
   cache-hit:
     description: A boolean indicating whether the cache was hit.

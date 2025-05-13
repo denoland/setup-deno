@@ -1,6 +1,7 @@
 import process from "node:process";
 import cache from "@actions/cache";
 import core from "@actions/core";
+import { hashFiles } from "@actions/glob";
 
 const state = {
   DENO_DIR: "DENO_DIR",
@@ -35,6 +36,10 @@ export async function restoreCache(cacheHash: string) {
     const denoDir = await resolveDenoDir();
     core.saveState(state.DENO_DIR, denoDir);
 
+    if (cacheHash.length === 0) {
+      cacheHash = await resolveDefaultCacheKey();
+    }
+
     const { GITHUB_JOB, RUNNER_OS, RUNNER_ARCH } = process.env;
     const restoreKey = `deno-cache-${RUNNER_OS}-${RUNNER_ARCH}`;
     // CI jobs often download different dependencies, so include Job ID in the cache key.
@@ -54,22 +59,28 @@ export async function restoreCache(cacheHash: string) {
     core.info(message);
   } catch (err) {
     core.warning(
-      new Error("Failed to restore cache. Continuing without cache.", {
-        cause: err,
-      }),
+      new Error("Failed to restore cache. Continuing without cache."),
     );
+    // core.warning doesn't log error causes, so explicititly log the error
+    core.warning(err as Error);
   }
+}
+
+function resolveDefaultCacheKey(): Promise<string> {
+  return hashFiles(
+    "**/deno.lock",
+    process.env.GITHUB_WORKSPACE,
+  );
 }
 
 async function resolveDenoDir(): Promise<string> {
   const { DENO_DIR } = process.env;
-  if (DENO_DIR) return DENO_DIR;
+  if (DENO_DIR) {
+    return DENO_DIR;
+  }
 
   // Retrieve the DENO_DIR from `deno info --json`
-  const { exec } = await import("node:child_process");
-  const output = await new Promise<string>((res, rej) => {
-    exec("deno info --json", (err, stdout) => err ? rej(err) : res(stdout));
-  });
+  const output = await exec("deno info --json");
   const info = JSON.parse(output);
   if (typeof info.denoDir !== "string") {
     throw new Error(
@@ -78,4 +89,11 @@ async function resolveDenoDir(): Promise<string> {
     );
   }
   return info.denoDir;
+}
+
+async function exec(command: string) {
+  const { exec } = await import("node:child_process");
+  return await new Promise<string>((res, rej) => {
+    exec(command, (err, stdout) => err ? rej(err) : res(stdout));
+  });
 }

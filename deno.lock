@@ -3,6 +3,7 @@
   "specifiers": {
     "npm:@actions/cache@^4.0.3": "4.0.3",
     "npm:@actions/core@^1.11.1": "1.11.1",
+    "npm:@actions/glob@0.5": "0.5.0",
     "npm:@actions/tool-cache@^2.0.2": "2.0.2",
     "npm:@types/node@*": "22.15.15",
     "npm:@types/node@^22.15.0": "22.15.17",
@@ -17,7 +18,7 @@
       "dependencies": [
         "@actions/core",
         "@actions/exec",
-        "@actions/glob",
+        "@actions/glob@0.1.2",
         "@actions/http-client",
         "@actions/io",
         "@azure/abort-controller@1.1.0",
@@ -42,6 +43,13 @@
     },
     "@actions/glob@0.1.2": {
       "integrity": "sha512-SclLR7Ia5sEqjkJTPs7Sd86maMDw43p769YxBOxvPvEWuPEhpAnBsQfENOpXjFYMmhCqd127bmf+YdvJqVqR4A==",
+      "dependencies": [
+        "@actions/core",
+        "minimatch"
+      ]
+    },
+    "@actions/glob@0.5.0": {
+      "integrity": "sha512-tST2rjPvJLRZLuT9NMUtyBjvj9Yo0MiJS3ow004slMvm8GFM+Zv9HvMJ7HWzfUyJnGrJvDsYkWBaaG3YKXRtCw==",
       "dependencies": [
         "@actions/core",
         "minimatch"
@@ -1083,6 +1091,7 @@
     "dependencies": [
       "npm:@actions/cache@^4.0.3",
       "npm:@actions/core@^1.11.1",
+      "npm:@actions/glob@0.5",
       "npm:@actions/tool-cache@^2.0.2",
       "npm:@types/node@^22.15.0",
       "npm:@types/semver@^7.7.0",
