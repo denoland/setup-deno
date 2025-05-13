@@ -145,8 +145,8 @@ number.
 ### Caching dependencies downloaded by Deno automatically
 
 Dependencies installed by Deno can be cached automatically between workflow
-runs. This helps improve the performance of your workflow by minimizing work and
-network requests.
+runs. This helps make your GH action run faster by not repeating caching work
+and network requests done by a previous run.
 
 To enable the cache, use `cache: true`.
 
