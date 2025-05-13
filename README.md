@@ -144,7 +144,9 @@ number.
 
 ### Caching dependencies downloaded by Deno automatically
 
-Dependencies installed by Deno can be cached automatically.
+Dependencies installed by Deno can be cached automatically between workflow
+runs. This helps improve the performance of your workflow by minimizing work and
+network requests.
 
 To enable the cache, use `cache: true`.
 
@@ -173,8 +175,7 @@ It is possible to customize the default hash
 ```yaml
 - uses: denoland/setup-deno@v2
   with:
-    # setting `cache-hash` implies `cache: true`
-    # and will replace the default cache-hash
-    # of `${{ hashFiles('**/deno.lock') }}`
-    cache-hash: ${{ hashFiles('/deno.json') }}
+    # setting `cache-hash` implies `cache: true` and will replace
+    # the default cache-hash of `${{ hashFiles('**/deno.lock') }}`
+    cache-hash: ${{ hashFiles('**/deno.json') }}
 ```
