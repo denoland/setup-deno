@@ -166,8 +166,9 @@ By default, the cache is automatically keyed by:
 - the runner os and architecture
 - a hash of the deno.lock files in the project
 
-It is possible to customize the default hash (`${{ hashFiles('**/deno.lock') }}`)
-used as part of the cache key via the `cache-hash` input.
+It is possible to customize the default hash
+(`${{ hashFiles('**/deno.lock') }}`) used as part of the cache key via the
+`cache-hash` input.
 
 ```yaml
 - uses: denoland/setup-deno@v2
