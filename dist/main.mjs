@@ -20318,6 +20318,9 @@ function exit(message) {
 	import_core.setFailed(message);
 	process$1.exit();
 }
+function isCachingEnabled() {
+	return import_core.getInput("cache") === "true" || import_core.getInput("cache-hash").length > 0;
+}
 async function main() {
 	try {
 		const denoVersionFile = import_core.getInput("deno-version-file");
@@ -20331,8 +20334,8 @@ async function main() {
 		import_core.setOutput("deno-version", version.version);
 		import_core.setOutput("release-channel", version.kind);
 		import_core.info("Installation complete.");
-		if (import_core.getInput("cache") === "true") {
-			const { restoreCache } = await import("./cache-ByPW8-iO.mjs");
+		if (isCachingEnabled()) {
+			const { restoreCache } = await import("./cache-D7LLZXo3.mjs");
 			await restoreCache(import_core.getInput("cache-hash"));
 		}
 	} catch (err) {
