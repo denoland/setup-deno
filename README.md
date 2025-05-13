@@ -166,7 +166,7 @@ By default, the cache is automatically keyed by:
 - the github
   [job_id](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_id)
 - the runner os and architecture
-- a hash of the deno.lock files in the project
+- a hash of the `deno.lock` files in the project
 
 It is possible to customize the default hash
 (`${{ hashFiles('**/deno.lock') }}`) used as part of the cache key via the
