@@ -4,79 +4,46 @@ Set up your GitHub Actions workflow with a specific version of Deno.
 
 ## Usage
 
-### Latest stable for a major
+The installed version is `v2.x` by default.
 
 ```yaml
 - uses: denoland/setup-deno@v2
-  with:
-    deno-version: v2.x
 ```
 
-### Latest stable for any major
+### Version from input
 
-Targets the latest major, minor and patch version of Deno.
+To pick the latest version of specific release channel, set `deno-version` to
+one of the following:
 
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: vx.x.x
-```
-
-### Specific stable
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: "1.8.2"
-```
-
-### Semver range
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: "~1.7"
-```
-
-### Latest canary
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: canary
-```
-
-### Specific canary
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: e7b7129b7a92b7500ded88f8f5baa25a7f59e56e
-```
-
-### Latest release candidate
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: rc
-```
-
-### Specific release candidate
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    deno-version: 2.0.0-rc.1
-```
-
-### Latest LTS
+| Channel  | Description                      |
+| -------- | -------------------------------- |
+| `stable` | Latest Stable release version    |
+| `lts`    | Latest Long-Term-Support version |
+| `rc`     | Latest Release-Candidate version |
+| `canary` | Latest Canary release version    |
 
 ```yaml
 - uses: denoland/setup-deno@v2
   with:
     deno-version: lts
 ```
+
+A version can also be selected by providing a valid [Semver][sv] range or commit
+hash.
+
+**Examples**
+
+- Specific versions: `"1.8.2"`, `2.0.0-rc.1`
+- Semver range: `"^2"`, `"~1.7"`, `v2.1.x`, `vx.x.x`
+- Commit hash: `e7b7129b7a92b7500ded88f8f5baa25a7f59e56e`
+
+```yaml
+- uses: denoland/setup-deno@v2
+  with:
+    deno-version: v2.1.x
+```
+
+[sv]: https://devhints.io/semver
 
 ### Version from file
 
