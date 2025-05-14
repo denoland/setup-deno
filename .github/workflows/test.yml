@@ -116,12 +116,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Deno
         uses: ./
         with:
-          deno-version: "rc"
+          deno-version: canary
 
       - name: Lint
         run: deno lint
@@ -140,7 +140,7 @@ jobs:
       - name: Setup Deno
         uses: ./
         with:
-          deno-version: "rc"
+          deno-version: canary
 
       - name: Build code
         run: deno run -A scripts/build.ts

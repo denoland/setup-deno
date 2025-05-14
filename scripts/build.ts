@@ -23,4 +23,5 @@ await build({
   target: "node20.19",
   platform: "node",
   format: "esm",
+  fixedExtension: true,
 });
