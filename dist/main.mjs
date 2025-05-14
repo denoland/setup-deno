@@ -221,7 +221,7 @@ async function main() {
 		core.setOutput("release-channel", version.kind);
 		core.info("Installation complete.");
 		if (isCachingEnabled()) {
-			const { restoreCache } = await import("./cache-DGvoSvnF.js");
+			const { restoreCache } = await import("./cache-DosqIALc.mjs");
 			await restoreCache(core.getInput("cache-hash"));
 		}
 	} catch (err) {
