@@ -1,13 +1,13 @@
-import { import_core } from "./semver-DmxAwBYV.mjs";
-import { saveCache } from "./cache-zjpbixka.mjs";
+import { saveCache } from "./cache-TuPH0H7Y.js";
 import process from "node:process";
+import core from "@actions/core";
 
 //#region src/post.ts
 async function main() {
 	try {
 		await saveCache();
 	} catch (err) {
-		import_core.setFailed(err instanceof Error ? err : String(err));
+		core.setFailed(err instanceof Error ? err : String(err));
 		process.exit();
 	}
 }
