@@ -1,4 +1,4 @@
-import { __commonJS, __require, __toESM, import_core, require_auth, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-DmxAwBYV.mjs";
+import { __commonJS, __require, __toESM, import_core, require_auth, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-C43QPvfi.mjs";
 import process$1 from "node:process";
 
 //#region node_modules/.deno/@actions+glob@0.1.2/node_modules/@actions/glob/lib/internal-glob-options-helper.js
@@ -4378,8 +4378,8 @@ var require_ms = __commonJS({ "node_modules/.deno/ms@2.1.3/node_modules/ms/index
 } });
 
 //#endregion
-//#region node_modules/.deno/debug@4.4.0/node_modules/debug/src/common.js
-var require_common = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/debug/src/common.js"(exports, module) {
+//#region node_modules/.deno/debug@4.4.1/node_modules/debug/src/common.js
+var require_common = __commonJS({ "node_modules/.deno/debug@4.4.1/node_modules/debug/src/common.js"(exports, module) {
 	/**
 	* This is the common logic for both the Node.js and web browser
 	* implementations of `debug()`.
@@ -4502,7 +4502,7 @@ var require_common = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/d
 			createDebug.namespaces = namespaces;
 			createDebug.names = [];
 			createDebug.skips = [];
-			const split = (typeof namespaces === "string" ? namespaces : "").trim().replace(" ", ",").split(",").filter(Boolean);
+			const split = (typeof namespaces === "string" ? namespaces : "").trim().replace(/\s+/g, ",").split(",").filter(Boolean);
 			for (const ns of split) if (ns[0] === "-") createDebug.skips.push(ns.slice(1));
 			else createDebug.names.push(ns);
 		}
@@ -4583,8 +4583,8 @@ var require_common = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/d
 } });
 
 //#endregion
-//#region node_modules/.deno/debug@4.4.0/node_modules/debug/src/browser.js
-var require_browser = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/debug/src/browser.js"(exports, module) {
+//#region node_modules/.deno/debug@4.4.1/node_modules/debug/src/browser.js
+var require_browser = __commonJS({ "node_modules/.deno/debug@4.4.1/node_modules/debug/src/browser.js"(exports, module) {
 	/**
 	* This is the web browser implementation of `debug()`.
 	*/
@@ -4745,7 +4745,7 @@ var require_browser = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/
 	function load$1() {
 		let r;
 		try {
-			r = exports.storage.getItem("debug");
+			r = exports.storage.getItem("debug") || exports.storage.getItem("DEBUG");
 		} catch (error) {}
 		if (!r && typeof process !== "undefined" && "env" in process) r = process.env.DEBUG;
 		return r;
@@ -4780,8 +4780,8 @@ var require_browser = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/
 } });
 
 //#endregion
-//#region node_modules/.deno/debug@4.4.0/node_modules/debug/src/node.js
-var require_node = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/debug/src/node.js"(exports, module) {
+//#region node_modules/.deno/debug@4.4.1/node_modules/debug/src/node.js
+var require_node = __commonJS({ "node_modules/.deno/debug@4.4.1/node_modules/debug/src/node.js"(exports, module) {
 	/**
 	* Module dependencies.
 	*/
@@ -4988,8 +4988,8 @@ var require_node = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/deb
 } });
 
 //#endregion
-//#region node_modules/.deno/debug@4.4.0/node_modules/debug/src/index.js
-var require_src = __commonJS({ "node_modules/.deno/debug@4.4.0/node_modules/debug/src/index.js"(exports, module) {
+//#region node_modules/.deno/debug@4.4.1/node_modules/debug/src/index.js
+var require_src = __commonJS({ "node_modules/.deno/debug@4.4.1/node_modules/debug/src/index.js"(exports, module) {
 	/**
 	* Detect Electron renderer / nwjs process, which is node, but we should
 	* treat as a browser.
@@ -43117,7 +43117,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 		});
 	}
 } });
-var import_cache = __toESM(require_cache());
+var import_cache = __toESM(require_cache(), 1);
 
 //#endregion
 //#region node_modules/.deno/@actions+glob@0.5.0/node_modules/@actions/glob/lib/internal-glob-options-helper.js
@@ -44220,7 +44220,7 @@ var require_glob = __commonJS({ "node_modules/.deno/@actions+glob@0.5.0/node_mod
 	}
 	exports.hashFiles = hashFiles;
 } });
-var import_glob = __toESM(require_glob());
+var import_glob = __toESM(require_glob(), 1);
 
 //#endregion
 //#region src/cache.ts

@@ -1,4 +1,4 @@
-import { __commonJS, __require, __toESM, import_core, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-DmxAwBYV.mjs";
+import { __commonJS, __require, __toESM, import_core, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-C43QPvfi.mjs";
 import process$1 from "node:process";
 import * as path$1 from "node:path";
 import path from "node:path";
@@ -8,8 +8,8 @@ import { setTimeout as setTimeout$1 } from "node:timers";
 import * as os from "node:os";
 import * as fs from "node:fs/promises";
 
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/constants.js
-var require_constants$5 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/constants.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/internal/constants.js
+var require_constants$5 = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/internal/constants.js"(exports, module) {
 	const SEMVER_SPEC_VERSION = "2.0.0";
 	const MAX_LENGTH$2 = 256;
 	const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER || 9007199254740991;
@@ -37,21 +37,21 @@ var require_constants$5 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_mod
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/debug.js
-var require_debug = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/debug.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/internal/debug.js
+var require_debug = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/internal/debug.js"(exports, module) {
 	const debug$4 = typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args) => console.error("SEMVER", ...args) : () => {};
 	module.exports = debug$4;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/re.js
-var require_re = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/re.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/internal/re.js
+var require_re = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/internal/re.js"(exports, module) {
 	const { MAX_SAFE_COMPONENT_LENGTH, MAX_SAFE_BUILD_LENGTH, MAX_LENGTH: MAX_LENGTH$1 } = require_constants$5();
 	const debug$3 = require_debug();
 	exports = module.exports = {};
 	const re$4 = exports.re = [];
 	const safeRe = exports.safeRe = [];
-	const src$1 = exports.src = [];
+	const src = exports.src = [];
 	const safeSrc = exports.safeSrc = [];
 	const t$4 = exports.t = {};
 	let R = 0;
@@ -70,7 +70,7 @@ var require_re = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semv
 		const index = R++;
 		debug$3(name, index, value);
 		t$4[name] = index;
-		src$1[index] = value;
+		src[index] = value;
 		safeSrc[index] = safe;
 		re$4[index] = new RegExp(value, isGlobal ? "g" : void 0);
 		safeRe[index] = new RegExp(safe, isGlobal ? "g" : void 0);
@@ -78,54 +78,54 @@ var require_re = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semv
 	createToken("NUMERICIDENTIFIER", "0|[1-9]\\d*");
 	createToken("NUMERICIDENTIFIERLOOSE", "\\d+");
 	createToken("NONNUMERICIDENTIFIER", `\\d*[a-zA-Z-]${LETTERDASHNUMBER}*`);
-	createToken("MAINVERSION", `(${src$1[t$4.NUMERICIDENTIFIER]})\\.(${src$1[t$4.NUMERICIDENTIFIER]})\\.(${src$1[t$4.NUMERICIDENTIFIER]})`);
-	createToken("MAINVERSIONLOOSE", `(${src$1[t$4.NUMERICIDENTIFIERLOOSE]})\\.(${src$1[t$4.NUMERICIDENTIFIERLOOSE]})\\.(${src$1[t$4.NUMERICIDENTIFIERLOOSE]})`);
-	createToken("PRERELEASEIDENTIFIER", `(?:${src$1[t$4.NUMERICIDENTIFIER]}|${src$1[t$4.NONNUMERICIDENTIFIER]})`);
-	createToken("PRERELEASEIDENTIFIERLOOSE", `(?:${src$1[t$4.NUMERICIDENTIFIERLOOSE]}|${src$1[t$4.NONNUMERICIDENTIFIER]})`);
-	createToken("PRERELEASE", `(?:-(${src$1[t$4.PRERELEASEIDENTIFIER]}(?:\\.${src$1[t$4.PRERELEASEIDENTIFIER]})*))`);
-	createToken("PRERELEASELOOSE", `(?:-?(${src$1[t$4.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${src$1[t$4.PRERELEASEIDENTIFIERLOOSE]})*))`);
+	createToken("MAINVERSION", `(${src[t$4.NUMERICIDENTIFIER]})\\.(${src[t$4.NUMERICIDENTIFIER]})\\.(${src[t$4.NUMERICIDENTIFIER]})`);
+	createToken("MAINVERSIONLOOSE", `(${src[t$4.NUMERICIDENTIFIERLOOSE]})\\.(${src[t$4.NUMERICIDENTIFIERLOOSE]})\\.(${src[t$4.NUMERICIDENTIFIERLOOSE]})`);
+	createToken("PRERELEASEIDENTIFIER", `(?:${src[t$4.NONNUMERICIDENTIFIER]}|${src[t$4.NUMERICIDENTIFIER]})`);
+	createToken("PRERELEASEIDENTIFIERLOOSE", `(?:${src[t$4.NONNUMERICIDENTIFIER]}|${src[t$4.NUMERICIDENTIFIERLOOSE]})`);
+	createToken("PRERELEASE", `(?:-(${src[t$4.PRERELEASEIDENTIFIER]}(?:\\.${src[t$4.PRERELEASEIDENTIFIER]})*))`);
+	createToken("PRERELEASELOOSE", `(?:-?(${src[t$4.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${src[t$4.PRERELEASEIDENTIFIERLOOSE]})*))`);
 	createToken("BUILDIDENTIFIER", `${LETTERDASHNUMBER}+`);
-	createToken("BUILD", `(?:\\+(${src$1[t$4.BUILDIDENTIFIER]}(?:\\.${src$1[t$4.BUILDIDENTIFIER]})*))`);
-	createToken("FULLPLAIN", `v?${src$1[t$4.MAINVERSION]}${src$1[t$4.PRERELEASE]}?${src$1[t$4.BUILD]}?`);
-	createToken("FULL", `^${src$1[t$4.FULLPLAIN]}$`);
-	createToken("LOOSEPLAIN", `[v=\\s]*${src$1[t$4.MAINVERSIONLOOSE]}${src$1[t$4.PRERELEASELOOSE]}?${src$1[t$4.BUILD]}?`);
-	createToken("LOOSE", `^${src$1[t$4.LOOSEPLAIN]}$`);
+	createToken("BUILD", `(?:\\+(${src[t$4.BUILDIDENTIFIER]}(?:\\.${src[t$4.BUILDIDENTIFIER]})*))`);
+	createToken("FULLPLAIN", `v?${src[t$4.MAINVERSION]}${src[t$4.PRERELEASE]}?${src[t$4.BUILD]}?`);
+	createToken("FULL", `^${src[t$4.FULLPLAIN]}$`);
+	createToken("LOOSEPLAIN", `[v=\\s]*${src[t$4.MAINVERSIONLOOSE]}${src[t$4.PRERELEASELOOSE]}?${src[t$4.BUILD]}?`);
+	createToken("LOOSE", `^${src[t$4.LOOSEPLAIN]}$`);
 	createToken("GTLT", "((?:<|>)?=?)");
-	createToken("XRANGEIDENTIFIERLOOSE", `${src$1[t$4.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
-	createToken("XRANGEIDENTIFIER", `${src$1[t$4.NUMERICIDENTIFIER]}|x|X|\\*`);
-	createToken("XRANGEPLAIN", `[v=\\s]*(${src$1[t$4.XRANGEIDENTIFIER]})(?:\\.(${src$1[t$4.XRANGEIDENTIFIER]})(?:\\.(${src$1[t$4.XRANGEIDENTIFIER]})(?:${src$1[t$4.PRERELEASE]})?${src$1[t$4.BUILD]}?)?)?`);
-	createToken("XRANGEPLAINLOOSE", `[v=\\s]*(${src$1[t$4.XRANGEIDENTIFIERLOOSE]})(?:\\.(${src$1[t$4.XRANGEIDENTIFIERLOOSE]})(?:\\.(${src$1[t$4.XRANGEIDENTIFIERLOOSE]})(?:${src$1[t$4.PRERELEASELOOSE]})?${src$1[t$4.BUILD]}?)?)?`);
-	createToken("XRANGE", `^${src$1[t$4.GTLT]}\\s*${src$1[t$4.XRANGEPLAIN]}$`);
-	createToken("XRANGELOOSE", `^${src$1[t$4.GTLT]}\\s*${src$1[t$4.XRANGEPLAINLOOSE]}$`);
+	createToken("XRANGEIDENTIFIERLOOSE", `${src[t$4.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
+	createToken("XRANGEIDENTIFIER", `${src[t$4.NUMERICIDENTIFIER]}|x|X|\\*`);
+	createToken("XRANGEPLAIN", `[v=\\s]*(${src[t$4.XRANGEIDENTIFIER]})(?:\\.(${src[t$4.XRANGEIDENTIFIER]})(?:\\.(${src[t$4.XRANGEIDENTIFIER]})(?:${src[t$4.PRERELEASE]})?${src[t$4.BUILD]}?)?)?`);
+	createToken("XRANGEPLAINLOOSE", `[v=\\s]*(${src[t$4.XRANGEIDENTIFIERLOOSE]})(?:\\.(${src[t$4.XRANGEIDENTIFIERLOOSE]})(?:\\.(${src[t$4.XRANGEIDENTIFIERLOOSE]})(?:${src[t$4.PRERELEASELOOSE]})?${src[t$4.BUILD]}?)?)?`);
+	createToken("XRANGE", `^${src[t$4.GTLT]}\\s*${src[t$4.XRANGEPLAIN]}$`);
+	createToken("XRANGELOOSE", `^${src[t$4.GTLT]}\\s*${src[t$4.XRANGEPLAINLOOSE]}$`);
 	createToken("COERCEPLAIN", `(^|[^\\d])(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}})(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?`);
-	createToken("COERCE", `${src$1[t$4.COERCEPLAIN]}(?:$|[^\\d])`);
-	createToken("COERCEFULL", src$1[t$4.COERCEPLAIN] + `(?:${src$1[t$4.PRERELEASE]})?(?:${src$1[t$4.BUILD]})?(?:$|[^\\d])`);
-	createToken("COERCERTL", src$1[t$4.COERCE], true);
-	createToken("COERCERTLFULL", src$1[t$4.COERCEFULL], true);
+	createToken("COERCE", `${src[t$4.COERCEPLAIN]}(?:$|[^\\d])`);
+	createToken("COERCEFULL", src[t$4.COERCEPLAIN] + `(?:${src[t$4.PRERELEASE]})?(?:${src[t$4.BUILD]})?(?:$|[^\\d])`);
+	createToken("COERCERTL", src[t$4.COERCE], true);
+	createToken("COERCERTLFULL", src[t$4.COERCEFULL], true);
 	createToken("LONETILDE", "(?:~>?)");
-	createToken("TILDETRIM", `(\\s*)${src$1[t$4.LONETILDE]}\\s+`, true);
+	createToken("TILDETRIM", `(\\s*)${src[t$4.LONETILDE]}\\s+`, true);
 	exports.tildeTrimReplace = "$1~";
-	createToken("TILDE", `^${src$1[t$4.LONETILDE]}${src$1[t$4.XRANGEPLAIN]}$`);
-	createToken("TILDELOOSE", `^${src$1[t$4.LONETILDE]}${src$1[t$4.XRANGEPLAINLOOSE]}$`);
+	createToken("TILDE", `^${src[t$4.LONETILDE]}${src[t$4.XRANGEPLAIN]}$`);
+	createToken("TILDELOOSE", `^${src[t$4.LONETILDE]}${src[t$4.XRANGEPLAINLOOSE]}$`);
 	createToken("LONECARET", "(?:\\^)");
-	createToken("CARETTRIM", `(\\s*)${src$1[t$4.LONECARET]}\\s+`, true);
+	createToken("CARETTRIM", `(\\s*)${src[t$4.LONECARET]}\\s+`, true);
 	exports.caretTrimReplace = "$1^";
-	createToken("CARET", `^${src$1[t$4.LONECARET]}${src$1[t$4.XRANGEPLAIN]}$`);
-	createToken("CARETLOOSE", `^${src$1[t$4.LONECARET]}${src$1[t$4.XRANGEPLAINLOOSE]}$`);
-	createToken("COMPARATORLOOSE", `^${src$1[t$4.GTLT]}\\s*(${src$1[t$4.LOOSEPLAIN]})$|^$`);
-	createToken("COMPARATOR", `^${src$1[t$4.GTLT]}\\s*(${src$1[t$4.FULLPLAIN]})$|^$`);
-	createToken("COMPARATORTRIM", `(\\s*)${src$1[t$4.GTLT]}\\s*(${src$1[t$4.LOOSEPLAIN]}|${src$1[t$4.XRANGEPLAIN]})`, true);
+	createToken("CARET", `^${src[t$4.LONECARET]}${src[t$4.XRANGEPLAIN]}$`);
+	createToken("CARETLOOSE", `^${src[t$4.LONECARET]}${src[t$4.XRANGEPLAINLOOSE]}$`);
+	createToken("COMPARATORLOOSE", `^${src[t$4.GTLT]}\\s*(${src[t$4.LOOSEPLAIN]})$|^$`);
+	createToken("COMPARATOR", `^${src[t$4.GTLT]}\\s*(${src[t$4.FULLPLAIN]})$|^$`);
+	createToken("COMPARATORTRIM", `(\\s*)${src[t$4.GTLT]}\\s*(${src[t$4.LOOSEPLAIN]}|${src[t$4.XRANGEPLAIN]})`, true);
 	exports.comparatorTrimReplace = "$1$2$3";
-	createToken("HYPHENRANGE", `^\\s*(${src$1[t$4.XRANGEPLAIN]})\\s+-\\s+(${src$1[t$4.XRANGEPLAIN]})\\s*$`);
-	createToken("HYPHENRANGELOOSE", `^\\s*(${src$1[t$4.XRANGEPLAINLOOSE]})\\s+-\\s+(${src$1[t$4.XRANGEPLAINLOOSE]})\\s*$`);
+	createToken("HYPHENRANGE", `^\\s*(${src[t$4.XRANGEPLAIN]})\\s+-\\s+(${src[t$4.XRANGEPLAIN]})\\s*$`);
+	createToken("HYPHENRANGELOOSE", `^\\s*(${src[t$4.XRANGEPLAINLOOSE]})\\s+-\\s+(${src[t$4.XRANGEPLAINLOOSE]})\\s*$`);
 	createToken("STAR", "(<|>)?=?\\s*\\*");
 	createToken("GTE0", "^\\s*>=\\s*0\\.0\\.0\\s*$");
 	createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/parse-options.js
-var require_parse_options = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/parse-options.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/internal/parse-options.js
+var require_parse_options = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/internal/parse-options.js"(exports, module) {
 	const looseOption = Object.freeze({ loose: true });
 	const emptyOpts = Object.freeze({});
 	const parseOptions$3 = (options) => {
@@ -137,8 +137,8 @@ var require_parse_options = __commonJS({ "node_modules/.deno/semver@7.7.1/node_m
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/identifiers.js
-var require_identifiers = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/identifiers.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/internal/identifiers.js
+var require_identifiers = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/internal/identifiers.js"(exports, module) {
 	const numeric = /^[0-9]+$/;
 	const compareIdentifiers$1 = (a, b) => {
 		const anum = numeric.test(a);
@@ -157,11 +157,11 @@ var require_identifiers = __commonJS({ "node_modules/.deno/semver@7.7.1/node_mod
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/classes/semver.js
-var require_semver$3 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/classes/semver.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/classes/semver.js
+var require_semver$3 = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/classes/semver.js"(exports, module) {
 	const debug$2 = require_debug();
 	const { MAX_LENGTH, MAX_SAFE_INTEGER } = require_constants$5();
-	const { safeRe: re$3, safeSrc: src, t: t$3 } = require_re();
+	const { safeRe: re$3, t: t$3 } = require_re();
 	const parseOptions$2 = require_parse_options();
 	const { compareIdentifiers } = require_identifiers();
 	var SemVer$15 = class SemVer$15 {
@@ -251,8 +251,7 @@ var require_semver$3 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_module
 			if (release.startsWith("pre")) {
 				if (!identifier && identifierBase === false) throw new Error("invalid increment argument: identifier is empty");
 				if (identifier) {
-					const r = new RegExp(`^${this.options.loose ? src[t$3.PRERELEASELOOSE] : src[t$3.PRERELEASE]}$`);
-					const match = `-${identifier}`.match(r);
+					const match = `-${identifier}`.match(this.options.loose ? re$3[t$3.PRERELEASELOOSE] : re$3[t$3.PRERELEASE]);
 					if (!match || match[1] !== identifier) throw new Error(`invalid identifier: ${identifier}`);
 				}
 			}
@@ -332,8 +331,8 @@ var require_semver$3 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_module
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/parse.js
-var require_parse$1 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/parse.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/parse.js
+var require_parse$1 = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/parse.js"(exports, module) {
 	const SemVer$14 = require_semver$3();
 	const parse$6 = (version, options, throwErrors = false) => {
 		if (version instanceof SemVer$14) return version;
@@ -348,8 +347,8 @@ var require_parse$1 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/valid.js
-var require_valid$1 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/valid.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/valid.js
+var require_valid$1 = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/valid.js"(exports, module) {
 	const parse$5 = require_parse$1();
 	const valid$1 = (version, options) => {
 		const v = parse$5(version, options);
@@ -359,8 +358,8 @@ var require_valid$1 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/clean.js
-var require_clean = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/clean.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/clean.js
+var require_clean = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/clean.js"(exports, module) {
 	const parse$4 = require_parse$1();
 	const clean$1 = (version, options) => {
 		const s = parse$4(version.trim().replace(/^[=v]+/, ""), options);
@@ -370,8 +369,8 @@ var require_clean = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/s
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/inc.js
-var require_inc = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/inc.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/inc.js
+var require_inc = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/inc.js"(exports, module) {
 	const SemVer$13 = require_semver$3();
 	const inc$1 = (version, release, options, identifier, identifierBase) => {
 		if (typeof options === "string") {
@@ -389,8 +388,8 @@ var require_inc = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/sem
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/diff.js
-var require_diff = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/diff.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/diff.js
+var require_diff = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/diff.js"(exports, module) {
 	const parse$3 = require_parse$1();
 	const diff$1 = (version1, version2) => {
 		const v1 = parse$3(version1, null, true);
@@ -419,32 +418,32 @@ var require_diff = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/se
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/major.js
-var require_major = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/major.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/major.js
+var require_major = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/major.js"(exports, module) {
 	const SemVer$12 = require_semver$3();
 	const major$1 = (a, loose) => new SemVer$12(a, loose).major;
 	module.exports = major$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/minor.js
-var require_minor = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/minor.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/minor.js
+var require_minor = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/minor.js"(exports, module) {
 	const SemVer$11 = require_semver$3();
 	const minor$1 = (a, loose) => new SemVer$11(a, loose).minor;
 	module.exports = minor$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/patch.js
-var require_patch = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/patch.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/patch.js
+var require_patch = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/patch.js"(exports, module) {
 	const SemVer$10 = require_semver$3();
 	const patch$1 = (a, loose) => new SemVer$10(a, loose).patch;
 	module.exports = patch$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/prerelease.js
-var require_prerelease = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/prerelease.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/prerelease.js
+var require_prerelease = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/prerelease.js"(exports, module) {
 	const parse$2 = require_parse$1();
 	const prerelease$1 = (version, options) => {
 		const parsed = parse$2(version, options);
@@ -454,32 +453,32 @@ var require_prerelease = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modu
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/compare.js
-var require_compare = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/compare.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/compare.js
+var require_compare = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/compare.js"(exports, module) {
 	const SemVer$9 = require_semver$3();
 	const compare$11 = (a, b, loose) => new SemVer$9(a, loose).compare(new SemVer$9(b, loose));
 	module.exports = compare$11;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/rcompare.js
-var require_rcompare = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/rcompare.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/rcompare.js
+var require_rcompare = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/rcompare.js"(exports, module) {
 	const compare$10 = require_compare();
 	const rcompare$1 = (a, b, loose) => compare$10(b, a, loose);
 	module.exports = rcompare$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/compare-loose.js
-var require_compare_loose = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/compare-loose.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/compare-loose.js
+var require_compare_loose = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/compare-loose.js"(exports, module) {
 	const compare$9 = require_compare();
 	const compareLoose$1 = (a, b) => compare$9(a, b, true);
 	module.exports = compareLoose$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/compare-build.js
-var require_compare_build = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/compare-build.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/compare-build.js
+var require_compare_build = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/compare-build.js"(exports, module) {
 	const SemVer$8 = require_semver$3();
 	const compareBuild$3 = (a, b, loose) => {
 		const versionA = new SemVer$8(a, loose);
@@ -490,72 +489,72 @@ var require_compare_build = __commonJS({ "node_modules/.deno/semver@7.7.1/node_m
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/sort.js
-var require_sort = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/sort.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/sort.js
+var require_sort = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/sort.js"(exports, module) {
 	const compareBuild$2 = require_compare_build();
 	const sort$1 = (list, loose) => list.sort((a, b) => compareBuild$2(a, b, loose));
 	module.exports = sort$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/rsort.js
-var require_rsort = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/rsort.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/rsort.js
+var require_rsort = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/rsort.js"(exports, module) {
 	const compareBuild$1 = require_compare_build();
 	const rsort$1 = (list, loose) => list.sort((a, b) => compareBuild$1(b, a, loose));
 	module.exports = rsort$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/gt.js
-var require_gt = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/gt.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/gt.js
+var require_gt = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/gt.js"(exports, module) {
 	const compare$8 = require_compare();
 	const gt$4 = (a, b, loose) => compare$8(a, b, loose) > 0;
 	module.exports = gt$4;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/lt.js
-var require_lt = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/lt.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/lt.js
+var require_lt = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/lt.js"(exports, module) {
 	const compare$7 = require_compare();
 	const lt$3 = (a, b, loose) => compare$7(a, b, loose) < 0;
 	module.exports = lt$3;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/eq.js
-var require_eq = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/eq.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/eq.js
+var require_eq = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/eq.js"(exports, module) {
 	const compare$6 = require_compare();
 	const eq$2 = (a, b, loose) => compare$6(a, b, loose) === 0;
 	module.exports = eq$2;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/neq.js
-var require_neq = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/neq.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/neq.js
+var require_neq = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/neq.js"(exports, module) {
 	const compare$5 = require_compare();
 	const neq$2 = (a, b, loose) => compare$5(a, b, loose) !== 0;
 	module.exports = neq$2;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/gte.js
-var require_gte = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/gte.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/gte.js
+var require_gte = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/gte.js"(exports, module) {
 	const compare$4 = require_compare();
 	const gte$3 = (a, b, loose) => compare$4(a, b, loose) >= 0;
 	module.exports = gte$3;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/lte.js
-var require_lte = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/lte.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/lte.js
+var require_lte = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/lte.js"(exports, module) {
 	const compare$3 = require_compare();
 	const lte$3 = (a, b, loose) => compare$3(a, b, loose) <= 0;
 	module.exports = lte$3;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/cmp.js
-var require_cmp = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/cmp.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/cmp.js
+var require_cmp = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/cmp.js"(exports, module) {
 	const eq$1 = require_eq();
 	const neq$1 = require_neq();
 	const gt$3 = require_gt();
@@ -587,8 +586,8 @@ var require_cmp = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/sem
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/coerce.js
-var require_coerce = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/coerce.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/coerce.js
+var require_coerce = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/coerce.js"(exports, module) {
 	const SemVer$7 = require_semver$3();
 	const parse$1 = require_parse$1();
 	const { safeRe: re$2, t: t$2 } = require_re();
@@ -620,8 +619,8 @@ var require_coerce = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/internal/lrucache.js
-var require_lrucache = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/internal/lrucache.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/internal/lrucache.js
+var require_lrucache = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/internal/lrucache.js"(exports, module) {
 	var LRUCache = class {
 		constructor() {
 			this.max = 1e3;
@@ -655,8 +654,8 @@ var require_lrucache = __commonJS({ "node_modules/.deno/semver@7.7.1/node_module
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/classes/range.js
-var require_range = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/classes/range.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/classes/range.js
+var require_range = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/classes/range.js"(exports, module) {
 	const SPACE_CHARACTERS = /\s+/g;
 	var Range$11 = class Range$11 {
 		constructor(range, options) {
@@ -930,8 +929,8 @@ var require_range = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/s
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/classes/comparator.js
-var require_comparator = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/classes/comparator.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/classes/comparator.js
+var require_comparator = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/classes/comparator.js"(exports, module) {
 	const ANY$2 = Symbol("SemVer ANY");
 	var Comparator$3 = class Comparator$3 {
 		static get ANY() {
@@ -1002,8 +1001,8 @@ var require_comparator = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modu
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/functions/satisfies.js
-var require_satisfies = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/functions/satisfies.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/functions/satisfies.js
+var require_satisfies = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/functions/satisfies.js"(exports, module) {
 	const Range$9 = require_range();
 	const satisfies$4 = (version, range, options) => {
 		try {
@@ -1017,16 +1016,16 @@ var require_satisfies = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modul
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/to-comparators.js
-var require_to_comparators = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/to-comparators.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/to-comparators.js
+var require_to_comparators = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/to-comparators.js"(exports, module) {
 	const Range$8 = require_range();
 	const toComparators$1 = (range, options) => new Range$8(range, options).set.map((comp) => comp.map((c) => c.value).join(" ").trim().split(" "));
 	module.exports = toComparators$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/max-satisfying.js
-var require_max_satisfying = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/max-satisfying.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/max-satisfying.js
+var require_max_satisfying = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/max-satisfying.js"(exports, module) {
 	const SemVer$4 = require_semver$3();
 	const Range$7 = require_range();
 	const maxSatisfying$1 = (versions, range, options) => {
@@ -1052,8 +1051,8 @@ var require_max_satisfying = __commonJS({ "node_modules/.deno/semver@7.7.1/node_
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/min-satisfying.js
-var require_min_satisfying = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/min-satisfying.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/min-satisfying.js
+var require_min_satisfying = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/min-satisfying.js"(exports, module) {
 	const SemVer$3 = require_semver$3();
 	const Range$6 = require_range();
 	const minSatisfying$1 = (versions, range, options) => {
@@ -1079,8 +1078,8 @@ var require_min_satisfying = __commonJS({ "node_modules/.deno/semver@7.7.1/node_
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/min-version.js
-var require_min_version = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/min-version.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/min-version.js
+var require_min_version = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/min-version.js"(exports, module) {
 	const SemVer$2 = require_semver$3();
 	const Range$5 = require_range();
 	const gt$2 = require_gt();
@@ -1119,8 +1118,8 @@ var require_min_version = __commonJS({ "node_modules/.deno/semver@7.7.1/node_mod
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/valid.js
-var require_valid = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/valid.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/valid.js
+var require_valid = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/valid.js"(exports, module) {
 	const Range$4 = require_range();
 	const validRange$1 = (range, options) => {
 		try {
@@ -1133,8 +1132,8 @@ var require_valid = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/s
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/outside.js
-var require_outside = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/outside.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/outside.js
+var require_outside = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/outside.js"(exports, module) {
 	const SemVer$1 = require_semver$3();
 	const Comparator$2 = require_comparator();
 	const { ANY: ANY$1 } = Comparator$2;
@@ -1187,24 +1186,24 @@ var require_outside = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/gtr.js
-var require_gtr = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/gtr.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/gtr.js
+var require_gtr = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/gtr.js"(exports, module) {
 	const outside$2 = require_outside();
 	const gtr$1 = (version, range, options) => outside$2(version, range, ">", options);
 	module.exports = gtr$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/ltr.js
-var require_ltr = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/ltr.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/ltr.js
+var require_ltr = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/ltr.js"(exports, module) {
 	const outside$1 = require_outside();
 	const ltr$1 = (version, range, options) => outside$1(version, range, "<", options);
 	module.exports = ltr$1;
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/intersects.js
-var require_intersects = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/intersects.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/intersects.js
+var require_intersects = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/intersects.js"(exports, module) {
 	const Range$2 = require_range();
 	const intersects$1 = (r1, r2, options) => {
 		r1 = new Range$2(r1, options);
@@ -1215,8 +1214,8 @@ var require_intersects = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modu
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/simplify.js
-var require_simplify = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/simplify.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/simplify.js
+var require_simplify = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/simplify.js"(exports, module) {
 	const satisfies$2 = require_satisfies();
 	const compare$2 = require_compare();
 	module.exports = (versions, range, options) => {
@@ -1249,8 +1248,8 @@ var require_simplify = __commonJS({ "node_modules/.deno/semver@7.7.1/node_module
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/subset.js
-var require_subset = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/ranges/subset.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/subset.js
+var require_subset = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/ranges/subset.js"(exports, module) {
 	const Range$1 = require_range();
 	const Comparator$1 = require_comparator();
 	const { ANY } = Comparator$1;
@@ -1345,8 +1344,8 @@ var require_subset = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/
 } });
 
 //#endregion
-//#region node_modules/.deno/semver@7.7.1/node_modules/semver/index.js
-var require_semver$2 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_modules/semver/index.js"(exports, module) {
+//#region node_modules/.deno/semver@7.7.2/node_modules/semver/index.js
+var require_semver$2 = __commonJS({ "node_modules/.deno/semver@7.7.2/node_modules/semver/index.js"(exports, module) {
 	const internalRe = require_re();
 	const constants$1 = require_constants$5();
 	const SemVer = require_semver$3();
@@ -1436,7 +1435,7 @@ var require_semver$2 = __commonJS({ "node_modules/.deno/semver@7.7.1/node_module
 		rcompareIdentifiers: identifiers.rcompareIdentifiers
 	};
 } });
-var import_semver = __toESM(require_semver$2());
+var import_semver = __toESM(require_semver$2(), 1);
 
 //#endregion
 //#region node_modules/.deno/undici@7.9.0/node_modules/undici/lib/core/symbols.js
@@ -19291,7 +19290,7 @@ var require_undici = __commonJS({ "node_modules/.deno/undici@7.9.0/node_modules/
 	const { EventSource } = require_eventsource();
 	module.exports.EventSource = EventSource;
 } });
-var import_undici = __toESM(require_undici());
+var import_undici = __toESM(require_undici(), 1);
 
 //#endregion
 //#region src/version.ts
@@ -20249,7 +20248,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 		return Array.from(new Set(values));
 	}
 } });
-var import_tool_cache = __toESM(require_tool_cache());
+var import_tool_cache = __toESM(require_tool_cache(), 1);
 
 //#endregion
 //#region src/install.ts
@@ -20335,7 +20334,7 @@ async function main() {
 		import_core.setOutput("release-channel", version.kind);
 		import_core.info("Installation complete.");
 		if (isCachingEnabled()) {
-			const { restoreCache } = await import("./cache-D7LLZXo3.mjs");
+			const { restoreCache } = await import("./cache-CSb2jW5L.mjs");
 			await restoreCache(import_core.getInput("cache-hash"));
 		}
 	} catch (err) {
