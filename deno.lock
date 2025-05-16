@@ -1081,18 +1081,16 @@
     }
   },
   "workspace": {
-    "packageJson": {
-      "dependencies": [
-        "npm:@actions/cache@4.0.3",
-        "npm:@actions/core@^1.11.1",
-        "npm:@actions/glob@0.5",
-        "npm:@actions/tool-cache@^2.0.2",
-        "npm:@types/node@^20.16.5",
-        "npm:@types/semver@^7.7.0",
-        "npm:semver@^7.7.1",
-        "npm:tsdown@0.10.1",
-        "npm:undici@^7.8.0"
-      ]
-    }
+    "dependencies": [
+      "npm:@actions/cache@4.0.3",
+      "npm:@actions/core@^1.11.1",
+      "npm:@actions/glob@0.5",
+      "npm:@actions/tool-cache@^2.0.2",
+      "npm:@types/node@^20.16.5",
+      "npm:@types/semver@^7.7.0",
+      "npm:semver@^7.7.1",
+      "npm:tsdown@0.10.1",
+      "npm:undici@^7.8.0"
+    ]
   }
 }
