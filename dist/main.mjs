@@ -1,4 +1,4 @@
-import { __commonJS, __require, __toESM, import_core, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-C43QPvfi.mjs";
+import { __commonJS, __require, __toESM, import_core, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-DmxAwBYV.mjs";
 import process$1 from "node:process";
 import * as path$1 from "node:path";
 import path from "node:path";
@@ -1435,7 +1435,7 @@ var require_semver$2 = __commonJS({ "node_modules/.deno/semver@7.7.2/node_module
 		rcompareIdentifiers: identifiers.rcompareIdentifiers
 	};
 } });
-var import_semver = __toESM(require_semver$2(), 1);
+var import_semver = __toESM(require_semver$2());
 
 //#endregion
 //#region node_modules/.deno/undici@7.9.0/node_modules/undici/lib/core/symbols.js
@@ -19290,7 +19290,7 @@ var require_undici = __commonJS({ "node_modules/.deno/undici@7.9.0/node_modules/
 	const { EventSource } = require_eventsource();
 	module.exports.EventSource = EventSource;
 } });
-var import_undici = __toESM(require_undici(), 1);
+var import_undici = __toESM(require_undici());
 
 //#endregion
 //#region src/version.ts
@@ -20248,7 +20248,7 @@ var require_tool_cache = __commonJS({ "node_modules/.deno/@actions+tool-cache@2.
 		return Array.from(new Set(values));
 	}
 } });
-var import_tool_cache = __toESM(require_tool_cache(), 1);
+var import_tool_cache = __toESM(require_tool_cache());
 
 //#endregion
 //#region src/install.ts
@@ -20334,7 +20334,7 @@ async function main() {
 		import_core.setOutput("release-channel", version.kind);
 		import_core.info("Installation complete.");
 		if (isCachingEnabled()) {
-			const { restoreCache } = await import("./cache-CSb2jW5L.mjs");
+			const { restoreCache } = await import("./cache-BcT6mm7Q.mjs");
 			await restoreCache(import_core.getInput("cache-hash"));
 		}
 	} catch (err) {

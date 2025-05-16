@@ -17074,7 +17074,7 @@ var require_core = __commonJS({ "node_modules/.deno/@actions+core@1.11.1/node_mo
 	*/
 	exports.platform = __importStar(require_platform());
 } });
-var import_core = __toESM(require_core(), 1);
+var import_core = __toESM(require_core());
 
 //#endregion
 //#region node_modules/.deno/semver@6.3.1/node_modules/semver/semver.js
