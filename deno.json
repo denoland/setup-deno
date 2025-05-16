@@ -3,7 +3,7 @@
   "description": "Set up Deno easily in GitHub Actions",
   "version": "2.0.3",
   "license": "MIT",
-  "exports": "./src/main.ts",
+  "exports": "./src/cache.ts",
   "lock": {
     "frozen": true
   },
