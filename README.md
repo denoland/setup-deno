@@ -113,7 +113,7 @@ This is useful when you want to install different versions of Deno side by side.
 
 You can determine the release channel reading back the `release-channel` output.
 
-Valid values are `stable`, `canary` and `rc`.
+Valid values are `stable`, `lts`, `canary` and `rc`.
 
 ```yaml
 - uses: denoland/setup-deno@v2
