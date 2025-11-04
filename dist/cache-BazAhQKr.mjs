@@ -1,4 +1,4 @@
-import { __commonJS, __require, __toESM, import_core, require_auth, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-C43QPvfi.mjs";
+import { __commonJS, __require, __toESM, import_core, require_auth, require_core, require_exec, require_io, require_lib, require_semver } from "./semver-DmxAwBYV.mjs";
 import process$1 from "node:process";
 
 //#region node_modules/.deno/@actions+glob@0.1.2/node_modules/@actions/glob/lib/internal-glob-options-helper.js
@@ -43117,7 +43117,7 @@ var require_cache = __commonJS({ "node_modules/.deno/@actions+cache@4.0.3/node_m
 		});
 	}
 } });
-var import_cache = __toESM(require_cache(), 1);
+var import_cache = __toESM(require_cache());
 
 //#endregion
 //#region node_modules/.deno/@actions+glob@0.5.0/node_modules/@actions/glob/lib/internal-glob-options-helper.js
@@ -44220,7 +44220,7 @@ var require_glob = __commonJS({ "node_modules/.deno/@actions+glob@0.5.0/node_mod
 	}
 	exports.hashFiles = hashFiles;
 } });
-var import_glob = __toESM(require_glob(), 1);
+var import_glob = __toESM(require_glob());
 
 //#endregion
 //#region src/cache.ts
