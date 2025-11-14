@@ -142,6 +142,16 @@ number.
 - run: echo "Deno version is ${{ steps.deno.outputs.deno-version }}"
 ```
 
+### Determining the target platform
+
+You can determine the target platform of Deno.
+
+```yaml
+- uses: denoland/setup-deno@v2
+  with:
+    target: x86_64-pc-windows-msvc
+```
+
 ### Caching dependencies downloaded by Deno automatically
 
 Dependencies installed by Deno can be cached automatically between workflow

@@ -80,6 +80,19 @@ jobs:
       - name: Check binary exists
         run: deno_foo -V
 
+  test-target:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Deno with target x64
+        uses: ./
+        with:
+          target: x86_64-pc-windows-msvc
+
+      - name: Check version
+        run: deno --version
+
   test-setup-cache:
     runs-on: ${{ matrix.os }}
     strategy:

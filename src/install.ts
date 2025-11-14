@@ -6,7 +6,7 @@ import core from "@actions/core";
 import tc from "@actions/tool-cache";
 import type { Version } from "./version.ts";
 
-export async function install(version: Version) {
+export async function install(version: Version, target: string = "") {
   const cachedPath = tc.find(
     "deno",
     version.kind === "canary" ? `0.0.0-${version.version}` : version.version,
@@ -17,7 +17,7 @@ export async function install(version: Version) {
     return;
   }
 
-  const zip = zipName();
+  const zip = target ? `deno-${target}.zip` : zipName();
   let url;
 
   switch (version.kind) {

@@ -20252,14 +20252,14 @@ var import_tool_cache = __toESM(require_tool_cache(), 1);
 
 //#endregion
 //#region src/install.ts
-async function install(version) {
+async function install(version, target = "") {
 	const cachedPath = import_tool_cache.find("deno", version.kind === "canary" ? `0.0.0-${version.version}` : version.version);
 	if (cachedPath) {
 		import_core.info(`Using cached Deno installation from ${cachedPath}.`);
 		import_core.addPath(cachedPath);
 		return;
 	}
-	const zip = zipName();
+	const zip = target ? `deno-${target}.zip` : zipName();
 	let url;
 	switch (version.kind) {
 		case "canary":
@@ -20328,7 +20328,8 @@ async function main() {
 		const version = await resolveVersion(range);
 		if (version === null) exit("Could not resolve a version for the given range.");
 		import_core.info(`Going to install ${version.kind} version ${version.version}.`);
-		await install(version);
+		const target = import_core.getInput("target");
+		await install(version, target);
 		import_core.info(`::add-matcher::${path.join(import.meta.dirname ?? ".", "..", "deno-problem-matchers.json")}`);
 		import_core.setOutput("deno-version", version.version);
 		import_core.setOutput("release-channel", version.kind);
