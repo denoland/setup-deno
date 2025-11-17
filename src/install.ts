@@ -39,16 +39,21 @@ export async function install(version: Version, target: string = "") {
   const zipPath = await tc.downloadTool(url);
   const extractedFolder = await tc.extractZip(zipPath);
 
+  // Determine if the binary has .exe extension based on target or current platform
+  const isWindowsPlatform = target
+    ? target.includes("windows")
+    : process.platform === "win32";
+
   const binaryName = core.getInput("deno-binary-name");
   if (binaryName !== "deno") {
     await fs.rename(
       path.join(
         extractedFolder,
-        process.platform === "win32" ? "deno.exe" : "deno",
+        isWindowsPlatform ? "deno.exe" : "deno",
       ),
       path.join(
         extractedFolder,
-        process.platform === "win32" ? binaryName + ".exe" : binaryName,
+        isWindowsPlatform ? binaryName + ".exe" : binaryName,
       ),
     );
   }

@@ -20276,8 +20276,9 @@ async function install(version, target = "") {
 	import_core.info(`Downloading Deno from ${url}.`);
 	const zipPath = await import_tool_cache.downloadTool(url);
 	const extractedFolder = await import_tool_cache.extractZip(zipPath);
+	const isWindowsPlatform = target ? target.includes("windows") : process$1.platform === "win32";
 	const binaryName = import_core.getInput("deno-binary-name");
-	if (binaryName !== "deno") await fs.rename(path$1.join(extractedFolder, process$1.platform === "win32" ? "deno.exe" : "deno"), path$1.join(extractedFolder, process$1.platform === "win32" ? binaryName + ".exe" : binaryName));
+	if (binaryName !== "deno") await fs.rename(path$1.join(extractedFolder, isWindowsPlatform ? "deno.exe" : "deno"), path$1.join(extractedFolder, isWindowsPlatform ? binaryName + ".exe" : binaryName));
 	const newCachedPath = await import_tool_cache.cacheDir(extractedFolder, binaryName, version.kind === "canary" ? `0.0.0-${version.version}` : version.version);
 	import_core.info(`Cached Deno to ${newCachedPath}.`);
 	import_core.addPath(newCachedPath);
