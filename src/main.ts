@@ -45,7 +45,8 @@ async function main() {
 
     core.info(`Going to install ${version.kind} version ${version.version}.`);
 
-    await install(version);
+    const target = core.getInput("target");
+    await install(version, target);
 
     core.info(
       `::add-matcher::${

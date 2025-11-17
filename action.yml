@@ -13,6 +13,8 @@ inputs:
   deno-binary-name:
     description: The name to use for the binary.
     default: "deno"
+  target:
+    description: The target platform of the binary (e.g., "x86_64-pc-windows-msvc").
   cache:
     description: Cache downloaded modules & packages automatically in GitHub Actions cache.
     default: "false"
