@@ -142,16 +142,6 @@ number.
 - run: echo "Deno version is ${{ steps.deno.outputs.deno-version }}"
 ```
 
-### Determining the target platform
-
-You can determine the target platform of Deno.
-
-```yaml
-- uses: denoland/setup-deno@v2
-  with:
-    target: x86_64-pc-windows-msvc
-```
-
 ### Caching dependencies downloaded by Deno automatically
 
 Dependencies installed by Deno can be cached automatically between workflow
@@ -188,4 +178,18 @@ It is possible to customize the default hash
     # setting `cache-hash` implies `cache: true` and will replace
     # the default cache-hash of `${{ hashFiles('**/deno.lock') }}`
     cache-hash: ${{ hashFiles('**/deno.json') }}
+```
+
+### Determining the target platform
+
+You can determine the target platform of Deno.
+
+This can be used when automatic platform detection does not meet the conditions,
+such as when you want to run x64 binaries on Windows Arm.
+
+```yaml
+- uses: denoland/setup-deno@v2
+  with:
+    deno-version: v2.x
+    target: x86_64-pc-windows-msvc
 ```
