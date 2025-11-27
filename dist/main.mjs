@@ -20252,14 +20252,14 @@ var import_tool_cache = __toESM(require_tool_cache(), 1);
 
 //#endregion
 //#region src/install.ts
-async function install(version) {
+async function install(version, target = "") {
 	const cachedPath = import_tool_cache.find("deno", version.kind === "canary" ? `0.0.0-${version.version}` : version.version);
 	if (cachedPath) {
 		import_core.info(`Using cached Deno installation from ${cachedPath}.`);
 		import_core.addPath(cachedPath);
 		return;
 	}
-	const zip = zipName();
+	const zip = target ? `deno-${target}.zip` : zipName();
 	let url;
 	switch (version.kind) {
 		case "canary":
@@ -20276,8 +20276,9 @@ async function install(version) {
 	import_core.info(`Downloading Deno from ${url}.`);
 	const zipPath = await import_tool_cache.downloadTool(url);
 	const extractedFolder = await import_tool_cache.extractZip(zipPath);
+	const isWindowsPlatform = target ? target.includes("windows") : process$1.platform === "win32";
 	const binaryName = import_core.getInput("deno-binary-name");
-	if (binaryName !== "deno") await fs.rename(path$1.join(extractedFolder, process$1.platform === "win32" ? "deno.exe" : "deno"), path$1.join(extractedFolder, process$1.platform === "win32" ? binaryName + ".exe" : binaryName));
+	if (binaryName !== "deno") await fs.rename(path$1.join(extractedFolder, isWindowsPlatform ? "deno.exe" : "deno"), path$1.join(extractedFolder, isWindowsPlatform ? binaryName + ".exe" : binaryName));
 	const newCachedPath = await import_tool_cache.cacheDir(extractedFolder, binaryName, version.kind === "canary" ? `0.0.0-${version.version}` : version.version);
 	import_core.info(`Cached Deno to ${newCachedPath}.`);
 	import_core.addPath(newCachedPath);
@@ -20328,7 +20329,8 @@ async function main() {
 		const version = await resolveVersion(range);
 		if (version === null) exit("Could not resolve a version for the given range.");
 		import_core.info(`Going to install ${version.kind} version ${version.version}.`);
-		await install(version);
+		const target = import_core.getInput("target");
+		await install(version, target);
 		import_core.info(`::add-matcher::${path.join(import.meta.dirname ?? ".", "..", "deno-problem-matchers.json")}`);
 		import_core.setOutput("deno-version", version.version);
 		import_core.setOutput("release-channel", version.kind);

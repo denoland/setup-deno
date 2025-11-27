@@ -146,3 +146,17 @@ It is possible to customize the default hash
     # the default cache-hash of `${{ hashFiles('**/deno.lock') }}`
     cache-hash: ${{ hashFiles('**/deno.json') }}
 ```
+
+### Determining the target platform
+
+You can determine the target platform of Deno.
+
+This can be used when automatic platform detection does not meet the conditions,
+such as when you want to run x64 binaries on Windows Arm.
+
+```yaml
+- uses: denoland/setup-deno@v2
+  with:
+    deno-version: v2.x
+    target: x86_64-pc-windows-msvc
+```

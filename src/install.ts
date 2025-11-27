@@ -6,7 +6,7 @@ import core from "@actions/core";
 import tc from "@actions/tool-cache";
 import type { Version } from "./version.ts";
 
-export async function install(version: Version) {
+export async function install(version: Version, target: string = "") {
   const cachedPath = tc.find(
     "deno",
     version.kind === "canary" ? `0.0.0-${version.version}` : version.version,
@@ -17,7 +17,7 @@ export async function install(version: Version) {
     return;
   }
 
-  const zip = zipName();
+  const zip = target ? `deno-${target}.zip` : zipName();
   let url;
 
   switch (version.kind) {
@@ -39,16 +39,21 @@ export async function install(version: Version) {
   const zipPath = await tc.downloadTool(url);
   const extractedFolder = await tc.extractZip(zipPath);
 
+  // Determine if the binary has .exe extension based on target or current platform
+  const isWindowsPlatform = target
+    ? target.includes("windows")
+    : process.platform === "win32";
+
   const binaryName = core.getInput("deno-binary-name");
   if (binaryName !== "deno") {
     await fs.rename(
       path.join(
         extractedFolder,
-        process.platform === "win32" ? "deno.exe" : "deno",
+        isWindowsPlatform ? "deno.exe" : "deno",
       ),
       path.join(
         extractedFolder,
-        process.platform === "win32" ? binaryName + ".exe" : binaryName,
+        isWindowsPlatform ? binaryName + ".exe" : binaryName,
       ),
     );
   }
