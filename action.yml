@@ -15,7 +15,7 @@ inputs:
     default: "deno"
   cache:
     description: Cache downloaded modules & packages automatically in GitHub Actions cache.
-    default: "false"
+    default: "true"
   cache-hash:
     description: A hash used as part of the cache key, which defaults to a hash of the deno.lock files.
 outputs:
