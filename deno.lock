@@ -4,12 +4,12 @@
     "npm:@actions/cache@^4.0.3": "4.1.0",
     "npm:@actions/core@^1.11.1": "1.11.1",
     "npm:@actions/glob@0.6": "0.6.1",
+    "npm:@actions/http-client@^3.0.2": "3.0.2",
     "npm:@actions/tool-cache@^2.0.2": "2.0.2",
     "npm:@types/node@^20.16.5": "20.17.47",
     "npm:@types/semver@^7.7.0": "7.7.1",
     "npm:semver@^7.7.1": "7.7.4",
-    "npm:tsdown@0.20": "0.20.3_rolldown@1.0.0-rc.3",
-    "npm:undici@^7.8.0": "7.22.0"
+    "npm:tsdown@0.20": "0.20.3_rolldown@1.0.0-rc.3"
   },
   "npm": {
     "@actions/cache@4.1.0": {
@@ -72,6 +72,13 @@
       "dependencies": [
         "tunnel",
         "undici@5.29.0"
+      ]
+    },
+    "@actions/http-client@3.0.2": {
+      "integrity": "sha512-JP38FYYpyqvUsz+Igqlc/JG6YO9PaKuvqjM3iGvaLqFnJ7TFmcLyy2IDrY0bI0qCQug8E9K+elv5ZNfw62ZJzA==",
+      "dependencies": [
+        "tunnel",
+        "undici@6.23.0"
       ]
     },
     "@actions/http-client@4.0.0": {
@@ -814,9 +821,6 @@
     "undici@6.23.0": {
       "integrity": "sha512-VfQPToRA5FZs/qJxLIinmU59u0r7LXqoJkCzinq3ckNJp3vKEh7jTWN589YQ5+aoAC/TGRLyJLCPKcLQbM8r9g=="
     },
-    "undici@7.22.0": {
-      "integrity": "sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg=="
-    },
     "unrun@0.2.27": {
       "integrity": "sha512-Mmur1UJpIbfxasLOhPRvox/QS4xBiDii71hMP7smfRthGcwFL2OAmYRgduLANOAU4LUkvVamuP+02U+c90jlrw==",
       "dependencies": [
@@ -855,12 +859,12 @@
         "npm:@actions/cache@^4.0.3",
         "npm:@actions/core@^1.11.1",
         "npm:@actions/glob@0.6",
+        "npm:@actions/http-client@^3.0.2",
         "npm:@actions/tool-cache@^2.0.2",
         "npm:@types/node@^20.16.5",
         "npm:@types/semver@^7.7.0",
         "npm:semver@^7.7.1",
-        "npm:tsdown@0.20",
-        "npm:undici@^7.8.0"
+        "npm:tsdown@0.20"
       ]
     }
   }
