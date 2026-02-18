@@ -11,6 +11,10 @@
     "dist"
   ],
   "tasks": {
-    "build": "deno run -A scripts/build.ts"
+    "build": "deno run -A scripts/build.ts",
+    "lock:deno": "deno install --frozen=false --lockfile-only",
+    "lock:npm": "deno run -A --no-lock --node-modules-dir=none -- npm:npm install --package-lock-only --no-fund",
+    "lock": "deno task --no-lock lock:npm ; deno task --no-lock lock:deno ;",
+    "modules": "deno run -A --no-lock --node-modules-dir=none -- npm:npm ci --no-fund"
   }
 }

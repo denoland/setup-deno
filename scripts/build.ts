@@ -1,6 +1,12 @@
 import { build } from "tsdown";
 import { join } from "node:path";
 
+import pkg from "../package.json" with { type: "json" };
+const dependencyNames = Object.keys({
+  ...(pkg.dependencies || {}),
+  ...(pkg.devDependencies || {}),
+});
+
 // Ensure `deno install` has run before building
 await new Deno.Command(Deno.execPath(), {
   args: ["install"],
@@ -24,4 +30,7 @@ await build({
   platform: "node",
   format: "esm",
   fixedExtension: true,
+  noExternal: dependencyNames,
+  external: [/^node:/],
+  inlineOnly: false,
 });
