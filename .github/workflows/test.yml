@@ -18,26 +18,34 @@ jobs:
         deno:
           - "1.x"
           - "2.x"
+          - "latest"
           - "1.33.1"
           - "canary"
           - "~1.32"
           - "b290fd01f3f5d32f9d010fc719ced0240759c049"
           - "rc"
           - "lts"
+          - "stable"
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
         with:
           deno-version: ${{ matrix.deno }}
 
+      - name: Report Deno versions
+        shell: bash
+        run: |
+          printf -- '%s\n' 'Used deno-version:' '${{ matrix.deno }}' ''
+          deno --version
+
       - name: Test Deno
         run: deno run https://deno.land/std@0.198.0/examples/welcome.ts
 
       - name: Test `deno install -g` (2.0)
-        if: matrix.deno == 'canary' || matrix.deno == 'latest'
+        if: matrix.deno == 'canary' || matrix.deno == 'stable'
         run: |
           deno install -g --allow-net --no-config -n deno_curl https://deno.land/std@0.198.0/examples/curl.ts
           deno_curl https://deno.land/std@0.198.0/examples/curl.ts
@@ -54,7 +62,7 @@ jobs:
       matrix:
         deno-version-file: [.dvmrc, .tool-versions]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
@@ -70,7 +78,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
@@ -86,7 +94,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
@@ -103,7 +111,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
@@ -116,7 +124,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
@@ -130,12 +138,12 @@ jobs:
         run: deno fmt --check
 
       - name: Check types
-        run: deno check src/main.ts
+        run: deno check src/main.ts src/post.ts
 
   build-diff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Deno
         uses: ./
@@ -145,5 +153,10 @@ jobs:
       - name: Build code
         run: deno run -A scripts/build.ts
 
-      - name: Assert no git changes (run `deno task build` if this fails)
+      - name: Assert no git changes
         run: git diff --quiet
+
+      - name: Advise about failures
+        if: failure()
+        shell: bash
+        run: printf -- '%s\n' 'Run "deno task build" to update the files under dist/ in the repository.'
