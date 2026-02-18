@@ -1,9 +1,7 @@
 // @ts-types="@types/semver"
 import semver from "semver";
-import { fetch } from "undici";
 import * as fs from "node:fs";
-import * as console from "node:console";
-import { setTimeout } from "node:timers";
+import { fetchWithRetries } from "./fetch.ts";
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
@@ -206,26 +204,5 @@ async function resolveRelease(range: string): Promise<Version | null> {
     if (version === null) throw new Error("UNREACHABLE");
 
     return { version, kind: version.includes("-rc.") ? "rc" : "stable" };
-  }
-}
-
-async function fetchWithRetries(url: string, maxRetries = 5) {
-  let sleepMs = 250;
-  let iterationCount = 0;
-  while (true) {
-    iterationCount++;
-    try {
-      const res = await fetch(url);
-      if (res.status === 200 || iterationCount > maxRetries) {
-        return res;
-      }
-    } catch (err) {
-      if (iterationCount > maxRetries) {
-        throw err;
-      }
-    }
-    console.warn(`Failed fetching. Retrying in ${sleepMs}ms...`);
-    await new Promise((resolve) => setTimeout(resolve, sleepMs));
-    sleepMs = Math.min(sleepMs * 2, 10_000);
   }
 }
