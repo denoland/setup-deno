@@ -24,4 +24,5 @@ await build({
   platform: "node",
   format: "esm",
   fixedExtension: true,
+  inlineOnly: false,
 });

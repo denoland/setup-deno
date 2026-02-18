@@ -1,8 +1,9 @@
-import { import_core } from "./semver-C43QPvfi.mjs";
-import { saveCache } from "./cache-BG71A93Z.mjs";
+import { f as __toESM, n as require_core } from "./semver-O4tt7wRT.mjs";
+import { n as saveCache } from "./cache-DpsdXZtI.mjs";
 import process from "node:process";
 
 //#region src/post.ts
+var import_core = /* @__PURE__ */ __toESM(require_core(), 1);
 async function main() {
 	try {
 		await saveCache();
@@ -14,3 +15,4 @@ async function main() {
 main();
 
 //#endregion
+export {  };

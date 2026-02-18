@@ -1,9 +1,7 @@
 // @ts-types="@types/semver"
 import semver from "semver";
-import { fetch } from "undici";
 import * as fs from "node:fs";
-import * as console from "node:console";
-import { setTimeout } from "node:timers";
+import { fetchWithRetries } from "./fetch.ts";
 
 const GIT_HASH_RE = /^[0-9a-fA-F]{40}$/;
 
@@ -32,7 +30,7 @@ export function parseVersionRange(
     return { range: "latest", kind: "rc" };
   }
 
-  if (version === "latest") {
+  if (version === "latest" || version === "stable") {
     return { range: "latest", kind: "stable" };
   }
 
@@ -145,14 +143,35 @@ async function resolveLTS(): Promise<Version | null> {
 async function resolveRelease(range: string): Promise<Version | null> {
   if (range === "latest") {
     const res = await fetchWithRetries(
-      "https://dl.deno.land/release-latest.txt",
+      "https://github.com/denoland/docs/raw/refs/heads/main/replacements.json",
     );
     if (res.status !== 200) {
       throw new Error(
-        "Failed to fetch release version info from dl.deno.land. Please try again later.",
+        "Failed to fetch release version info from github.com. Please try again later.",
       );
     }
-    let version: string | null = (await res.text()).trim();
+    let version: string | null = "";
+    try {
+      const replacementsJson = await res.json();
+      if (typeof replacementsJson !== "object" || replacementsJson === null) {
+        throw new Error("Fetched CLI version info is invalid.");
+      }
+      if (!("CLI_VERSION" in replacementsJson)) {
+        throw new Error("Fetched CLI version info is invalid.");
+      }
+      version = (replacementsJson as { CLI_VERSION: string }).CLI_VERSION
+        .trim();
+    } catch {
+      const res2 = await fetchWithRetries(
+        "https://github.com/denoland/deno/raw/refs/heads/main/cli/lib/version.txt",
+      );
+      if (res2.status !== 200) {
+        throw new Error(
+          "Failed to fetch release version info from github.com. Please try again later.",
+        );
+      }
+      version = (await res.text()).trim();
+    }
     version = semver.clean(version);
     if (version === null) {
       throw new Error("Failed to parse release version.");
@@ -185,26 +204,5 @@ async function resolveRelease(range: string): Promise<Version | null> {
     if (version === null) throw new Error("UNREACHABLE");
 
     return { version, kind: version.includes("-rc.") ? "rc" : "stable" };
-  }
-}
-
-async function fetchWithRetries(url: string, maxRetries = 5) {
-  let sleepMs = 250;
-  let iterationCount = 0;
-  while (true) {
-    iterationCount++;
-    try {
-      const res = await fetch(url);
-      if (res.status === 200 || iterationCount > maxRetries) {
-        return res;
-      }
-    } catch (err) {
-      if (iterationCount > maxRetries) {
-        throw err;
-      }
-    }
-    console.warn(`Failed fetching. Retrying in ${sleepMs}ms...`);
-    await new Promise((resolve) => setTimeout(resolve, sleepMs));
-    sleepMs = Math.min(sleepMs * 2, 10_000);
   }
 }

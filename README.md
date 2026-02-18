@@ -17,7 +17,7 @@ one of the following:
 
 | Channel  | Description                      |
 | -------- | -------------------------------- |
-| `latest` | Latest Stable release version    |
+| `stable` | Latest Stable release version    |
 | `lts`    | Latest Long-Term-Support version |
 | `rc`     | Latest Release-Candidate version |
 | `canary` | Latest Canary release version    |
