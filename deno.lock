@@ -5,7 +5,7 @@
     "npm:@actions/core@^1.11.1": "1.11.1",
     "npm:@actions/glob@0.5": "0.5.0",
     "npm:@actions/tool-cache@^2.0.2": "2.0.2",
-    "npm:@types/node@^20.16.5": "20.17.47",
+    "npm:@types/node@24": "24.12.0",
     "npm:@types/semver@^7.7.0": "7.7.0",
     "npm:semver@^7.7.1": "7.7.2",
     "npm:tsdown@0.10.1": "0.10.1_rolldown@1.0.0-beta.8-commit.852c603__valibot@1.0.0",
@@ -511,8 +511,8 @@
         "tslib@2.8.1"
       ]
     },
-    "@types/node@20.17.47": {
-      "integrity": "sha512-3dLX0Upo1v7RvUimvxLeXqwrfyKxUINk0EAM83swP2mlSUcwV73sZy8XhNz8bcZ3VbsfQyC/y6jRdL5tgCNpDQ==",
+    "@types/node@24.12.0": {
+      "integrity": "sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==",
       "dependencies": [
         "undici-types"
       ]
@@ -1021,8 +1021,8 @@
         "quansync"
       ]
     },
-    "undici-types@6.19.8": {
-      "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
+    "undici-types@7.16.0": {
+      "integrity": "sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw=="
     },
     "undici@5.29.0": {
       "integrity": "sha512-raqeBD6NQK4SkWhQzeYKd1KmIG6dllBOTt55Rmkt4HtI9mwdWtJljnrXjAFUBLTSN67HWrOIZ3EPF4kjUw80Bg==",
@@ -1087,7 +1087,7 @@
         "npm:@actions/core@^1.11.1",
         "npm:@actions/glob@0.5",
         "npm:@actions/tool-cache@^2.0.2",
-        "npm:@types/node@^20.16.5",
+        "npm:@types/node@24",
         "npm:@types/semver@^7.7.0",
         "npm:semver@^7.7.1",
         "npm:tsdown@0.10.1",
