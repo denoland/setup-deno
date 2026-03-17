@@ -26,7 +26,7 @@ outputs:
   release-channel:
     description: "The release channel of the installed version."
 runs:
-  using: "node20"
+  using: "node24"
   main: "dist/main.mjs"
   post: "dist/post.mjs"
   post-if: always()
