@@ -64,6 +64,25 @@ jobs:
       - name: Check version
         run: deno -V | grep -q "deno 1\.43\.1"
 
+  test-version-file-dvm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # dvm records the version as `key=value`, possibly not on the first line
+      - name: Write a dvm-style .dvmrc
+        run: |
+          printf 'registry_binary=https://dl.deno.land\ndeno_version=1.43.1\n' \
+            > "$RUNNER_TEMP/.dvmrc"
+
+      - name: Setup Deno
+        uses: ./
+        with:
+          deno-version-file: ${{ runner.temp }}/.dvmrc
+
+      - name: Check version
+        run: deno -V | grep -q "deno 1\.43\.1"
+
   test-binary-name:
     runs-on: ${{ matrix.os }}
     strategy:
