@@ -19331,7 +19331,8 @@ function getDenoVersionFromFile(versionFilePath) {
 	if (!fs$3.existsSync(versionFilePath)) throw new Error(`The specified node version file at: ${versionFilePath} does not exist`);
 	const contents = fs$3.readFileSync(versionFilePath, "utf8");
 	const denoVersionInToolVersions = contents.match(/^deno\s+v?(?<version>[^\s]+)$/m);
-	return denoVersionInToolVersions?.groups?.version || contents.trim();
+	const denoVersionInDvmrc = contents.match(/^[^\S\n]*deno_version[^\S\n]*=[^\S\n]*v?(?<version>[^\s]+)[^\S\n]*$/m);
+	return denoVersionInToolVersions?.groups?.version || denoVersionInDvmrc?.groups?.version || contents.trim();
 }
 function resolveVersion({ range, kind }) {
 	if (kind === "canary") return resolveCanary(range);

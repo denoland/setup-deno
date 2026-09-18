@@ -75,7 +75,19 @@ export function getDenoVersionFromFile(
     /^deno\s+v?(?<version>[^\s]+)$/m,
   );
 
-  return denoVersionInToolVersions?.groups?.version || contents.trim();
+  // dvm writes .dvmrc as a `key=value` config rather than a bare version, and
+  // may record other keys before it:
+  // ```
+  // registry_binary=https://dl.deno.land
+  // deno_version=1.43.1
+  // ```
+  // This parses the version of Deno from the file
+  const denoVersionInDvmrc = contents.match(
+    /^[^\S\n]*deno_version[^\S\n]*=[^\S\n]*v?(?<version>[^\s]+)[^\S\n]*$/m,
+  );
+
+  return denoVersionInToolVersions?.groups?.version ||
+    denoVersionInDvmrc?.groups?.version || contents.trim();
 }
 
 export function resolveVersion(
