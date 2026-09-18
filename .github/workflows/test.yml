@@ -83,6 +83,40 @@ jobs:
       - name: Check version
         run: deno -V | grep -q "deno 1\.43\.1"
 
+  test-version-file-rejects-url:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # A version file is repo content, so it must never be able to choose what
+      # gets downloaded. dvm's registry key is not read, and a URL is not a
+      # valid version: both are rejected before any download happens.
+      - name: Write version files that try to point elsewhere
+        run: |
+          printf 'registry_binary=https://example.invalid\n' \
+            > "$RUNNER_TEMP/.dvmrc-registry"
+          printf 'deno_version=https://example.invalid/deno.zip\n' \
+            > "$RUNNER_TEMP/.dvmrc-url"
+
+      - name: Setup Deno with a registry-only .dvmrc
+        id: registry-only
+        continue-on-error: true
+        uses: ./
+        with:
+          deno-version-file: ${{ runner.temp }}/.dvmrc-registry
+
+      - name: Setup Deno with a URL as the version
+        id: url-version
+        continue-on-error: true
+        uses: ./
+        with:
+          deno-version-file: ${{ runner.temp }}/.dvmrc-url
+
+      - name: Both must have been rejected
+        run: |
+          test "${{ steps.registry-only.outcome }}" = failure
+          test "${{ steps.url-version.outcome }}" = failure
+
   test-binary-name:
     runs-on: ${{ matrix.os }}
     strategy:
