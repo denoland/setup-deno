@@ -146,3 +146,21 @@ It is possible to customize the default hash
     # the default cache-hash of `${{ hashFiles('**/deno.lock') }}`
     cache-hash: ${{ hashFiles('**/deno.json') }}
 ```
+
+### Determining whether the cache was hit
+
+When caching is enabled, you can check whether the cache was restored by reading
+back the `cache-hit` output.
+
+The output is `true` when a cache entry matching the full cache key was
+restored, and `false` otherwise, including when only an older cache was restored
+through the fallback key (same runner os and architecture).
+
+```yaml
+- uses: denoland/setup-deno@v2
+  id: deno
+  with:
+    cache: true
+
+- run: echo "Deno cache hit: ${{ steps.deno.outputs.cache-hit }}"
+```
